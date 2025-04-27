@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sub-3 마라톤: 1년 전략 로드맵</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* 기본 폰트 및 배경 설정 */
+        body {
+            font-family: 'Noto Sans KR', sans-serif; /* 본문 기본 폰트 */
+            background-color: #fdfbf6; /* 따뜻한 아이보리 배경 */
+            color: #4a4a4a; /* 기본 텍스트 색상 (부드러운 검정) */
+            line-height: 1.7; /* 기본 줄 간격 */
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Noto Serif KR', serif; /* 제목 폰트 */
+            font-weight: 700;
+            color: #004d40; /* 깊은 청록색 */
+        }
+        /* 테이블 컨테이너 */
+        .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border: 1px solid #e0e0e0; /* 부드러운 회색 테두리 */
+            border-radius: 0.75rem; /* 12px */
+            box-shadow: 0 4px 12px rgba(0, 77, 64, 0.07); /* 청록색 기반 그림자 */
+            margin-top: 1.5rem; /* 테이블 상단 여백 */
+        }
+        /* 테이블 최소 너비 */
+        .min-w-table { min-width: 1150px; }
+        .min-w-recovery-table { min-width: 650px; }
+
+        /* 테이블 셀 스타일 (격자, 정렬, 패딩) */
+        th, td {
+            white-space: pre-wrap;
+            word-break: keep-all;
+            vertical-align: middle;
+            padding: 16px 18px; /* 패딩 증가 */
+            border: 1px solid #eeeeee; /* 더 연한 격자 선 */
+            font-size: 0.9rem; /* 테이블 폰트 크기 조정 */
+        }
+        td[rowspan] { vertical-align: top; padding-top: 20px; }
+        /* 테이블 헤더 스타일 */
+        th {
+             text-align: left;
+             background-color: #004d40; /* 깊은 청록색 */
+             color: white;
+             font-weight: 700;
+             font-family: 'Noto Sans KR', sans-serif; /* 헤더는 Sans Serif 유지 */
+             position: sticky; top: 0; z-index: 20;
+             vertical-align: middle;
+             border-color: #00382e; /* 더 진한 청록색 테두리 */
+             font-size: 0.9rem;
+        }
+        /* 테이블 행 호버 */
+        tbody tr:hover {
+            background-color: #e0f2f1; /* 연한 청록색 호버 */
+        }
+        /* 카드 스타일 (혁신적 디자인) */
+        .innovative-card {
+            background: linear-gradient(145deg, #ffffff 70%, #f7f8fc 100%); /* 미묘한 그라데이션 배경 */
+            border-radius: 1.25rem; /* 20px */
+            box-shadow: 0 10px 25px rgba(0, 77, 64, 0.08), 0 5px 10px rgba(0, 77, 64, 0.04);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            border: 1px solid transparent; /* 초기 테두리 투명 */
+            position: relative;
+            overflow: hidden;
+            padding: 2.5rem 3rem; /* 내부 패딩 증가 */
+        }
+        .innovative-card:before { /* 그라데이션 테두리 효과 */
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 1.25rem;
+            padding: 2px; /* 테두리 두께 */
+            background: linear-gradient(145deg, #00796b, #b2dfdb); /* 청록색 그라데이션 테두리 */
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: destination-out;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out;
+        }
+        .innovative-card:hover {
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 0 15px 35px rgba(0, 77, 64, 0.12), 0 8px 15px rgba(0, 77, 64, 0.06);
+        }
+        .innovative-card:hover:before {
+            opacity: 1;
+        }
+        /* 헤더 디자인 */
+        .innovative-header {
+             background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%23004d40' fill-opacity='0.06'%3E%3Cpath opacity='.5' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9z'/%3E%3Cpath d='M6 5V0h1v5h9V0h1v5h9V0h1v5h9V0h1v5h9V0h1v5h9V0h1v5h9V0h1v5h9V0h1v5h9V0h1v5h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H6v-1h9V6H6v-1zm-1 0V0h-1v5H0v1h5v9H0v1h5v9H0v1h5v9H0v1h5v9H0v1h5v9H0v1h5v9H0v1h5v9H0v1h5v9H0v1h5v4h1v-4h9v4h1v-4h9v4h1v-4h9v4h1v-4h9v4h1v-4h9v4h1v-4h9v4h1v-4h9v4h1v-4h9v4h1v-4h9v4h1v-4h4v-1h-4v-9h4v-1h-4v-9h4v-1h-4v-9h4v-1h-4v-9h4v-1h-4v-9h4v-1h-4v-9h4v-1h-4v-9h4v-1h-4V6h-9V0h-1v6h-9V0h-1v6h-9V0h-1v6h-9V0h-1v6h-9V0h-1v6h-9V0h-1v6h-9V0h-1v6H5V0H4v6H0v1h4v9H0v1h4v9H0v1h4v9H0v1h4v9H0v1h4v9H0v1h4v9H0v1h4v9H0v1h4v9H0v1h4v9h1v-9h9v9h1v-9h9v9h1v-9h9v9h1v-9h9v9h1v-9h9v9h1v-9h9v9h1v-9h9v9h1v-9h9v9h1v-9h9v9h1v-9h4v-1h-4v-9h4v-1h-4v-9h4v-1h-4v-9h4v-1h-4v-9h4v-1h-4v-9h4v-1h-4v-9h4v-1h-4v-9h4v-1h-4V5h-9V0h-1v5h-9V0h-1v5h-9V0h-1v5h-9V0h-1v5h-9V0h-1v5h-9V0h-1v5H5z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"), linear-gradient(135deg, #004d40 0%, #00796b 100%); /* 패턴 + 청록색 그라데이션 */
+             background-size: auto, cover;
+             padding: 3.5rem 2rem; /* 패딩 조정 */
+             border-radius: 1.25rem; /* 20px */
+        }
+        .innovative-header h1 {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 2.75rem; /* 44px */
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .innovative-header p {
+            font-size: 1.25rem; /* 20px */
+            opacity: 0.85;
+            max-width: 700px; /* 최대 너비 설정 */
+        }
+
+        /* 단계별 배경색 (더욱 은은하게) */
+        .phase-1-bg { background-color: #e8f5e9; } /* 연한 녹색 톤 */
+        .phase-2-bg { background-color: #e0f7fa; } /* 연한 시안 톤 */
+        .phase-3-bg { background-color: #fffde7; } /* 연한 노랑 톤 */
+        .phase-4-bg { background-color: #fff3e0; } /* 연한 주황 톤 */
+        .tapering-bg { background-color: #fafafa; } /* 매우 연한 회색 */
+
+        /* 스티키 컬럼 스타일 (격자 고려) */
+        .sticky-col-1, .sticky-col-2 { position: sticky; z-index: 10; background-color: inherit; }
+        .sticky-col-1 { left: 0; width: 80px; border-right: 1px solid #eeeeee; }
+        .sticky-col-2 { left: 80px; width: 130px; border-right: 1px solid #eeeeee; }
+
+         /* 각 단계별 스티키 컬럼 배경색 (격자 고려) */
+        tr .sticky-phase-1 { background-color: #e8f5e9; }
+        tr .sticky-phase-2 { background-color: #e0f7fa; }
+        tr .sticky-phase-3 { background-color: #fffde7; }
+        tr .sticky-phase-4 { background-color: #fff3e0; }
+        tr .sticky-tapering { background-color: #fafafa; }
+
+        /* 호버 시 스티키 컬럼 배경색 */
+         tr:hover .sticky-phase-1, tr:hover .sticky-phase-2, tr:hover .sticky-phase-3,
+         tr:hover .sticky-phase-4, tr:hover .sticky-tapering {
+            background-color: #e0f2f1; /* 호버 배경색 */
+         }
+         /* rowspan이 적용된 셀의 스티키 컬럼 스타일 */
+         td[rowspan].sticky-col-1, td[rowspan].sticky-col-2 { vertical-align: top; background-color: inherit !important; }
+         td[rowspan].sticky-phase-1 { background-color: #e8f5e9 !important; }
+         td[rowspan].sticky-phase-2 { background-color: #e0f7fa !important; }
+         td[rowspan].sticky-phase-3 { background-color: #fffde7 !important; }
+         td[rowspan].sticky-phase-4 { background-color: #fff3e0 !important; }
+         td[rowspan].sticky-tapering { background-color: #fafafa !important; }
+
+         /* 섹션 제목 스타일 (혁신적) */
+         .section-title {
+             font-size: 2.25rem; /* 36px */
+             font-weight: 700;
+             color: #004d40; /* 깊은 청록색 */
+             margin-bottom: 2rem; /* 32px */
+             padding-bottom: 1rem; /* 16px */
+             border-bottom: 2px solid;
+             border-image-slice: 1;
+             border-image-source: linear-gradient(to right, #00796b, #80cbc4); /* 청록색 그라데이션 경계선 */
+             display: flex;
+             align-items: center;
+             letter-spacing: -0.01em;
+         }
+         .section-title i {
+             margin-right: 1.25rem; /* 20px */
+             color: #00796b; /* 중간 청록색 */
+             font-size: 1.75rem; /* 28px */
+             transition: transform 0.3s ease;
+         }
+         .innovative-card:hover .section-title i {
+             transform: rotate(10deg) scale(1.1);
+         }
+         /* 강조 텍스트 */
+         .highlight { color: #00796b; font-weight: 700; }
+         .highlight-green { color: #388e3c; font-weight: 700; }
+         .highlight-red { color: #d84315; font-weight: 700; }
+
+         /* 목표 페이스 카드 스타일 */
+         .pace-card {
+             background: linear-gradient(145deg, #ffffff, #f8f8f8);
+             padding: 1.25rem; /* 20px */
+             border-radius: 1rem; /* 16px */
+             box-shadow: 0 4px 10px rgba(0, 77, 64, 0.06);
+             border: 1px solid #e0e0e0;
+             text-align: center;
+             transition: all 0.3s ease-in-out;
+             position: relative;
+             overflow: hidden;
+         }
+         .pace-card:hover {
+             transform: translateY(-4px) scale(1.02);
+             box-shadow: 0 8px 18px rgba(0, 77, 64, 0.1);
+         }
+         .pace-card p:first-child {
+             font-size: 1.5rem; /* 24px */
+             font-weight: 700;
+             color: #004d40; /* 깊은 청록색 */
+             margin-bottom: 0.5rem; /* 8px */
+         }
+         .pace-card p:last-child {
+             font-size: 0.9rem; /* 14.4px */
+             color: #5f5f5f;
+         }
+         /* 추가 고려사항 리스트 스타일 */
+         .consideration-list li {
+             padding-left: 2.5rem; /* 40px */
+             position: relative;
+             margin-bottom: 1rem; /* 항목 간 간격 */
+         }
+         .consideration-list li i {
+             position: absolute;
+             left: 0;
+             top: 6px;
+             width: 1.5rem; /* 24px */
+             height: 1.5rem; /* 24px */
+             text-align: center;
+             color: #ffffff; /* 아이콘 색상 흰색 */
+             background: linear-gradient(135deg, #00796b, #4db6ac); /* 청록색 그라데이션 배경 */
+             border-radius: 50%;
+             font-size: 0.8rem; /* 아이콘 크기 */
+             line-height: 1.5rem; /* 아이콘 수직 중앙 정렬 */
+             box-shadow: 0 2px 4px rgba(0, 77, 64, 0.2);
+             transition: transform 0.3s ease;
+         }
+          .innovative-card:hover .consideration-list li i {
+             transform: scale(1.1);
+         }
+         /* 푸터 스타일 */
+        footer {
+            border-top: 1px solid #e0e0e0;
+            padding-top: 2rem;
+            margin-top: 4rem;
+        }
+
+    </style>
+</head>
+<body class="bg-f7f8fc text-gray-700 antialiased">
+
+    <div class="container mx-auto px-4 py-16 md:px-6 md:py-24 max-w-7xl">
+
+        <header class="innovative-header mb-16 md:mb-24 text-center rounded-xl text-white shadow-xl">
+            <h1 class="text-4xl md:text-6xl font-bold mb-5 tracking-tight">Sub-3 마라톤: 1년 전략 로드맵</h1>
+            <p class="text-xl md:text-2xl opacity-90 max-w-3xl mx-auto">최상의 퍼포먼스를 위한 포괄적인 단계별 훈련 계획: 3시간의 벽을 넘어서</p>
+        </header>
+
+        <main class="space-y-16 md:space-y-20">
+            <section class="innovative-card">
+                <h2 class="section-title"><i class="fas fa-flag-checkered"></i>도전 개요: Sub-3를 향한 여정</h2>
+                <p class="mb-4 text-gray-600 leading-relaxed text-lg md:text-xl">
+                    본 문서는 현재 마라톤 기록(4:11:42)을 기준으로, 목표 기록인 <span class="highlight">Sub-3(3시간 이내 완주)</span> 달성을 위한 1년간의 정교한 훈련 프로그램을 제시합니다. 점진적 과부하, 주기화, 개인 맞춤형 회복 등 검증된 훈련 원칙을 바탕으로 VDOT 55 달성을 목표로 합니다.
+                </p>
+                <p class="text-gray-600 leading-relaxed text-lg md:text-xl">
+                    훈련은 총 4개의 핵심 단계로 구성되며, 최종 2-3주는 최상의 경기력 발휘를 위한 테이퍼링 기간입니다. 특히, 매 3-4주마다 포함된 <span class="highlight-green">전략적 회복 주간</span>은 신체 적응을 촉진하고 부상 위험을 최소화하여 지속 가능한 성장을 가능하게 합니다.
+                </p>
+            </section>
+
+            <section class="innovative-card">
+                <h2 class="section-title"><i class="fas fa-crosshairs"></i>핵심 성과 지표 및 목표 페이스</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mb-12">
+                    <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-xl border border-blue-200 shadow-lg text-center transition transform hover:scale-105 duration-300">
+                        <p class="font-semibold text-blue-800 mb-3 text-2xl">궁극적 목표</p>
+                        <p class="text-4xl font-bold text-blue-900">Sub-3 마라톤 완주</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-green-50 to-green-100 p-8 rounded-xl border border-green-200 shadow-lg text-center transition transform hover:scale-105 duration-300">
+                        <p class="font-semibold text-green-800 mb-3 text-2xl">목표 VDOT</p>
+                        <p class="text-4xl font-bold text-green-900">55</p>
+                    </div>
+                </div>
+                <div class="bg-gradient-to-br from-indigo-50 to-purple-100 p-8 rounded-xl border border-indigo-200 shadow-lg">
+                    <p class="font-semibold text-indigo-800 mb-6 text-2xl text-center">🏁 VDOT 55 목표 페이스 (/km)</p>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
+                        <div class="pace-card"> <p>E</p> <p>5:03-5:37</p> </div>
+                        <div class="pace-card"> <p>M</p> <p>4:19</p> </div>
+                        <div class="pace-card"> <p>T</p> <p>4:18</p> </div>
+                        <div class="pace-card"> <p>I</p> <p>3:58</p> </div>
+                        <div class="pace-card"> <p>R</p> <p>3:41</p> </div>
+                    </div>
+                     <p class="mt-8 text-xs text-gray-500 italic text-center">
+                        (E: 이지, M: 마라톤, T: 역치, I: 인터벌, R: 반복주)
+                    </p>
+                </div>
+                 <p class="mt-8 text-base text-gray-500 italic">
+                    *참고: 위 페이스는 각 훈련 영역의 최종 목표치입니다. 계획 초기에는 현재 체력 수준에서 시작하여 점진적으로 목표 페이스에 도달합니다. 운동자각도(RPE)는 특히 초기 단계에서 중요한 강도 지표입니다.
+                </p>
+            </section>
+
+            <section class="innovative-card p-0 overflow-hidden">
+                 <div class="p-8 md:p-12 border-b border-gray-200">
+                    <h2 class="section-title !mb-0 !pb-0 !border-none"><i class="fas fa-calendar-week"></i>단계별 상세 훈련 스케줄</h2>
+                    <p class="mt-4 text-gray-600 text-base md:text-lg">다음 표는 주간 훈련 구조를 상세히 나타냅니다. 개인의 반응에 따라 유연하게 조정하고, 매 3-4주마다 아래 '회복 주간 프로토콜'에 따라 훈련량을 조절하십시오.</p>
+                 </div>
+                <div class="table-container">
+                    <table class="min-w-table w-full text-sm text-left text-gray-600">
+                        <thead>
+                            <tr>
+                                <th class="sticky-col-1">주차</th>
+                                <th class="sticky-col-2">단계</th>
+                                <th class="px-4 py-3">요일</th>
+                                <th class="px-4 py-3">훈련 유형</th>
+                                <th class="px-4 py-3">거리/시간</th>
+                                <th class="px-4 py-3">목표 강도</th>
+                                <th class="px-4 py-3">훈련 구조</th>
+                                <th class="px-4 py-3">단계별 중점사항 및 참고</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td rowspan="7" class="sticky-col-1 sticky-phase-1 font-medium">1-16</td>
+                                <td rowspan="7" class="sticky-col-2 sticky-phase-1 font-semibold text-green-800">1단계: 기반 구축</td>
+                                <td class="px-4 py-4">월</td>
+                                <td class="px-4 py-4">이지런</td>
+                                <td class="px-4 py-4">6-10km (점진적)</td>
+                                <td class="px-4 py-4">현재 E (~6:27) → 개선 (5:50-6:20) / RPE 3-4</td>
+                                <td class="px-4 py-4">10분 워밍업 - 본운동 - 10분 쿨다운</td>
+                                <td rowspan="7" class="px-4 py-4 align-top text-xs leading-relaxed">
+                                    <strong class="block mb-1 text-sm text-green-700">중점:</strong> 강력한 유산소 기반, 훈련 습관 형성, 부상 내성 강화.<br>
+                                    <strong class="block mt-2 mb-1 text-sm text-green-700">훈련량:</strong> 주 55-60km → 90-100km (회복주 제외). 이지런 약 80%.<br>
+                                    <strong class="block mt-2 mb-1 text-sm text-green-700">참고:</strong> 점진적 증량. 3-4주마다 회복주. 근력 1-2회/주. E 페이스 목표(5:03-5:37) 향해 점진적 개선.
+                                </td>
+                            </tr>
+                            <tr><td class="px-4 py-4">화</td><td class="px-4 py-4">이지런 (후반: LT/스트라이드 선택)</td><td class="px-4 py-4">8-12km(E) / 후반 8-10km(질적)</td><td class="px-4 py-4">E/RPE 3-4. 후반 T(5:10-5:40)/RPE 6-7 시도. 스트라이드 고려.</td><td class="px-4 py-4">E: 10WU-본-10CD. 질적: 15WU-본(예:3x800T)-15CD.</td></tr>
+                            <tr><td class="px-4 py-4">수</td><td class="px-4 py-4">이지런</td><td class="px-4 py-4">8-12km (점진적)</td><td class="px-4 py-4">E 페이스 / RPE 3-4</td><td class="px-4 py-4">10분 워밍업 - 본운동 - 10분 쿨다운</td></tr>
+                            <tr><td class="px-4 py-4">목</td><td class="px-4 py-4">이지런 또는 MLR</td><td class="px-4 py-4">10-16km (점진적)</td><td class="px-4 py-4">E 페이스 / RPE 3-4</td><td class="px-4 py-4">10분 워밍업 - 본운동 - 10분 쿨다운</td></tr>
+                            <tr><td class="px-4 py-4">금</td><td class="px-4 py-4 font-semibold highlight-red">완전 휴식</td><td class="px-4 py-4">-</td><td class="px-4 py-4">-</td><td class="px-4 py-4">-</td></tr>
+                            <tr><td class="px-4 py-4">토</td><td class="px-4 py-4">장거리 달리기 (LR)</td><td class="px-4 py-4">14-22km (점진적)</td><td class="px-4 py-4">E 페이스 (~6:27 → 개선) / RPE 3-4</td><td class="px-4 py-4">10분 워밍업 - 본운동 - 10분 쿨다운</td></tr>
+                            <tr><td class="px-4 py-4">일</td><td class="px-4 py-4">회복 달리기 (RR)</td><td class="px-4 py-4">5-7km</td><td class="px-4 py-4">매우 천천히 / RPE 2-3</td><td class="px-4 py-4">5분 걷기 - 본운동 - 5분 걷기/스트레칭</td></tr>
+
+                            <tr>
+                                <td rowspan="7" class="sticky-col-1 sticky-phase-2 font-medium">17-28</td>
+                                <td rowspan="7" class="sticky-col-2 sticky-phase-2 font-semibold text-cyan-800">2단계: 강화 준비</td>
+                                <td class="px-4 py-4">월</td><td class="px-4 py-4">이지런</td><td class="px-4 py-4">10-12km</td><td class="px-4 py-4">E (5:20-5:40) → (5:10-5:30) / RPE 3-4</td><td class="px-4 py-4">10분 워밍업 - 본운동 - 10분 쿨다운</td>
+                                <td rowspan="7" class="px-4 py-4 align-top text-xs leading-relaxed">
+                                    <strong class="block mb-1 text-sm text-cyan-700">중점:</strong> LT/템포 점진 강화, VO2Max 도입 준비, 유산소 능력 유지/발전.<br>
+                                    <strong class="block mt-2 mb-1 text-sm text-cyan-700">훈련량:</strong> 주 100km → 110km (회복주 제외).<br>
+                                    <strong class="block mt-2 mb-1 text-sm text-cyan-700">강도:</strong> 주 1-2회 질적 훈련. LT 향상 집중. VO2max 기초 다지기(저볼륨).<br>
+                                    <strong class="block mt-2 mb-1 text-sm text-cyan-700">참고:</strong> 달리기 특화 근력 1-2회/주. 최대 LR(32-35km) 향해 빌드업.
+                                </td>
+                            </tr>
+                            <tr><td class="px-4 py-4">화</td><td class="px-4 py-4">템포런 또는 LT 인터벌</td><td class="px-4 py-4">10-14km (T 포함)</td><td class="px-4 py-4">T 페이스 (5:00 → 4:30 범위) 시도 / RPE 7</td><td class="px-4 py-4">15WU - T 본(예: 2x15분T or 4-6x1kmT) - 15CD.</td></tr>
+                            <tr><td class="px-4 py-4">수</td><td class="px-4 py-4">이지런</td><td class="px-4 py-4">12-15km</td><td class="px-4 py-4">E (5:10-5:30) / RPE 3-4</td><td class="px-4 py-4">10분 워밍업 - 본운동 - 10분 쿨다운</td></tr>
+                            <tr><td class="px-4 py-4">목</td><td class="px-4 py-4">이지런 또는 MLR</td><td class="px-4 py-4">15-20km</td><td class="px-4 py-4">E (5:10-5:30) / RPE 3-4</td><td class="px-4 py-4">10분 워밍업 - 본운동 - 10분 쿨다운</td></tr>
+                            <tr><td class="px-4 py-4">금</td><td class="px-4 py-4 font-semibold highlight-red">완전 휴식</td><td class="px-4 py-4">-</td><td class="px-4 py-4">-</td><td class="px-4 py-4">-</td></tr>
+                            <tr><td class="px-4 py-4">토</td><td class="px-4 py-4">이지런 + 인터벌(VO2Max)/언덕</td><td class="px-4 py-4">10-12km(E) + 인터벌(총 3-5km)</td><td class="px-4 py-4">E. I 페이스 (4:40 → 4:10 범위) 시도 또는 언덕 / RPE 8-9</td><td class="px-4 py-4">15WU - E - 인터벌(예: 4-5x800I or 언덕) - 15CD. 격주.</td></tr>
+                            <tr><td class="px-4 py-4">일</td><td class="px-4 py-4">장거리 달리기 (LR)</td><td class="px-4 py-4">24-28km (점진적)</td><td class="px-4 py-4">E 페이스 (5:10-5:30) / RPE 3-4</td><td class="px-4 py-4">10분 워밍업 - 본운동 - 10분 쿨다운</td></tr>
+
+                             <tr>
+                                <td rowspan="7" class="sticky-col-1 sticky-phase-3 font-medium">29-40</td>
+                                <td rowspan="7" class="sticky-col-2 sticky-phase-3 font-semibold text-amber-800">3단계: 마라톤 특화</td>
+                                <td class="px-4 py-4">월</td><td class="px-4 py-4">이지런</td><td class="px-4 py-4">12-14km</td><td class="px-4 py-4">E (5:05-5:30) → 목표 범위 진입 / RPE 3-4</td><td class="px-4 py-4">10분 워밍업 - 본운동 - 10분 쿨다운</td>
+                                <td rowspan="7" class="px-4 py-4 align-top text-xs leading-relaxed">
+                                    <strong class="block mb-1 text-sm text-amber-700">중점:</strong> 마라톤 페이스(MP) 적응, LT/VO2Max 유지/향상, 최대 훈련량 도달.<br>
+                                    <strong class="block mt-2 mb-1 text-sm text-amber-700">훈련량:</strong> 주 110km → 115-120km+ (회복주 제외).<br>
+                                    <strong class="block mt-2 mb-1 text-sm text-amber-700">강도:</strong> 주 2회 질적 + LR 내 질적 요소. MP(4:19) 본격 도입 및 볼륨 증가.<br>
+                                    <strong class="block mt-2 mb-1 text-sm text-amber-700">참고:</strong> 레이스 시뮬레이션. LR 내 MP 구간 증가. 최대 LR(32-35km) 근접/도달. 근력 1회/주(유지).
+                                </td>
+                            </tr>
+                            <tr><td class="px-4 py-4">화</td><td class="px-4 py-4">MP런 또는 LT/VO2Max 유지</td><td class="px-4 py-4">14-18km (MP 포함)</td><td class="px-4 py-4">M (4:19목표) 시도 (4:30→4:20) / RPE 5-6 또는 T/I 유지.</td><td class="px-4 py-4">15WU - MP 본(예: 8-12km@MP) - 15CD. 또는 LT/VO2Max.</td></tr>
+                            <tr><td class="px-4 py-4">수</td><td class="px-4 py-4">이지런</td><td class="px-4 py-4">15-20km</td><td class="px-4 py-4">E (5:05-5:30) / RPE 3-4</td><td class="px-4 py-4">10분 워밍업 - 본운동 - 10분 쿨다운</td></tr>
+                            <tr><td class="px-4 py-4">목</td><td class="px-4 py-4">이지런 또는 MLR</td><td class="px-4 py-4">18-22km</td><td class="px-4 py-4">E (5:05-5:30) / RPE 3-4</td><td class="px-4 py-4">10분 워밍업 - 본운동 - 10분 쿨다운</td></tr>
+                            <tr><td class="px-4 py-4">금</td><td class="px-4 py-4 font-semibold highlight-red">완전 휴식</td><td class="px-4 py-4">-</td><td class="px-4 py-4">-</td><td class="px-4 py-4">-</td></tr>
+                            <tr><td class="px-4 py-4">토</td><td class="px-4 py-4">이지런 + LT/VO2Max (짧게)</td><td class="px-4 py-4">10-12km(E) + 질적</td><td class="px-4 py-4">E. T/I 유지/향상 (4:18/3:58목표) / RPE 7-9. R(3:41) 도입 고려.</td><td class="px-4 py-4">15WU - E - 질적(예: 4x1kmT or 3-4x800I) - 15CD.</td></tr>
+                            <tr><td class="px-4 py-4">일</td><td class="px-4 py-4">LR w/ MP 구간</td><td class="px-4 py-4">28-32km (피크 근접)</td><td class="px-4 py-4">E + M (4:19목표) / RPE 3-4(E) + 5-6(MP)</td><td class="px-4 py-4">10WU - E - MP(예: 8-15km@MP) - E - 10CD.</td></tr>
+
+                             <tr>
+                                <td rowspan="7" class="sticky-col-1 sticky-phase-4 font-medium">41-49</td>
+                                <td rowspan="7" class="sticky-col-2 sticky-phase-4 font-semibold text-orange-800">4단계: 피크 및 테이퍼 준비</td>
+                                <td class="px-4 py-4">월</td><td class="px-4 py-4">이지런</td><td class="px-4 py-4">10-14km</td><td class="px-4 py-4">E (5:03-5:37) 유지 / RPE 3-4</td><td class="px-4 py-4">10분 워밍업 - 본운동 - 10분 쿨다운</td>
+                                <td rowspan="7" class="px-4 py-4 align-top text-xs leading-relaxed">
+                                    <strong class="block mb-1 text-sm text-orange-700">중점:</strong> 최상의 경기력 준비, 피로 관리, 레이스 전략 최종 점검.<br>
+                                    <strong class="block mt-2 mb-1 text-sm text-orange-700">훈련량:</strong> 최대량 유지/미세 조정. 48-49주차부터 점진적 감소 시작.<br>
+                                    <strong class="block mt-2 mb-1 text-sm text-orange-700">강도:</strong> 고강도 훈련 질 유지. MP 적응 최대화. 스피드/효율성 유지.<br>
+                                    <strong class="block mt-2 mb-1 text-sm text-orange-700">참고:</strong> 가장 긴 LR 수행(41-45주). 46주차부터 LR 길이 점진적 감소. MP 구간 유지/감소(피로 관리).
+                                </td>
+                            </tr>
+                            <tr><td class="px-4 py-4">화</td><td class="px-4 py-4">MP런 또는 MP/LT 훈련</td><td class="px-4 py-4">12-18km (MP 포함)</td><td class="px-4 py-4">M (4:19목표) 유지 / RPE 5-6. 또는 T 유지.</td><td class="px-4 py-4">15WU - MP 본(예: 10-15km@MP) - 15CD.</td></tr>
+                            <tr><td class="px-4 py-4">수</td><td class="px-4 py-4">이지런</td><td class="px-4 py-4">15-20km</td><td class="px-4 py-4">E (5:03-5:37) / RPE 3-4</td><td class="px-4 py-4">10분 워밍업 - 본운동 - 10분 쿨다운</td></tr>
+                            <tr><td class="px-4 py-4">목</td><td class="px-4 py-4">이지런 또는 MLR</td><td class="px-4 py-4">18-22km</td><td class="px-4 py-4">E (5:03-5:37) / RPE 3-4</td><td class="px-4 py-4">10분 워밍업 - 본운동 - 10분 쿨다운</td></tr>
+                            <tr><td class="px-4 py-4">금</td><td class="px-4 py-4 font-semibold highlight-red">완전 휴식</td><td class="px-4 py-4">-</td><td class="px-4 py-4">-</td><td class="px-4 py-4">-</td></tr>
+                            <tr><td class="px-4 py-4">토</td><td class="px-4 py-4">이지런 + 짧고 빠른 훈련 (R)</td><td class="px-4 py-4">8-10km(E) + 짧은 질주</td><td class="px-4 py-4">E. R (3:41목표) 유지 / RPE 9-10</td><td class="px-4 py-4">15WU - E - 6-8x100-200m R (충분회복) - 15CD.</td></tr>
+                            <tr><td class="px-4 py-4">일</td><td class="px-4 py-4">LR w/ MP 구간 (점진적 감소)</td><td class="px-4 py-4">32-35km+(41-45주) → 20-25km(46-47주)</td><td class="px-4 py-4">E + M (4:19목표) / RPE 3-4(E) + 5-6(MP)</td><td class="px-4 py-4">10WU - E - MP(최대 15-20km) - E - 10CD.</td></tr>
+
+                            <tr>
+                                <td class="sticky-col-1 sticky-tapering font-medium">50-52</td>
+                                <td class="sticky-col-2 sticky-tapering font-semibold text-gray-700">테이퍼링</td>
+                                <td class="px-4 py-4 italic">(별도 계획)</td><td class="px-4 py-4 italic">(별도 계획)</td>
+                                <td class="px-4 py-4 italic">(별도 계획)</td><td class="px-4 py-4 italic">(별도 계획)</td>
+                                <td class="px-4 py-4 italic">(별도 계획)</td>
+                                <td class="px-4 py-4 text-xs leading-relaxed">
+                                    레이스 직전 2-3주. 훈련량 40-60% 감소, 강도 유지. 피로 최소화, 경기력 최고조 집중.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="innovative-card p-0 overflow-hidden">
+                 <div class="p-8 md:p-12 border-b border-gray-200">
+                    <h2 class="section-title !mb-0 !pb-0 !border-none"><i class="fas fa-battery-three-quarters"></i>회복 주간 프로토콜 (매 4주차)</h2>
+                    <p class="mt-4 text-gray-600 leading-relaxed text-base md:text-lg">
+                        집중 훈련 3-4주 후, <span class="highlight-green">회복 주간</span>을 통해 생리적 적응을 유도하고 다음 훈련 블록을 준비합니다. 핵심은 이전 3주 평균 훈련량의 약 <strong class="font-semibold">70-80% 수준</strong>으로 총량을 줄이는 것입니다. 고강도 훈련(T, I, R, MP) 빈도나 볼륨을 줄이고, 가벼운 달리기와 휴식에 집중합니다.
+                    </p>
+                 </div>
+                <div class="table-container">
+                    <table class="min-w-recovery-table w-full text-sm text-left text-gray-600">
+                        <thead>
+                            <tr>
+                                <th class="px-4 py-3">요일</th><th class="px-4 py-3">훈련 유형</th>
+                                <th class="px-4 py-3">거리/시간 (예시)</th><th class="px-4 py-3">목표 강도 (페이스 / RPE)</th>
+                                <th class="px-4 py-3">참고</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td class="px-4 py-4">월</td><td class="px-4 py-4">이지런</td><td class="px-4 py-4">평소 월요일의 70-80%</td><td class="px-4 py-4">E 페이스 / RPE 3-4</td><td class="px-4 py-4">회복에 집중</td></tr>
+                            <tr><td class="px-4 py-4">화</td><td class="px-4 py-4">이지런 또는 <strong class="highlight-red">휴식</strong></td><td class="px-4 py-4">질적 훈련 대신 짧은 이지런/휴식</td><td class="px-4 py-4">E 페이스 / RPE 3-4 또는 휴식</td><td class="px-4 py-4">고강도 생략</td></tr>
+                            <tr><td class="px-4 py-4">수</td><td class="px-4 py-4">이지런</td><td class="px-4 py-4">평소 수요일의 70-80%</td><td class="px-4 py-4">E 페이스 / RPE 3-4</td><td class="px-4 py-4">피로도 따라 조절</td></tr>
+                            <tr><td class="px-4 py-4">목</td><td class="px-4 py-4">이지런 (MLR 대신)</td><td class="px-4 py-4">평소 목요일보다 짧게</td><td class="px-4 py-4">E 페이스 / RPE 3-4</td><td class="px-4 py-4">MLR 생략/단축</td></tr>
+                            <tr><td class="px-4 py-4">금</td><td class="px-4 py-4 font-semibold highlight-red">완전 휴식</td><td class="px-4 py-4">-</td><td class="px-4 py-4">-</td><td class="px-4 py-4">필수 휴식일</td></tr>
+                            <tr><td class="px-4 py-4">토</td><td class="px-4 py-4">이지런 (짧게)</td><td class="px-4 py-4">질적 훈련 대신 짧은 이지런</td><td class="px-4 py-4">E 페이스 / RPE 3-4</td><td class="px-4 py-4">고강도 생략</td></tr>
+                            <tr><td class="px-4 py-4">일</td><td class="px-4 py-4">장거리 달리기 (LR)</td><td class="px-4 py-4">평소 일요일의 70-80%</td><td class="px-4 py-4">E 페이스 / RPE 3-4</td><td class="px-4 py-4">거리 단축, MP 구간 생략</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                 <p class="p-8 md:p-12 pt-8 text-base text-gray-500 italic">
+                    *면책 조항: 위 표는 회복 주간의 예시 구조입니다. 항상 개인의 피로도와 회복 상태에 따라 유연하게 조정하십시오. 근력 훈련 또한 강도를 낮추거나 생략하는 것을 고려하십시오.
+                </p>
+            </section>
+
+            <section class="innovative-card">
+                <h2 class="section-title"><i class="fas fa-cogs"></i>전략적 고려사항 및 실행 가이드</h2>
+                <ul class="space-y-7 text-gray-600 leading-relaxed text-lg md:text-xl consideration-list">
+                    <li><i class="fas fa-shoe-prints fa-fw"></i><strong class="font-semibold text-gray-800">점진성 원칙:</strong> 본 계획은 청사진입니다. 매주 훈련량과 강도의 <span class="highlight">일관되고 점진적인 미세 조정</span>이 성공의 핵심입니다.</li>
+                    <li><i class="fas fa-bed fa-fw"></i><strong class="font-semibold text-gray-800">회복 주간의 중요성:</strong> 3-4주마다 <span class="highlight-green">의도적으로 훈련 부하를 줄이는 것</span>은 과훈련 방지 및 부상 예방을 위해 타협할 수 없는 요소입니다.</li>
+                    <li><i class="fas fa-dumbbell fa-fw"></i><strong class="font-semibold text-gray-800">근력 및 보조 훈련:</strong> 주 1-2회 근력 운동과 규칙적인 스트레칭/모빌리티는 회복탄력성과 효율성을 높입니다. 회복 주간에는 강도를 낮춥니다.</li>
+                    <li><i class="fas fa-heartbeat fa-fw"></i><strong class="font-semibold text-gray-800">개인화 및 유연성:</strong> 자신의 몸에 귀 기울이십시오. 생활 스트레스, 피로도, 부상 징후에 따라 <span class="text-purple-600 font-semibold">계획을 역동적으로 조정</span>하고, 필요시 과감히 휴식하십시오. 휴식도 훈련입니다.</li>
+                    <li><i class="fas fa-utensils fa-fw"></i><strong class="font-semibold text-gray-800">영양 및 수면:</strong> 충분한 수면과 균형 잡힌 영양 섭취는 <span class="highlight-red">회복과 적응의 근본적인 토대</span>입니다. 이를 최우선으로 고려하십시오.</li>
+                    <li><i class="fas fa-flag-checkered fa-fw"></i><strong class="font-semibold text-gray-800">조정 레이스 활용:</strong> 중간 목표 레이스(예: 하프 마라톤)를 통해 진행 상황을 평가하고 <span class="text-teal-600 font-semibold">귀중한 실전 경험</span>을 축적하는 것을 고려하십시오.</li>
+                    <li><i class="fas fa-tachometer-alt fa-fw"></i><strong class="font-semibold text-gray-800">페이스 적응:</strong> 현재 페이스와 목표 페이스 간의 격차를 고려하여, 초기에는 RPE에 집중하고 점진적으로 <span class="text-orange-600 font-semibold">목표 페이스에 대한 편안함과 숙련도</span>를 높여나가십시오.</li>
+                </ul>
+                <p class="mt-16 text-center text-xl font-semibold text-gray-800 border-t border-gray-200 pt-12">
+                    Sub-3 마라톤은 위대한 도전입니다. 절제된 실행, 지능적인 적응, 그리고 흔들림 없는 꾸준함으로 목표를 달성하십시오. <i class="fas fa-trophy text-yellow-500"></i>
+                </p>
+            </section>
+
+        </main>
+
+        <footer class="mt-16 md:mt-24 text-center text-xs text-gray-400">
+            <p>본 문서는 기밀 훈련 자료입니다 | &copy; 2025 퍼포먼스 플래닝 | AI 디자인 지원</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>
