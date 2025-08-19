@@ -110,10 +110,9 @@
     a:hover { text-decoration: underline; }
     ul, ol { margin: 6px 0 0 20px; padding-left: 0; }
 
-    /* 폼/버튼 유틸 */
     .field { display:flex; flex-direction:column; gap:6px; margin-bottom:10px; }
     .row { display:flex; align-items:center; gap:6px; }
-    .field input[type="number"] { width:100%; padding:8px 10px; border-radius:8px; border:1px solid var(--border-primary); background: rgba(15,23,42,.6); color: var(--text-primary); }
+    .field input[type="number"], .field select { width:100%; padding:8px 10px; border-radius:8px; border:1px solid var(--border-primary); background: rgba(15,23,42,.6); color: var(--text-primary); }
     .field input[type="checkbox"] { width:auto; }
     .button { display:inline-block; padding:8px 12px; border-radius:8px; border:1px solid var(--border-primary); background: rgba(15,23,42,.6); color: var(--text-primary); cursor:pointer; }
     .button:hover { background: rgba(167,139,250,.12); }
@@ -146,6 +145,7 @@
         <button class="tabs__button" role="tab" aria-selected="true" aria-controls="panel-overview" id="tab-overview">개요</button>
         <button class="tabs__button" role="tab" aria-selected="false" aria-controls="panel-intensity" id="tab-intensity" tabindex="-1">강도</button>
         <button class="tabs__button" role="tab" aria-selected="false" aria-controls="panel-personalize" id="tab-personalize" tabindex="-1">개인화</button>
+        <button class="tabs__button" role="tab" aria-selected="false" aria-controls="panel-tests" id="tab-tests" tabindex="-1">테스트</button>
         <button class="tabs__button" role="tab" aria-selected="false" aria-controls="panel-macro" id="tab-macro" tabindex="-1">52주</button>
         <button class="tabs__button" role="tab" aria-selected="false" aria-controls="panel-weekly" id="tab-weekly" tabindex="-1">주간</button>
         <button class="tabs__button" role="tab" aria-selected="false" aria-controls="panel-guard" id="tab-guard" tabindex="-1">튜닝</button>
@@ -212,14 +212,23 @@
           <h2 class="card__title">내 데이터 입력</h2>
           <form id="calc-form" class="grid grid--2-cols" aria-describedby="calc-help">
             <div>
-              <h3 class="card__subtitle">신체</h3>
+              <h3 class="card__subtitle">신체/환경</h3>
+              <label class="field">성별
+                <select id="in-sex" aria-label="성별">
+                  <option value="male">남성</option>
+                  <option value="female">여성</option>
+                </select>
+              </label>
+              <label class="field">나이
+                <input id="in-age" type="number" inputmode="numeric" min="12" max="90" step="1" />
+              </label>
               <label class="field">키 (cm)
                 <input id="in-height" type="number" inputmode="decimal" min="120" max="220" step="1" aria-describedby="calc-help" />
               </label>
               <label class="field">몸무게 (kg)
                 <input id="in-weight" type="number" inputmode="decimal" min="35" max="120" step="0.1" />
               </label>
-              <div id="calc-help" class="text-small text-muted">기록은 하나만 입력해도 계산됩니다(하프가 있으면 하프를 우선 사용).</div>
+              <div id="calc-help" class="text-small text-muted">기록은 하나만 입력해도 계산됩니다(우선순위: 마라톤 → 하프 → 10K → 5K).</div>
               <label class="field">
                 더위(체감 28°C 이상)
                 <input id="in-heat" type="checkbox" />
@@ -228,6 +237,13 @@
             </div>
             <div>
               <h3 class="card__subtitle">최근 기록</h3>
+              <label class="field">5K (분:초)
+                <div class="row">
+                  <input id="in-5k-m" type="number" min="12" max="40" step="1" aria-label="5K 분" />
+                  <span aria-hidden="true">:</span>
+                  <input id="in-5k-s" type="number" min="0" max="59" step="1" aria-label="5K 초" />
+                </div>
+              </label>
               <label class="field">10K (분:초)
                 <div class="row">
                   <input id="in-10k-m" type="number" min="25" max="80" step="1" aria-label="10K 분" />
@@ -244,20 +260,47 @@
                   <input id="in-hm-s" type="number" min="0" max="59" step="1" aria-label="하프 초" />
                 </div>
               </label>
+              <label class="field">마라톤(HH:MM:SS)
+                <div class="row">
+                  <input id="in-m-h" type="number" min="2" max="7" step="1" aria-label="마라톤 시간" />
+                  <span aria-hidden="true">:</span>
+                  <input id="in-m-m" type="number" min="0" max="59" step="1" aria-label="마라톤 분" />
+                  <span aria-hidden="true">:</span>
+                  <input id="in-m-s" type="number" min="0" max="59" step="1" aria-label="마라톤 초" />
+                </div>
+              </label>
             </div>
           </form>
         </div>
 
         <div class="card">
           <h3 class="card__subtitle">개인화 결과</h3>
-          <div class="grid grid--3-cols">
+          <div class="grid grid--4-cols">
             <div><span class="text-small text-muted">BMI</span><div id="out-bmi" aria-live="polite">—</div></div>
             <div><span class="text-small text-muted">MP</span><div id="out-mp" aria-live="polite">—</div></div>
             <div><span class="text-small text-muted">CHO 권장</span><div id="out-cho" aria-live="polite">—</div></div>
+            <div><span class="text-small text-muted">수분 권장</span><div id="out-hydr" aria-live="polite">—</div></div>
+            <div><span class="text-small text-muted">Na 권장</span><div id="out-na" aria-live="polite">—</div></div>
           </div>
           <div class="legend" style="margin-top:12px">
-            <span class="legend__item"><i class="legend__swatch legend__swatch--primary"></i> 계산 근거: Riegel 지수 1.06, CHO 0.8–1.0 g/kg/h(상한 120)</span>
+            <span class="legend__item"><i class="legend__swatch legend__swatch--primary"></i> 계산 근거: Riegel 1.06, CHO 0.8–1.0 g/kg/h(60–120), 수분 6–10(더위 8–12) mL/kg/h, Na 300–600(더위 600–1000) mg/h</span>
+            <span class="legend__item"><i class="legend__swatch legend__swatch--accent"></i> 마스터스(≥40) 보수 완화: Easy/Aerobic 범위 +5s, T 상단 +5s, CV 상단 +3s</span>
           </div>
+        </div>
+      </section>
+
+      <section id="panel-tests" class="tab-panel" role="tabpanel" aria-labelledby="tab-tests" hidden>
+        <div class="card">
+          <h2 class="card__title">테스트(입력 최신화 일정)</h2>
+          <ul>
+            <li>W8: 5K 타임 트라이얼(또는 레이스)</li>
+            <li>W12: 10K 레이스/테스트</li>
+            <li>W18±2: 하프마라톤 B-레이스(스페시픽 블록 전)</li>
+            <li>W28: (옵션) 5K 재측정 · CV/Strides 세부 튜닝</li>
+            <li>W30: (옵션) 8–10K 템포/레이스 · LT 확인</li>
+            <li>W32: 마라톤 A 레이스</li>
+          </ul>
+          <p class="text-small text-muted">테스트 후 <a href="#panel-personalize">개인화</a>에서 기록을 즉시 갱신하면 강도 칩과 KPI가 자동 업데이트됩니다.</p>
         </div>
       </section>
 
@@ -331,15 +374,57 @@
 
       <section id="panel-evidence" class="tab-panel" role="tabpanel" aria-labelledby="tab-evidence" hidden>
         <div class="card">
-          <h2 class="card__title">근거(핵심 문헌)</h2>
+          <h2 class="card__title">근거(학술 문헌, 중복 제거)</h2>
           <ol class="cols-2 text-small">
             <li>Thomas DT, Erdman KA, Burke LM. Nutrition and Athletic Performance. J Acad Nutr Diet. 2016;116(3):501–528; Med Sci Sports Exerc. 48(3):543–568.</li>
             <li>ACSM Position Stand. Exercise and Fluid Replacement. Med Sci Sports Exerc. 2007;39(2):377–390.</li>
-            <li>Jeukendrup AE. Multiple transportable carbohydrates and endurance performance. Sports Med. 2010–2014 리뷰 다수.</li>
+            <li>Jeukendrup AE. Multiple transportable carbohydrates and endurance performance. Sports Med. 2010–2014.</li>
             <li>Bosquet L, et al. Effects of tapering on performance: a meta-analysis. Med Sci Sports Exerc. 2007;39(8):1358–1365.</li>
-            <li>Seiler S. Training intensity distribution and endurance performance. 2009–2010 리뷰.</li>
+            <li>Seiler S. Training intensity distribution and endurance performance. 2009–2010.</li>
             <li>Stöggl T, Sperlich B. Polarized vs. threshold training. Front Physiol. 2014;5:33.</li>
-            <li>Périard JD, et al. Heat acclimation and endurance performance. Sports Med. 2015–2021 합의/리뷰.</li>
+            <li>Périard JD, et al. Heat acclimation and endurance performance. Sports Med. 2015–2021.</li>
+            <li>Quantitative Analysis of 92 12-Week Sub-elite Marathon Training Plans. PMC.</li>
+            <li>The Training Characteristics of World-Class Distance Runners: An Integration of Scientific Literature and Results-Proven Practice.</li>
+            <li>Factors Influencing Running Performance During a Marathon: Breaking the 2-h Barrier. PMC.</li>
+            <li>Genes and Elite Marathon Running Performance: A Systematic Review. PMC.</li>
+            <li>Post-analysis methods for lactate threshold depend on training intensity and aerobic capacity in runners. PMC.</li>
+            <li>Physiological and training characteristics of recreational marathon runners. PMC.</li>
+            <li>Effect of Strength Training Programs in Middle- and Long-Distance Runners' Economy at Different Running Speeds: Systematic Review with Meta-analysis. PMC.</li>
+            <li>The effects of strength training on running economy in highly trained runners: systematic review with meta-analysis of controlled trials.</li>
+            <li>The effect of advanced footwear technology on elite male marathon race speed.</li>
+            <li>Training Periodization, Methods, Intensity Distribution, and Volume in Highly Trained and Elite Distance Runners. Int J Sports Physiol Perform. 2022;17(6):820.</li>
+            <li>The training intensity distribution among well-trained and elite endurance athletes. PMC.</li>
+            <li>Editorial: Training Intensity, Volume and Recovery Distribution Among Elite and Recreational Endurance Athletes. PMC.</li>
+            <li>The Training Intensity Distribution of Marathon Runners Across Performance Levels. PubMed.</li>
+            <li>Training for a (half-)marathon: Training volume and longest endurance run related to performance and running injuries. PMC.</li>
+            <li>An evaluation of the training determinants of marathon performance: meta-analysis with meta-regression. PubMed.</li>
+            <li>Does Lactate-Guided Threshold Interval Training within a High-Volume Low-Intensity Approach Represent the Next Step in Distance Running Training? PMC.</li>
+            <li>How does high-intensity intermittent training affect recreational endurance runners? Systematic review. PMC.</li>
+            <li>Effects of Running-Specific Strength, Endurance, and Concurrent Training on Recreational Endurance Athletes. PMC.</li>
+            <li>Nutrition Concepts for Elite Distance Runners Based on Macronutrient and Energy Expenditure. PMC.</li>
+            <li>Nutrition strategies for the marathon: fuel for training and racing. PubMed.</li>
+            <li>From Food Supplements to Functional Foods: Post-Exercise Recovery Nutrition. PMC.</li>
+            <li>Fuel for the Work Required: Carbohydrate Periodization & Glycogen Threshold Hypothesis. PMC.</li>
+            <li>Sleep-Low Train-Low intervention in recreationally endurance-trained women. EJ-Sport.</li>
+            <li>Case study: Nutrition and training periodization in elite endurance athletes. PubMed.</li>
+            <li>Contemporary Nutrition Strategies to Optimize Performance in Distance Runners and Race Walkers. Int J Sport Nutr Exerc Metab.</li>
+            <li>Muscle glycogen loading interventions in an elite racewalker: case report. PMC.</li>
+            <li>Dietary observations of ultra-endurance runners during a 24-h event. PMC.</li>
+            <li>Nutritional intake and timing of marathon runners: influence on finishing time. PMC.</li>
+            <li>120 g/h carbohydrate intake during a mountain marathon: muscle damage in elite runners. PMC.</li>
+            <li>Nutrition and muscle recovery. PMC.</li>
+            <li>Role of nutrition in performance enhancement and postexercise recovery. PMC.</li>
+            <li>The 4R's framework for post-exercise recovery nutrition. PMC.</li>
+            <li>Effectiveness of recovery strategies after training and competition in endurance athletes: umbrella review. PMC.</li>
+            <li>Mental toughness latent profiles in endurance athletes. PMC.</li>
+            <li>Mental toughness and resilience in trail runners' performance. PMC.</li>
+            <li>Three weeks of mental training: physiological outcomes during time trial. PMC.</li>
+            <li>Personality of marathon runners: narrative review. PMC.</li>
+            <li>Mental preparation in runners: gender, competition level, psychological training effects. Frontiers.</li>
+            <li>Mental endurance, mental training, and emotional intelligence in elite athletes. PMC.</li>
+            <li>Technological advances in elite marathon performance. J Appl Physiol.</li>
+            <li>Crossing the Golden Training Divide: training world-class 800/1500-m runners. PMC.</li>
+            <li>Recommendations for marathon runners: recommender systems & machine learning. PMC.</li>
           </ol>
           <p class="text-small text-muted" style="margin-top:12px;">본 UI는 가이드이며, 개인 의료·생활 제약에 따른 조정이 필요합니다.</p>
         </div>
@@ -350,13 +435,14 @@
   <script>
     /**
      * 변경 근거(정량/재현):
-     * - 탭 접근성: [hidden], 스킵 링크, 포커스 스타일, Home/End/좌우키, 해시 딥링크 유지(Accessibility 100).
+     * - 탭 접근성: [hidden], 스킵 링크, 키보드(Home/End/좌우), 해시 딥링크(Accessibility 100).
      * - 개인화 계산:
-     *   - MP: Riegel 지수 1.06으로 10K/HM 기록 → 마라톤 예측 → km당 페이스(MM:SS).
-     *   - Easy/Aerobic/T/CV: 가이드 기반 가감(s/km) 수치화.
-     *   - CHO: 0.8–1.0 g/kg/h, 상한 120 g/h, 하한 60 g/h.
-     *   - 수분/Na: 기본 0.4–0.8 L/h, 300–600 mg/h, 더위 체크 시 0.6–1.0 L/h, 800–1000 mg/h.
-     * - 성능: 순수 JS(≈3KB), 이벤트 최소 바인딩, 동기 렌더만 변경(TBT 미미).
+     *   - MP: Riegel 1.06으로 5K/10K/HM/마라톤 → 마라톤 예측 → km당 페이스.
+     *   - Easy/Aerobic/T/CV: 가이드 기반 가감(s/km). Masters(≥40) 보수 완화(+5/+5/+5/+3 s).
+     *   - CHO: 0.8–1.0 g/kg/h(60–120 g/h).
+     *   - 수분: 6–10 mL/kg/h(더위 8–12) → 0.3–1.0 L/h 범위로 클램프.
+     *   - Na: 300–600 mg/h(더위 600–1000 mg/h).
+     * - 성능: 순수 JS, 단일 이벤트, 동기 렌더만 변경.
      */
     document.addEventListener('DOMContentLoaded', () => {
       const tablist = document.querySelector('[role="tablist"]');
@@ -421,10 +507,14 @@
       // ---- 개인화 계산기 ----
       const $ = (id) => document.getElementById(id);
       const els = {
+        sex: $('in-sex'), age: $('in-age'),
         height: $('in-height'), weight: $('in-weight'), heat: $('in-heat'),
+        k5m: $('in-5k-m'), k5s: $('in-5k-s'),
         k10m: $('in-10k-m'), k10s: $('in-10k-s'),
         hmH: $('in-hm-h'), hmM: $('in-hm-m'), hmS: $('in-hm-s'),
-        outBMI: $('out-bmi'), outMP: $('out-mp'), outCHO: $('out-cho'),
+        mH: $('in-m-h'), mM: $('in-m-m'), mS: $('in-m-s'),
+        outBMI: $('out-bmi'), outMP: $('out-mp'),
+        outCHO: $('out-cho'), outHydr: $('out-hydr'), outNa: $('out-na'),
         kpiMP: $('kpi-mp'), kpiCHO: $('kpi-cho'),
         chipEasy: $('chip-easy'), chipAer: $('chip-aerobic'),
         chipT: $('chip-t'), chip10K: $('chip-10k'), chipCV: $('chip-cv'),
@@ -441,54 +531,49 @@
       };
       const rangeStr = (a, b) => `${secToPace(a)}–${secToPace(b)}`;
       const riegel = (t1, d1, d2, exp = 1.06) => t1 * Math.pow(d2 / d1, exp);
-
       const readNumber = (el) => {
         const v = parseFloat(el?.value);
         return Number.isFinite(v) ? v : 0;
       };
 
       const calc = () => {
-        // 입력 읽기
-        const hCm = readNumber(els.height);
+        const age = readNumber(els.age);
+        const masters = age >= 40;
         const kg = readNumber(els.weight);
+        const hCm = readNumber(els.height);
         const isHeat = !!els.heat?.checked;
 
-        const t10k = (() => {
-          const m = readNumber(els.k10m);
-          const s = readNumber(els.k10s);
-          if (m <= 0 && s <= 0) return 0;
-          return m * 60 + s;
+        const t5k = (() => {
+          const m = readNumber(els.k5m), s = readNumber(els.k5s);
+          return (m > 0 || s > 0) ? (m * 60 + s) : 0;
         })();
-
+        const t10k = (() => {
+          const m = readNumber(els.k10m), s = readNumber(els.k10s);
+          return (m > 0 || s > 0) ? (m * 60 + s) : 0;
+        })();
         const tHM = (() => {
-          const h = readNumber(els.hmH);
-          const m = readNumber(els.hmM);
-          const s = readNumber(els.hmS);
-          if (h <= 0 && m <= 0 && s <= 0) return 0;
-          return h * 3600 + m * 60 + s;
+          const h = readNumber(els.hmH), m = readNumber(els.hmM), s = readNumber(els.hmS);
+          return (h > 0 || m > 0 || s > 0) ? (h * 3600 + m * 60 + s) : 0;
+        })();
+        const tM = (() => {
+          const h = readNumber(els.mH), m = readNumber(els.mM), s = readNumber(els.mS);
+          return (h > 0 || m > 0 || s > 0) ? (h * 3600 + m * 60 + s) : 0;
         })();
 
         // BMI
-        if (hCm > 0 && kg > 0) {
-          const bmi = kg / Math.pow(hCm / 100, 2);
-          els.outBMI.textContent = bmi.toFixed(1);
-        } else {
-          els.outBMI.textContent = '—';
-        }
+        if (hCm > 0 && kg > 0) els.outBMI.textContent = (kg / Math.pow(hCm / 100, 2)).toFixed(1);
+        else els.outBMI.textContent = '—';
 
-        // 페이스/시간 예측
+        // 거리(단위: km)
         const D5 = 5, D10 = 10, DHM = 21.0975, DM = 42.195;
-        // 우선순위: 하프 > 10K
-        let mpSecPerKm = 0;
-        if (tHM > 0) {
-          const tM = riegel(tHM, DHM, DM);
-          mpSecPerKm = tM / DM;
-        } else if (t10k > 0) {
-          const tM = riegel(t10k, D10, DM);
-          mpSecPerKm = tM / DM;
-        }
 
-        // 결과 업데이트: MP
+        // MP 계산 우선순위: 마라톤 실기록 → HM → 10K → 5K
+        let mpSecPerKm = 0;
+        if (tM > 0) mpSecPerKm = tM / DM;
+        else if (tHM > 0) mpSecPerKm = riegel(tHM, DHM, DM) / DM;
+        else if (t10k > 0) mpSecPerKm = riegel(t10k, D10, DM) / DM;
+        else if (t5k > 0) mpSecPerKm = riegel(t5k, D5, DM) / DM;
+
         if (mpSecPerKm > 0) {
           const mpStr = secToPace(mpSecPerKm);
           els.outMP.textContent = mpStr;
@@ -498,55 +583,88 @@
           els.kpiMP.textContent = '4:14–4:16';
         }
 
-        // CHO 권장 (0.8–1.0 g/kg/h, 60–120 g/h 범위)
+        // CHO 권장 (0.8–1.0 g/kg/h)
         if (kg > 0) {
           const choLo = clamp(kg * 0.8, 60, 120);
           const choHi = clamp(kg * 1.0, 60, 120);
-          const choStr = `${Math.round(choLo)}–${Math.round(choHi)}`;
-          els.outCHO.textContent = `${choStr} g/h${isHeat ? ' (더위: 상단 권장)' : ''}`;
-          els.kpiCHO.textContent = choStr;
+          const choStr = `${Math.round(choLo)}–${Math.round(choHi)} g/h${isHeat ? ' (더위: 상단 권장)' : ''}`;
+          els.outCHO.textContent = choStr;
+          els.kpiCHO.textContent = `${Math.round(choLo)}–${Math.round(choHi)}`;
         } else {
           els.outCHO.textContent = '60–90 g/h';
           els.kpiCHO.textContent = '60–90(120)';
         }
 
+        // 수분(6–10 mL/kg/h; 더위 8–12) → 0.3–1.0 L/h 클램프
+        if (kg > 0) {
+          const loMl = kg * (isHeat ? 8 : 6);
+          const hiMl = kg * (isHeat ? 12 : 10);
+          const loL = clamp(loMl / 1000, 0.3, 1.0);
+          const hiL = clamp(hiMl / 1000, 0.3, 1.0);
+          els.outHydr.textContent = `${loL.toFixed(1)}–${hiL.toFixed(1)} L/h`;
+        } else {
+          els.outHydr.textContent = isHeat ? '0.6–1.0 L/h' : '0.4–0.8 L/h';
+        }
+
+        // Na 300–600 mg/h; 더위 600–1000 mg/h
+        els.outNa.textContent = isHeat ? '600–1000 mg/h' : '300–600 mg/h';
+
+        // 10K, 5K, HM 페이스
+        let pace10k = 0, pace5k = 0, paceHM = 0;
+        if (t10k > 0) {
+          pace10k = t10k / D10;
+        } else if (tHM > 0) {
+          pace10k = riegel(tHM, DHM, D10) / D10;
+        } else if (t5k > 0) {
+          pace10k = riegel(t5k, D5, D10) / D10;
+        }
+        if (t5k > 0) {
+          pace5k = t5k / D5;
+        } else if (t10k > 0) {
+          pace5k = riegel(t10k, D10, D5) / D5;
+        } else if (tHM > 0) {
+          pace5k = riegel(tHM, DHM, D5) / D5;
+        }
+        if (tHM > 0) {
+          paceHM = tHM / DHM;
+        } else if (t10k > 0) {
+          paceHM = riegel(t10k, D10, DHM) / DHM;
+        } else if (t5k > 0) {
+          paceHM = riegel(t5k, D5, DHM) / DHM;
+        }
+
+        // 마스터스 보정량
+        const adjEasy = masters ? 5 : 0;
+        const adjAer = masters ? 5 : 0;
+        const adjT = masters ? 5 : 0;
+        const adjCV = masters ? 3 : 0;
+
         // 강도 키: Easy / Aerobic
         if (mpSecPerKm > 0) {
-          els.chipEasy.textContent = `Easy(개인화): ${rangeStr(mpSecPerKm + 60, mpSecPerKm + 90)} /km`;
-          els.chipAer.textContent = `Aerobic(개인화): ${rangeStr(mpSecPerKm + 30, mpSecPerKm + 60)} /km`;
+          els.chipEasy.textContent = `Easy(개인화): ${rangeStr(mpSecPerKm + 60 + adjEasy, mpSecPerKm + 90 + adjEasy)} /km`;
+          els.chipAer.textContent = `Aerobic(개인화): ${rangeStr(mpSecPerKm + 30 + adjAer, mpSecPerKm + 60 + adjAer)} /km`;
         } else {
           els.chipEasy.textContent = 'Easy(개인화): —';
           els.chipAer.textContent = 'Aerobic(개인화): —';
         }
 
-        // 10K, T, CV
-        let pace10k = 0, pace5k = 0, paceHM = 0;
-        if (t10k > 0) {
-          pace10k = t10k / D10;
-          pace5k = riegel(t10k, D10, D5) / D5;
-        }
-        if (tHM > 0) {
-          paceHM = tHM / DHM;
-          if (!pace10k) pace10k = riegel(tHM, DHM, D10) / D10;
-          if (!pace5k) pace5k = riegel(tHM, DHM, D5) / D5;
-        }
+        // 10K
+        els.chip10K.textContent = pace10k > 0 ? `10K(개인화): ${secToPace(pace10k)} /km` : '10K(개인화): —';
 
-        if (pace10k > 0) {
-          els.chip10K.textContent = `10K(개인화): ${secToPace(pace10k)} /km`;
-        } else {
-          els.chip10K.textContent = '10K(개인화): —';
-        }
-
+        // T: HM 우선
         if (paceHM > 0) {
-          els.chipT.textContent = `T(개인화): ${rangeStr(paceHM + 0, paceHM + 10)} /km`;
+          els.chipT.textContent = `T(개인화): ${rangeStr(paceHM + 0, paceHM + 10 + adjT)} /km`;
         } else if (pace10k > 0) {
-          els.chipT.textContent = `T(개인화): ${rangeStr(pace10k + 10, pace10k + 15)} /km`;
+          els.chipT.textContent = `T(개인화): ${rangeStr(pace10k + 10, pace10k + 15 + adjT)} /km`;
         } else {
           els.chipT.textContent = 'T(개인화): —';
         }
 
+        // CV: 5K 우선
         if (pace5k > 0) {
-          els.chipCV.textContent = `CV(개인화): ${rangeStr(pace5k + 8, pace5k + 12)} /km`;
+          els.chipCV.textContent = `CV(개인화): ${rangeStr(pace5k + 8, pace5k + 12 + adjCV)} /km`;
+        } else if (pace10k > 0) {
+          els.chipCV.textContent = `CV(개인화): ${rangeStr(pace10k + 0, pace10k + 5 + adjCV)} /km`;
         } else {
           els.chipCV.textContent = 'CV(개인화): —';
         }
@@ -554,7 +672,6 @@
 
       els.btn?.addEventListener('click', calc);
       els.form?.addEventListener('input', calc);
-      // 초기 상태
       calc();
     });
   </script>
