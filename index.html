@@ -39,8 +39,9 @@
     .btn[aria-pressed="true"]{outline:2px solid var(--color-accent);outline-offset:2px}
 
     .chips{display:flex;flex-wrap:wrap;gap:8px}
-    .chip{padding:8px 12px;border-radius:999px;border:1px solid var(--border-primary);background:rgba(15,23,42,.6);min-height:40px;cursor:pointer}
-    .chip[aria-pressed="true"]{outline:2px solid var(--color-primary);outline-offset:2px}
+    .chip{padding:8px 12px;border-radius:999px;border:1px solid var(--border-primary);background:rgba(15,23,42,.6);min-height:40px;cursor:pointer;color:var(--text-primary)}
+    .chip:hover{background:rgba(167,139,250,.12)}
+    .chip[aria-pressed="true"]{outline:2px solid var(--color-primary);outline-offset:2px;color:#fff;background:rgba(56,189,248,.18)}
 
     .card{background:var(--bg-card);border:1px solid var(--border-primary);border-radius:16px;padding:14px}
     .title{margin:0 0 10px;font-size:16px;color:#dbeafe}
@@ -68,9 +69,14 @@
 
     .tabs{display:flex;gap:8px;overflow:auto;margin:10px 0}
     .tbtn{padding:10px 12px;border:1px solid var(--border-primary);border-radius:999px;background:transparent;color:#c7d2fe;white-space:nowrap}
+    .tbtn:hover{background:rgba(167,139,250,.12)}
     .tbtn[aria-pressed="true"]{background:rgba(167,139,250,.14);color:#fff;outline:2px solid var(--color-accent);outline-offset:1px}
 
     .simple .adv-only{display:none !important}
+
+    /* 도움말 패널 */
+    .help-panel{display:none}
+    .help-panel.is-open{display:block; border-color:rgba(167,139,250,.5)}
   </style>
 </head>
 <body class="simple">
@@ -81,18 +87,25 @@
       <div class="hero__actions">
         <button id="mode-simple" class="btn" aria-pressed="true">간단 보기</button>
         <button id="mode-advanced" class="btn" aria-pressed="false">상세 보기</button>
-        <button id="help-toggle" class="btn" aria-pressed="false">도움말</button>
+        <button id="help-toggle" class="btn" aria-pressed="false" aria-controls="help-panel" aria-expanded="false">도움말</button>
       </div>
     </header>
+
+    <!-- 도움말 패널(토글) -->
+    <section id="help-panel" class="card help-panel" aria-hidden="true">
+      <h3 class="title">도움말(요약)</h3>
+      <ul class="muted">
+        <li>거리: km·m, 시간: 분·초, 페이스: 분:초/ km 또는 분:초/ mile</li>
+        <li>기록은 10K 또는 하프 하나만 입력해도 됩니다.</li>
+        <li>날씨·단위 칩을 누르면 바로 반영됩니다.</li>
+      </ul>
+    </section>
 
     <section class="card">
       <h3 class="title">1) 빠른 설정</h3>
       <div class="row">
         <div class="field"><label>성별<select id="in-sex"><option value="male">남성</option><option value="female">여성</option></select></label></div>
-        <div class="field"><label>나이<select id="in-age">
-          <option value="">선택</option>
-          <script>for(let i=16;i<=80;i++)document.write(`<option>${i}</option>`)</script>
-        </select></label></div>
+        <div class="field"><label>나이<select id="in-age"><option value="">선택</option><script>for(let i=16;i<=80;i++)document.write(`<option>${i}</option>`)</script></select></label></div>
         <div class="field"><label>키 (cm)<input id="in-height" type="number" min="120" max="220" inputmode="numeric" /></label></div>
         <div class="field"><label>몸무게 (kg)<input id="in-weight" type="number" min="35" max="120" step="0.1" inputmode="decimal" /></label></div>
       </div>
@@ -211,7 +224,6 @@
     </section>
   </div>
 
-  <!-- 하단 요약바(상세 모드에서만 자동 표시) -->
   <div class="helper" id="quickbar" aria-hidden="true">
     <div class="helper__in">
       <div class="pair"><strong>MP</strong><span id="q-mp">—</span></div>
@@ -233,23 +245,31 @@
       const set = (el, v) => { if(el && el.textContent!==v) el.textContent = v; };
       const KM_PER_MILE = 1.609344;
 
-      // 간단/상세 모드
-      const body = document.body;
-      const btnSimple = $('mode-simple'), btnAdv = $('mode-advanced'), helpBtn = $('help-toggle');
-      const quickbar = $('quickbar');
+      // 모드
+      const body = document.body, quickbar=$('quickbar');
+      const btnSimple=$('mode-simple'), btnAdv=$('mode-advanced'), helpBtn=$('help-toggle'), helpPanel=$('help-panel');
       const MODE_KEY='sub3_simple';
       function applyMode(simple=true){
         body.classList.toggle('simple', simple);
         btnSimple.setAttribute('aria-pressed', String(simple));
         btnAdv.setAttribute('aria-pressed', String(!simple));
-        quickbar.setAttribute('aria-hidden', String(simple)); // 간단=숨김
-        try{localStorage.setItem(MODE_KEY, simple?'1':'0')}catch(e){}
+        quickbar.setAttribute('aria-hidden', String(simple));
       }
-      btnSimple.addEventListener('click', ()=>applyMode(true));
-      btnAdv.addEventListener('click', ()=>applyMode(false));
+      btnSimple.addEventListener('click', ()=>{applyMode(true); try{localStorage.setItem(MODE_KEY,'1')}catch(e){}});
+      btnAdv.addEventListener('click', ()=>{applyMode(false);try{localStorage.setItem(MODE_KEY,'0')}catch(e){}});
       (function initMode(){const s=localStorage.getItem(MODE_KEY);applyMode(s!=='0');})();
 
-      // 입력 요소
+      // 도움말 패널 토글
+      helpBtn.addEventListener('click', ()=>{
+        const on = helpBtn.getAttribute('aria-pressed')!=='true';
+        helpBtn.setAttribute('aria-pressed', String(on));
+        helpBtn.setAttribute('aria-expanded', String(on));
+        helpPanel.classList.toggle('is-open', on);
+        helpPanel.setAttribute('aria-hidden', String(!on));
+        if(on) helpPanel.scrollIntoView({behavior:'smooth', block:'nearest'});
+      });
+
+      // 요소
       const els = {
         sex:$('in-sex'), age:$('in-age'), h:$('in-height'), kg:$('in-weight'),
         wx:$('in-weather'), units:$('in-units'),
@@ -258,39 +278,33 @@
         hmH:$('in-hm-h'), hmM:$('in-hm-m'), hmS:$('in-hm-s')
       };
 
-      // 칩 바인딩(날씨/단위)
+      // 칩 바인딩
       document.querySelectorAll('#wx-chips .chip').forEach(ch=>{
         ch.addEventListener('click',()=>{
           document.querySelectorAll('#wx-chips .chip').forEach(x=>x.setAttribute('aria-pressed','false'));
-          ch.setAttribute('aria-pressed','true');
-          els.wx.value = ch.dataset.wx;
-          calc();
+          ch.setAttribute('aria-pressed','true'); els.wx.value = ch.dataset.wx; calc();
         });
       });
       document.querySelectorAll('#unit-chips .chip').forEach(ch=>{
         ch.addEventListener('click',()=>{
           document.querySelectorAll('#unit-chips .chip').forEach(x=>x.setAttribute('aria-pressed','false'));
-          ch.setAttribute('aria-pressed','true');
-          els.units.value = ch.dataset.unit;
-          calc();
+          ch.setAttribute('aria-pressed','true'); els.units.value = ch.dataset.unit; calc();
         });
       });
 
-      // 도우미
-      const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      // 유틸
       function secToPace(sec){
         if(!isFinite(sec)||sec<=0) return '—';
-        const useImperial = els.units.value==='imperial';
-        const s = Math.round(useImperial? sec*KM_PER_MILE : sec);
+        const useImp = els.units.value==='imperial';
+        const s = Math.round(useImp? sec*KM_PER_MILE : sec);
         const m = Math.floor(s/60), ss=String(s%60).padStart(2,'0');
-        return `${m}:${ss}/${useImperial?'mile':'km'}`;
+        return `${m}:${ss}/${useImp?'mile':'km'}`;
       }
       const clamp=(v,a,b)=>Math.min(Math.max(v,a),b);
       const read=(el)=>{const v=parseFloat(el?.value);return Number.isFinite(v)?v:0;};
       function normMS(m,s){let M=Math.max(0,Math.floor(read(m))), S=Math.floor(read(s));if(S<0)S=0;if(S>=60){M+=Math.floor(S/60);S%=60;}return M*60+S;}
       function getExp(p10){const mode=els.rMode?.value||'auto'; if(mode==='manual'){const v=parseFloat(els.rExp?.value); return (v>=1.03&&v<=1.10)?v:1.06;}
         if(!isFinite(p10)||p10<=0) return 1.06; if(p10<=240) return 1.04; if(p10>=330) return 1.08; return 1.06;}
-
       const WX = {
         normal:{ml:[6,10],na:[300,600],adj:{e:0,a:0,t:0,c:0},lr:[0,0],sess:'계획대로'},
         heat:{ml:[8,12],na:[600,1000],adj:{e:10,a:8,t:12,c:8},lr:[-20,-10],sess:'Aerobic 40–70분(반복 10–20%↓)'},
@@ -307,7 +321,7 @@
         base:`- 월: Easy 10–14 km + 스트라이드<br/>- 화: 언덕 10회 × 60초 또는 CV 5회 × 5분(휴식 2분)<br/>- 수: Aerobic 12–16 km<br/>- 목: 템포 2세트 × 5 km 또는 30–40분<br/>- 금: Easy 8–12 km + S&C 25분<br/>- 토: Easy 10–14 km<br/>- 일: 롱런 24–28 km(후반 4–6 km 점증)`,
         spec:`- 화: 10회 × 1 km @10K(휴식 60–75초)<br/>- 목: MP 블록 2세트 × (6–8 km) 또는 MP 14–18 km<br/>- 일: 롱런 28–32 km(후반 8–12 km @MP~MP+10초/ km)`,
         taper:`- 화: 6회 × 1 km(가볍게)·목: MP 12–16 km·일: 롱런 18–24 km(편한 페이스)`,
-        more:`프렙/베이스2/스페시픽2/피크/테이퍼B/리커버리/오프·리셋은 ‘상세 보기’에서 카드 전체 확인 가능`
+        more:`프렙/베이스2/스페시픽2/피크/테이퍼B/리커버리/오프·리셋은 ‘상세 보기’에서 전체 카드 확인`
       };
       function selectPreset(key){
         document.querySelectorAll('.tbtn').forEach(b=>b.setAttribute('aria-pressed','false'));
@@ -321,48 +335,42 @@
       // 계산
       function calc(){
         const age=parseFloat(els.age.value)||0, masters=age>=40;
-        const kg=read(els.kg), h=read(els.h), wx=WX[els.wx.value]||WX.normal, useImp=els.units.value==='imperial';
+        const kg=read(els.kg), h=read(els.h), wx=WX[els.wx.value]||WX.normal;
         const t10=normMS(els.k10m,els.k10s), tHM=(read(els.hmH)||0)*3600 + normMS(els.hmM,els.hmS);
-        const D5=5, D10=10, DHM=21.0975, DM=42.195;
+        const D10=10, DHM=21.0975, DM=42.195;
 
-        // 10K pace(초/ km) 추정
         let p10=0;
         if(t10>0) p10=t10/D10;
         else if(tHM>0) p10=(tHM*Math.pow(D10/DHM,getExp(tHM/DHM)))/D10;
 
-        // MP (초/ km)
         let mp=0;
         if(tHM>0) mp=(tHM*Math.pow(DM/DHM,getExp(p10||300)))/DM;
         else if(t10>0) mp=(t10*Math.pow(DM/D10,getExp(p10||300)))/DM;
 
-        // 범위
         const adjM={e:masters?5:0,a:masters?5:0,t:masters?5:0,c:masters?3:0}, A=wx.adj;
         const easy = mp? [mp+60+adjM.e+A.e, mp+90+adjM.e+A.e] : null;
         const aer  = mp? [mp+30+adjM.a+A.a, mp+60+adjM.a+A.a] : null;
 
-        // T / CV
         let pHM= tHM? tHM/DHM : (p10? (p10*D10)*Math.pow(DHM/D10,getExp(p10))/DHM : 0);
-        let p5 =  p10? (p10*D10)*Math.pow(D5/D10,getExp(p10))/D5 : (tHM? (tHM)*Math.pow(D5/DHM,getExp(pHM))/D5 : 0);
+        let p5 =  p10? (p10*D10)*Math.pow(5/D10,getExp(p10))/5 : (tHM? (tHM)*Math.pow(5/DHM,getExp(pHM))/5 : 0);
 
         const T = (pHM||p10) ? [ (pHM||p10+10)+0 + A.t, (pHM||p10+10)+10 + adjM.t + A.t ] : null;
         const CV= (p5||p10)  ? [ (p5||p10)+8 + A.c, (p5||p10)+12 + adjM.c + A.c ] : null;
 
-        // 영양/수분/Na
         const cho = kg? [clamp(kg*0.8,60,120), clamp(kg*1.0,60,120)] : null;
         const ml=wx.ml, hydr = kg? [clamp(kg*ml[0]/1000,0.3,1.2), clamp(kg*ml[1]/1000,0.3,1.2)] : null;
         const na = wx.na;
 
-        // 출력
         set($('mp'), mp? secToPace(mp) : '—');
         set($('easy'), easy? `${secToPace(easy[0])} ~ ${secToPace(easy[1])}` : '—');
         set($('aer'),  aer?  `${secToPace(aer[0])} ~ ${secToPace(aer[1])}`   : '—');
         set($('t'),    T?    `${secToPace(T[0])} ~ ${secToPace(T[1])}`       : '—');
         set($('cv'),   CV?   `${secToPace(CV[0])} ~ ${secToPace(CV[1])}`     : '—');
+
         const fuelStr = `${cho? `${Math.round(cho[0])}–${Math.round(cho[1])} g/h` : '60–90 g/h'} · ${hydr? `${hydr[0].toFixed(1)}–${hydr[1].toFixed(1)} L/h` : (wx===WX.heat?'0.6–1.0 L/h':'0.4–0.8 L/h')} · ${na[0]}–${na[1]} mg/h`;
         set($('fuel'), fuelStr);
         set($('today-sess'), wx.sess);
 
-        // 하단바(상세)
         set($('q-mp'), $('mp').textContent);
         set($('q-easy'), $('easy').textContent);
         set($('q-t'), $('t').textContent);
@@ -375,13 +383,6 @@
         ['in-sex','in-age','in-height','in-weight','in-weather','in-units','in-riegel-mode','in-riegel','in-10k-m','in-10k-s','in-hm-h','in-hm-m','in-hm-s']
           .forEach(id=>$(id)?.addEventListener('input',calc));
       }
-
-      // 도움말 토글(간단히: details 전체 열기/닫기)
-      helpBtn.addEventListener('click',()=>{
-        const on = helpBtn.getAttribute('aria-pressed')!=='true';
-        helpBtn.setAttribute('aria-pressed', String(on));
-        document.querySelectorAll('details').forEach(d=>d.open = on);
-      });
 
       // 복사/공유
       $('btn-copy')?.addEventListener('click', async ()=>{
@@ -397,6 +398,22 @@
         const url = `${location.origin}${location.pathname}?s=${btoa(encodeURIComponent(JSON.stringify(data)))}`;
         try{await navigator.clipboard.writeText(url);}catch(e){prompt('링크를 복사하세요',url);}
       });
+
+      // 공유 링크 복원
+      (function hydrateFromQS(){
+        const qs = new URLSearchParams(location.search); const raw = qs.get('s'); if(!raw) return;
+        try{
+          const d = JSON.parse(decodeURIComponent(atob(raw)));
+          Object.entries(d).forEach(([k,v])=>{
+            const input = document.querySelector(`#in-${k}`); if(input!=null) input.value = v;
+          });
+          // 칩 상태 동기화
+          document.querySelectorAll('#wx-chips .chip').forEach(x=>x.setAttribute('aria-pressed','false'));
+          const wxBtn = document.querySelector(`#wx-chips .chip[data-wx="${$('in-weather').value}"]`); wxBtn?.setAttribute('aria-pressed','true');
+          document.querySelectorAll('#unit-chips .chip').forEach(x=>x.setAttribute('aria-pressed','false'));
+          const unBtn = document.querySelector(`#unit-chips .chip[data-unit="${$('in-units').value}"]`); unBtn?.setAttribute('aria-pressed','true');
+        }catch(e){}
+      })();
 
       // 초기
       bindInputs(); calc();
