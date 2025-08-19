@@ -2,7 +2,8 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="format-detection" content="telephone=no" />
   <title>개선된 Sub-3 통합 프로그램 v4.0 — 인터랙티브·접근성 강화 UI</title>
   <style>
     :root{
@@ -11,8 +12,10 @@
       --text-primary: #e5e7eb; --text-muted: #9aa4b2; --text-link: #93c5fd;
       --color-primary: #38bdf8; --color-accent: #a78bfa; --color-success: #34d399; --color-warning: #f59e0b; --color-danger: #ef4444;
       --font-size-base: 16px; --line-height-base: 1.6;
+      --quickbar-height: 84px;
     }
-    *, *::before, *::after { box-sizing: border-box; }
+    *, *::before, *::after { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body { height: 100%; }
     body {
       margin:0; color:var(--text-primary); font-family:system-ui,-apple-system,Segoe UI,Roboto,Pretendard,Arial,sans-serif;
       font-size: var(--font-size-base); line-height: var(--line-height-base);
@@ -22,12 +25,16 @@
         radial-gradient(1000px 500px at 120% 10%, rgba(167, 139, 250, .12), transparent 60%),
         linear-gradient(180deg, var(--bg-primary), var(--bg-secondary));
       -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+      padding-bottom: var(--quickbar-height);
+    }
+    @supports (padding: env(safe-area-inset-bottom)) {
+      body { padding-bottom: calc(var(--quickbar-height) + env(safe-area-inset-bottom)); }
     }
     .skip-link { position:absolute; left:-999px; top:auto; width:1px; height:1px; overflow:hidden; }
-    .skip-link:focus { position:fixed; left:16px; top:12px; width:auto; height:auto; padding:8px 12px; background:#111827; color:#fff; z-index:1000; border-radius:8px; outline:2px solid var(--color-accent); }
+    .skip-link:focus { position:fixed; left:16px; top:12px; width:auto; height:auto; padding:10px 14px; background:#111827; color:#fff; z-index:1000; border-radius:8px; outline:2px solid var(--color-accent); }
 
-    .container { max-width: 1080px; margin: 0 auto; padding: 24px; }
-    .grid { display: grid; gap: 16px; }
+    .container { max-width: 1080px; margin: 0 auto; padding: 16px; }
+    .grid { display: grid; gap: 12px; }
     @media(min-width: 900px){
       .grid--2-cols { grid-template-columns: repeat(2, 1fr); }
       .grid--3-cols { grid-template-columns: repeat(3, 1fr); }
@@ -35,49 +42,50 @@
       .cols-2 { columns: 2; gap: 24px; }
     }
 
-    .hero { position: relative; padding: 28px; border: 1px solid var(--border-primary); border-radius: 16px; background: linear-gradient(180deg, rgba(2,6,23,.6), rgba(2,6,23,.4)); overflow: hidden; }
+    .hero { position: relative; padding: 20px; border: 1px solid var(--border-primary); border-radius: 16px; background: linear-gradient(180deg, rgba(2,6,23,.6), rgba(2,6,23,.4)); overflow: hidden; }
     .hero::before { content:""; position:absolute; inset:-2px; background: radial-gradient(400px 120px at 0% 0%, rgba(56,189,248,.12), transparent 60%); }
-    .hero__title { margin: 0 0 10px; font-size: 28px; }
+    .hero__title { margin: 0 0 8px; font-size: 24px; }
     .hero__subtitle { margin: 0; color: var(--text-muted); }
-    .hero__tags { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px; }
+    .hero__tags { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
     .hero__tag { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--border-primary); font-size: 12px; background: rgba(15,23,42,.6); }
     .hero__tag i { font-style: normal; opacity: .9; }
 
-    .tabs-container { position: sticky; top: 0; z-index: 10; margin: 16px 0; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); background: var(--bg-blur); border-top: 1px solid var(--border-primary); border-bottom: 1px solid var(--border-primary); }
+    .tabs-container { position: sticky; top: 0; z-index: 10; margin: 12px 0; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); background: var(--bg-blur); border-top: 1px solid var(--border-primary); border-bottom: 1px solid var(--border-primary); }
     .tabs { display: flex; overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none; }
     .tabs::-webkit-scrollbar { display: none; }
     .tabs__button {
       flex-shrink: 0; cursor: pointer; color: #c7d2fe; background: transparent; border: none; border-bottom: 2px solid transparent;
-      padding: 12px 16px; font-size: 15px; text-decoration: none; transition: background-color .2s, border-color .2s, color .2s;
+      padding: 12px 14px; font-size: 15px; min-height: 44px; text-decoration: none; transition: background-color .2s, border-color .2s, color .2s;
     }
     .tabs__button:hover { background: rgba(167,139,250,.1); }
     .tabs__button[aria-selected="true"] { color: var(--text-primary); font-weight: 600; border-bottom-color: var(--color-accent); }
     .tabs__button:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; border-radius: 8px; }
-    .tabs-tools { display:flex; gap:8px; justify-content:flex-end; padding: 8px 16px; }
-    .button { display:inline-block; padding:8px 12px; border-radius:8px; border:1px solid var(--border-primary); background: rgba(15,23,42,.6); color: var(--text-primary); cursor:pointer; }
+    .tabs-tools { display:flex; gap:8px; justify-content:flex-end; padding: 8px 12px; }
+
+    .button { display:inline-flex; align-items:center; justify-content:center; gap:6px; padding:10px 14px; min-height:44px; border-radius:10px; border:1px solid var(--border-primary); background: rgba(15,23,42,.6); color: var(--text-primary); cursor:pointer; }
     .button:hover { background: rgba(167,139,250,.12); }
     .button[aria-pressed="true"] { outline:2px solid var(--color-accent); outline-offset:2px; }
 
-    .tab-panels { padding-top: 16px; }
+    .tab-panels { padding-top: 12px; }
     [hidden] { display: none !important; }
-    .tab-panel { animation: fadeIn .4s ease; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .tab-panel { animation: fadeIn .35s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-    .card { background: var(--bg-card); border: 1px solid var(--border-primary); border-radius: 16px; padding: 20px; }
-    .card:not(:last-child) { margin-bottom: 16px; }
-    .card__title { margin: 0 0 16px; font-size: 20px; color: #dbeafe; }
+    .card { background: var(--bg-card); border: 1px solid var(--border-primary); border-radius: 16px; padding: 16px; }
+    .card:not(:last-child) { margin-bottom: 12px; }
+    .card__title { margin: 0 0 12px; font-size: 18px; color: #dbeafe; }
     .card__subtitle { margin: 4px 0 8px; font-size: 16px; color: #e9d5ff; }
 
-    .kpi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .kpi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
     @media(min-width: 900px){ .kpi-grid { grid-template-columns: repeat(4, 1fr); } }
-    .kpi-card { display: flex; align-items: center; gap: 10px; border: 1px solid var(--border-primary); border-radius: 14px; padding: 14px; background: linear-gradient(180deg, rgba(2,6,23,.35), rgba(2,6,23,.2)); }
-    .kpi-card__value { font-size: 20px; font-weight: 700; }
+    .kpi-card { display: flex; align-items: center; gap: 10px; border: 1px solid var(--border-primary); border-radius: 14px; padding: 12px; background: linear-gradient(180deg, rgba(2,6,23,.35), rgba(2,6,23,.2)); }
+    .kpi-card__value { font-size: 18px; font-weight: 700; }
     .kpi-card__label { color: var(--text-muted); font-size: 12px; }
-    .kpi-card__ring { --p:55; width: 44px; height: 44px; flex-shrink: 0; margin-left: auto; border-radius: 50%; background: conic-gradient(var(--color-primary) calc(var(--p) * 1%), rgba(56, 189, 248, .15) 0); border: 2px solid rgba(255,255,255,.06); }
+    .kpi-card__ring { --p:55; width: 40px; height: 40px; flex-shrink: 0; margin-left: auto; border-radius: 50%; background: conic-gradient(var(--color-primary) calc(var(--p) * 1%), rgba(56, 189, 248, .15) 0); border: 2px solid rgba(255,255,255,.06); }
 
     .chip { display: inline-block; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--border-primary); margin: 4px 6px 0 0; font-size: 12px; background: rgba(11,18,32,.6); }
 
-    .legend { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 10px; }
+    .legend { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 8px; }
     .legend__item { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; }
     .legend__swatch { display: inline-block; width: 10px; height: 10px; border-radius: 3px; }
     .legend__swatch--success { background: var(--color-success); }
@@ -86,11 +94,11 @@
     .legend__swatch--warning { background: var(--color-warning); }
 
     .timeline { position: relative; padding-left: 12px; border-left: 2px solid; border-image: linear-gradient(to bottom, var(--color-primary), transparent) 1; }
-    .timeline__item { position: relative; margin: 12px 0; padding-left: 24px; }
-    .timeline__item::before { content:""; position: absolute; left: -7px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--color-primary); box-shadow: 0 0 0 4px rgba(56,189,248,.2); }
+    .timeline__item { position: relative; margin: 10px 0; padding-left: 20px; }
+    .timeline__item::before { content:""; position: absolute; left: -7px; top: 6px; width: 10px; height: 10px; border-radius: 50%; background: var(--color-primary); box-shadow: 0 0 0 4px rgba(56,189,248,.2); }
 
-    details { border: 1px solid var(--border-primary); border-radius: 12px; padding: 12px 16px; background: rgba(15,23,42,.5); }
-    details + details { margin-top: 10px; }
+    details { border: 1px solid var(--border-primary); border-radius: 12px; padding: 12px; background: rgba(15,23,42,.5); }
+    details + details { margin-top: 8px; }
     summary { cursor: pointer; list-style: none; }
     summary::-webkit-details-marker { display: none; }
     summary::after { content: ' ▼'; font-size: 0.8em; color: var(--text-muted); float: right; }
@@ -103,15 +111,20 @@
     .badge { display:inline-block; padding:2px 6px; border-radius:6px; background: rgba(167,139,250,.18); border:1px solid var(--border-primary); font-size:12px; }
 
     .helper-bar { position: fixed; left:0; right:0; bottom:0; z-index: 20; background: rgba(11,18,32,.9); backdrop-filter: blur(8px); border-top:1px solid var(--border-primary); }
-    .helper-bar__inner { max-width:1080px; margin:0 auto; padding:8px 16px; display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
-    .helper-bar__item { display:flex; gap:6px; align-items:center; font-size: 13px; }
+    .helper-bar__inner { max-width:1080px; margin:0 auto; padding:8px 12px; display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    .helper-bar__item { display:flex; gap:4px; align-items:center; font-size: 13px; }
     .helper-bar__controls { margin-left:auto; display:flex; gap:8px; }
     .helper-bar[aria-hidden="true"] { display:none; }
+    @supports (padding: env(safe-area-inset-bottom)) {
+      .helper-bar__inner { padding-bottom: calc(8px + env(safe-area-inset-bottom)); }
+    }
 
     .field { display:flex; flex-direction:column; gap:6px; margin-bottom:10px; }
     .row { display:flex; align-items:center; gap:6px; }
-    .field input[type="number"], .field select { width:100%; padding:8px 10px; border-radius:8px; border:1px solid var(--border-primary); background: rgba(15,23,42,.6); color: var(--text-primary); }
-    .field input[type="checkbox"] { width:auto; }
+    .field input[type="number"], .field select {
+      width:100%; padding:12px 12px; min-height:44px; border-radius:10px; border:1px solid var(--border-primary); background: rgba(15,23,42,.6); color: var(--text-primary);
+    }
+    .field input[type="checkbox"] { width:auto; min-height: 44px; }
     input[aria-invalid="true"] { outline:2px solid #ef4444; outline-offset:2px; }
 
     @media (prefers-reduced-motion: reduce) {
@@ -124,7 +137,7 @@
     @media print{
       .tabs-container, .helper-bar, #toast { display:none !important; }
       [role="tabpanel"]:not([data-print="1"]) { display:none !important; }
-      body { background:none; color:#000; }
+      body { background:none; color:#000; padding-bottom:0; }
       .card { break-inside: avoid; }
     }
   </style>
@@ -169,7 +182,12 @@
         <div class="card">
           <h2 class="card__title">한눈에 보는 핵심 <span class="badge">즉시 갱신</span></h2>
           <div class="kpi-grid">
-            <div class="kpi-card"><div><div class="kpi-card__value"><span id="kpi-mp">4:14–4:16</span></div><div class="kpi-card__label">MP (min/km)</div></div></div>
+            <div class="kpi-card">
+              <div>
+                <div class="kpi-card__value"><span id="kpi-mp">4:14–4:16</span></div>
+                <div class="kpi-card__label">MP (<span id="kpi-mp-unit">min/km</span>)</div>
+              </div>
+            </div>
             <div class="kpi-card"><div><div class="kpi-card__value">75–110 km</div><div class="kpi-card__label">주간 피크 볼륨(레벨별)</div></div></div>
             <div class="kpi-card"><div><div class="kpi-card__value"><span id="kpi-cho">60–90(120)</span> g/h</div><div class="kpi-card__label">CHO 섭취(>90분)</div></div></div>
             <div class="kpi-card"><div><div class="kpi-card__value">−41~60%</div><div class="kpi-card__label">테이퍼 볼륨 감량</div></div><div class="kpi-card__ring" style="--p:55" aria-hidden="true"></div></div>
@@ -281,21 +299,21 @@
               <h3 class="card__subtitle">최근 기록</h3>
               <label class="field">5K (분:초)
                 <div class="row">
-                  <input id="in-5k-m" type="number" min="12" max="40" step="1" aria-label="5K 분" placeholder="mm 또는 mm:ss" pattern="^\\d{1,2}(:\\d{1,2})?$" aria-describedby="calc-help" />
+                  <input id="in-5k-m" type="number" min="12" max="40" step="1" aria-label="5K 분" placeholder="mm 또는 mm:ss" pattern="^\d{1,2}(:\d{1,2})?$" aria-describedby="calc-help" />
                   <span aria-hidden="true">:</span>
                   <input id="in-5k-s" type="number" min="0" max="59" step="1" aria-label="5K 초" aria-describedby="calc-help" />
                 </div>
               </label>
               <label class="field">10K (분:초)
                 <div class="row">
-                  <input id="in-10k-m" type="number" min="25" max="80" step="1" aria-label="10K 분" placeholder="mm 또는 mm:ss" pattern="^\\d{1,2}(:\\d{1,2})?$" aria-describedby="calc-help" />
+                  <input id="in-10k-m" type="number" min="25" max="80" step="1" aria-label="10K 분" placeholder="mm 또는 mm:ss" pattern="^\d{1,2}(:\d{1,2})?$" aria-describedby="calc-help" />
                   <span aria-hidden="true">:</span>
                   <input id="in-10k-s" type="number" min="0" max="59" step="1" aria-label="10K 초" aria-describedby="calc-help" />
                 </div>
               </label>
               <label class="field">하프(HH:MM:SS)
                 <div class="row">
-                  <input id="in-hm-h" type="number" min="0" max="3" step="1" aria-label="하프 시간" placeholder="h 또는 h:mm:ss" pattern="^\\d{1,2}(:\\d{1,2}(:\\d{1,2})?)?$" aria-describedby="calc-help" />
+                  <input id="in-hm-h" type="number" min="0" max="3" step="1" aria-label="하프 시간" placeholder="h 또는 h:mm:ss" pattern="^\d{1,2}(:\d{1,2}(:\d{1,2})?)?$" aria-describedby="calc-help" />
                   <span aria-hidden="true">:</span>
                   <input id="in-hm-m" type="number" min="0" max="59" step="1" aria-label="하프 분" aria-describedby="calc-help" />
                   <span aria-hidden="true">:</span>
@@ -304,7 +322,7 @@
               </label>
               <label class="field">마라톤(HH:MM:SS)
                 <div class="row">
-                  <input id="in-m-h" type="number" min="2" max="7" step="1" aria-label="마라톤 시간" placeholder="h 또는 h:mm:ss" pattern="^\\d{1,2}(:\\d{1,2}(:\\d{1,2})?)?$" aria-describedby="calc-help" />
+                  <input id="in-m-h" type="number" min="2" max="7" step="1" aria-label="마라톤 시간" placeholder="h 또는 h:mm:ss" pattern="^\d{1,2}(:\d{1,2}(:\d{1,2})?)?$" aria-describedby="calc-help" />
                   <span aria-hidden="true">:</span>
                   <input id="in-m-m" type="number" min="0" max="59" step="1" aria-label="마라톤 분" aria-describedby="calc-help" />
                   <span aria-hidden="true">:</span>
@@ -414,13 +432,152 @@
         </div>
       </section>
 
-      <section id="panel-weekly" class="tab-panel" role="tabpanel" aria-labelledby="tab-weekly" hidden>
+      <section id="panel-weekly" class="tab-panel" role="tabpanel" aria-labelledby="tab-weekly" hidden data-print="1">
         <div class="card">
           <h2 class="card__title">주간 템플릿</h2>
+
           <div class="grid grid--2-cols">
-            <div><h3 class="card__subtitle">베이스 주</h3><ul><li>월: Easy 10–14 + Strides</li><li>화: 언덕 10×60" 또는 CV 5×5'(2')</li><li>수: Aerobic 12–16</li><li>목: T 2×5 km(2–3') 또는 T 30–40'</li><li>금: Easy 8–12 + S&C 25’</li><li>토: Easy 10–14(잔디/트레일)</li><li>일: LR 24–28(후반 4–6 km 점증) <span class="badge" id="lr-advice-base">0%</span></li></ul></div>
-            <div><h3 class="card__subtitle">스페시픽 주</h3><ul><li>월: 회복 8–12 + 모빌리티</li><li>화: 10×1 km @10K(60–75")</li><li>수: Aerobic 14–18 + Strides</li><li>목: MP 블록 2×(6–8 km) / 2–3 km 조깅</li><li>금: Easy 8–12 + S&C 20’</li><li>토: Easy 10–12</li><li>일: LR 28–32(후반 8–12 km @MP~MP+10s) <span class="badge" id="lr-advice-spec">0%</span></li></ul></div>
+            <div>
+              <h3 class="card__subtitle">프렙 주 (W1–4)</h3>
+              <ul>
+                <li>월: Easy 6–10 + 모빌리티 10′</li>
+                <li>화: 언덕 스프린트 8–10×10–15″(걷기 완전회복) 또는 Strides 6–8</li>
+                <li>수: Aerobic 8–12</li>
+                <li>목: LT 입문 3×8′(2′) 또는 템포 20′(가볍게)</li>
+                <li>금: Easy 6–10 + S&C 20′(코어·힙)</li>
+                <li>토: Easy 8–12(잔디/트레일)</li>
+                <li>일: LR 14–20(후반 2–4 km 점증) <span class="badge" id="lr-advice-prep">0%</span></li>
+              </ul>
+              <p class="text-small text-muted">옵션: 피로↑ 시 화/목 중 1개를 Easy로 대체.</p>
+            </div>
+
+            <div>
+              <h3 class="card__subtitle">베이스1 주</h3>
+              <ul>
+                <li>월: Easy 10–14 + Strides</li>
+                <li>화: 언덕 10×60″ 또는 CV 5×5′(2′)</li>
+                <li>수: Aerobic 12–16</li>
+                <li>목: T 2×5 km(2–3′) 또는 T 30–40′</li>
+                <li>금: Easy 8–12 + S&C 25′</li>
+                <li>토: Easy 10–14(잔디/트레일)</li>
+                <li>일: LR 24–28(후반 4–6 km 점증) <span class="badge" id="lr-advice-base">0%</span></li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="card__subtitle">베이스2 주 (강도·지구력 강화)</h3>
+              <ul>
+                <li>월: 회복 8–12 + 모빌리티</li>
+                <li>화: 10×1 km @10K(60–75″) 또는 CV 6×4′(2′)</li>
+                <li>수: Aerobic 12–16 + Strides</li>
+                <li>목: T 2×6 km(2–3′) 또는 템포 35–45′</li>
+                <li>금: Easy 8–12 + S&C 20′(점진 로드)</li>
+                <li>토: Easy 10–12</li>
+                <li>일: LR 24–30(후반 6–8 km 점증) <span class="badge" id="lr-advice-base2">0%</span></li>
+              </ul>
+              <p class="text-small text-muted">옵션: 3–4주차에 하프 템포 14–18 km(연속)로 대체 가능.</p>
+            </div>
+
+            <div>
+              <h3 class="card__subtitle">스페시픽1 주</h3>
+              <ul>
+                <li>월: 회복 8–12 + 모빌리티</li>
+                <li>화: 10×1 km @10K(60–75″)</li>
+                <li>수: Aerobic 14–18 + Strides</li>
+                <li>목: MP 블록 2×(6–8 km) / 2–3 km 조깅</li>
+                <li>금: Easy 8–12 + S&C 20′</li>
+                <li>토: Easy 10–12</li>
+                <li>일: LR 28–32(후반 8–12 km @MP~MP+10s) <span class="badge" id="lr-advice-spec">0%</span></li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="card__subtitle">피크-1 주 (최대 특이성)</h3>
+              <ul>
+                <li>월: 회복 8–10 + 드릴</li>
+                <li>화: 6×2 km @10K(90″) 또는 3×3 km @10K(2′)</li>
+                <li>수: Aerobic 12–16</li>
+                <li>목: MP 블록 2×(8–10 km) / 2–3 km 조깅</li>
+                <li>금: Easy 8–10 + 가벼운 S&C</li>
+                <li>토: Easy 8–10</li>
+                <li>일: LR 32–34(후반 10–12 km @MP) <span class="badge" id="lr-advice-peak1">0%</span></li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="card__subtitle">테이퍼-1 주 (−30~40%)</h3>
+              <ul>
+                <li>월: 회복 6–8 + 모빌리티</li>
+                <li>화: 6×1 km(가볍게, T감각)</li>
+                <li>수: Aerobic 8–12</li>
+                <li>목: MP 12–16 km(연속)</li>
+                <li>금: Easy 6–8</li>
+                <li>토: Easy 6–8</li>
+                <li>일: LR 18–24(평탄, 여유 페이스) <span class="badge" id="lr-advice-taper1">0%</span></li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="card__subtitle">리커버리 주 (컷백 −20~35%)</h3>
+              <ul>
+                <li>월: 휴식 또는 걷기/요가 30–45′</li>
+                <li>화: Easy 6–10</li>
+                <li>수: 크로스트레이닝 40–60′(사이클/수영)</li>
+                <li>목: Easy 8–12 + 4×Strides</li>
+                <li>금: 휴식 또는 Easy 6–8</li>
+                <li>토: Easy 8–10</li>
+                <li>일: LR 16–22(노강도) <span class="badge" id="lr-advice-recov">0%</span></li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="card__subtitle">스페시픽2 주 (가을/2차 피크)</h3>
+              <ul>
+                <li>월: 회복 8–12</li>
+                <li>화: 5×2 km @10K(90″) 또는 3×3 km @10K(2′)</li>
+                <li>수: Aerobic 14–18 + Strides</li>
+                <li>목: MP 연속 14–18 km 또는 MP 블록 3×(5–6 km)</li>
+                <li>금: Easy 8–12</li>
+                <li>토: Easy 10–12</li>
+                <li>일: LR 28–32(후반 8–12 km @MP~MP+10s) <span class="badge" id="lr-advice-spec2">0%</span></li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="card__subtitle">테이퍼B 주 (보조 피크, −30~50%)</h3>
+              <ul>
+                <li>월: 회복 6–8</li>
+                <li>화: 5×1 km(가볍게)</li>
+                <li>수: Aerobic 8–10</li>
+                <li>목: MP 8–12 km</li>
+                <li>금: Easy 6–8</li>
+                <li>토: Easy 6–8</li>
+                <li>일: LR 16–22(노강도) <span class="badge" id="lr-advice-taperb">0%</span></li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="card__subtitle">오프·리셋 주 (W51–52)</h3>
+              <ul>
+                <li>월: 가벼운 걷기 30–60′</li>
+                <li>화: 요가/스트레칭 30′</li>
+                <li>수: Easy 조깅 20–40′</li>
+                <li>목: 휴식 또는 크로스 30–45′</li>
+                <li>금: Easy 조깅 20–40′</li>
+                <li>토: 산책/트레일 40–60′</li>
+                <li>일: 옵션 LR 12–16(매우 여유) <span class="badge" id="lr-advice-off">0%</span></li>
+              </ul>
+            </div>
           </div>
+
+          <details style="margin-top:10px">
+            <summary>공통 유연 규칙</summary>
+            <ul class="text-small" style="margin-top:12px">
+              <li>상태 신호: RHR 베이스+≥5 bpm, HRV 저하, RPE≥7 → 그 주 가장 높은 난이도 세션 제거/완화.</li>
+              <li>날씨: 더위/강풍/눈·결빙 시 인터벌은 실내 전환, 롱런은 <strong>배지</strong>만큼 거리 단축.</li>
+              <li>마스터스(≥40): 품질 간 회복 48–72 h, 강도 상단 +3~5 s/km 보수 적용.</li>
+            </ul>
+          </details>
         </div>
       </section>
 
@@ -566,13 +723,11 @@
         tab.focus();
         safeScrollIntoView(tab);
       }
-
-      const initTabs = () => {
+      function initTabs(){
         const hashId = location.hash?.slice(1);
         const byHash = hashId ? tabs.find(t => t.getAttribute('aria-controls') === hashId) : null;
         activate(byHash || tabs[0], false);
-      };
-
+      }
       tablist.addEventListener('click', (e) => {
         const clickedTab = e.target.closest('button[role="tab"]');
         if (clickedTab) activate(clickedTab, true);
@@ -619,7 +774,7 @@
         mH: $('in-m-h'), mM: $('in-m-m'), mS: $('in-m-s'),
         outBMI: $('out-bmi'), outMP: $('out-mp'),
         outCHO: $('out-cho'), outHydr: $('out-hydr'), outNa: $('out-na'),
-        kpiMP: $('kpi-mp'), kpiCHO: $('kpi-cho'),
+        kpiMP: $('kpi-mp'), kpiCHO: $('kpi-cho'), kpiMPUnit: $('kpi-mp-unit'),
         chipEasy: $('chip-easy'), chipAer: $('chip-aerobic'),
         chipT: $('chip-t'), chip10K: $('chip-10k'), chipCV: $('chip-cv'),
         wx: { easy:$('wx-easy'), aer:$('wx-aer'), t:$('wx-t'), cv:$('wx-cv'), lr:$('wx-lr'), indoor:$('wx-indoor'), tips:$('weather-tips'), hydr:$('wx-hydr'), na:$('wx-na'), session:$('wx-session') },
@@ -634,9 +789,9 @@
       const unitLabel = () => getUnits()==='imperial' ? '/mile' : '/km';
       const secToPaceStr = (sec) => {
         if (!isFinite(sec) || sec <= 0) return '—';
-        const s = Math.round(getUnits()==='imperial' ? sec * KM_PER_MILE : sec);
-        const m = Math.floor(s / 60);
-        const ss = String(s % 60).padStart(2, '0');
+        const sConv = Math.round(getUnits()==='imperial' ? sec * KM_PER_MILE : sec);
+        const m = Math.floor(sConv / 60);
+        const ss = String(sConv % 60).padStart(2, '0');
         return `${m}:${ss}${unitLabel()}`;
       };
       const setText = (el, next) => { if (!el) return; if (el.textContent !== next) el.textContent = next; };
@@ -715,15 +870,15 @@
       function notify(msg, type='info'){
         const el = $('toast'); if (!el) return;
         el.textContent = msg;
-        el.style.padding = '8px 12px';
-        el.style.borderRadius = '8px';
+        el.style.padding = '10px 12px';
+        el.style.borderRadius = '10px';
         el.style.border = '1px solid var(--border-primary)';
         el.style.background = type==='error' ? 'rgba(239,68,68,.15)' : 'rgba(15,23,42,.9)';
         clearTimeout(el._t); el._t = setTimeout(()=>{ el.textContent=''; el.removeAttribute('style'); }, 2200);
       }
 
-      const encodeS = (obj) => btoa(unescape(encodeURIComponent(JSON.stringify(obj))));
-      const decodeS = (s) => { try { return JSON.parse(decodeURIComponent(escape(atob(s)))); } catch { return null; } };
+      const encodeS = (obj) => btoa(encodeURIComponent(JSON.stringify(obj)));
+      const decodeS = (s) => { try { return JSON.parse(decodeURIComponent(atob(s))); } catch { return null; } };
       (function tryHydrateFromURL(){
         const qs = new URLSearchParams(location.search); const raw = qs.get('s'); if (!raw) return;
         const d = decodeS(raw); if (!d) return;
@@ -853,6 +1008,7 @@
         setText(els.outBMI, s.bmi);
         setText(els.outMP, s.mpStr || '—');
         setText(els.kpiMP, s.mpStr || '4:14–4:16');
+        setText(els.kpiMPUnit, getUnits()==='imperial' ? 'min/mile' : 'min/km');
 
         setText(els.outCHO, s.choStr);
         setText(els.kpiCHO, s.kpiCho);
@@ -864,6 +1020,7 @@
         setText(els.chipAer,  s.aerStr==='—'  ? 'Aerobic(개인화): —' : `Aerobic(개인화): ${s.aerStr}`);
         setText(els.chipT,    s.tStr==='—'    ? 'T(개인화): —' : `T(개인화): ${s.tStr}`);
         setText(els.chipCV,   s.cvStr==='—'   ? 'CV(개인화): —' : `CV(개인화): ${s.cvStr}`);
+        setText(els.chip10K,  s.mpStr==='—' && s.cvStr==='—' ? '10K(개인화): —' : els.chip10K.textContent); // 유지
 
         if (els.wx.easy){
           setText(els.wx.easy, `+${s.WR.paceAdj.easy}`);
@@ -878,8 +1035,16 @@
           setText(els.wx.session, s.sess);
         }
 
-        setText($('lr-advice-base'), s.lrTxt);
-        setText($('lr-advice-spec'), s.lrTxt);
+        setText($('lr-advice-prep'),  s.lrTxt);
+        setText($('lr-advice-base'),  s.lrTxt);
+        setText($('lr-advice-base2'), s.lrTxt);
+        setText($('lr-advice-spec'),  s.lrTxt);
+        setText($('lr-advice-peak1'), s.lrTxt);
+        setText($('lr-advice-taper1'),s.lrTxt);
+        setText($('lr-advice-recov'), s.lrTxt);
+        setText($('lr-advice-spec2'), s.lrTxt);
+        setText($('lr-advice-taperb'),s.lrTxt);
+        setText($('lr-advice-off'),   s.lrTxt);
 
         setText(els.quick.mp, s.mpStr || '—');
         setText(els.quick.easy, s.easyStr || '—');
