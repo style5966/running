@@ -69,10 +69,11 @@
     .fab{position:fixed;right:16px;bottom:16px;z-index:11;width:48px;height:48px;border-radius:999px;border:1px solid var(--border-primary);background:rgba(15,23,42,.9);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,.35)}
     .fab[hidden]{display:none}
 
-    .tabs{display:flex;gap:8px;overflow:auto;margin:10px 0}
-    .tbtn{padding:10px 12px;border:1px solid var(--border-primary);border-radius:999px;background:transparent;color:#c7d2fe;white-space:nowrap}
+    /* 프리셋 탭: 원형 버튼 잘림 방지 */
+    .tabs{display:flex;gap:8px;overflow-x:auto;overflow-y:visible;margin:10px 0;padding:6px 0}
+    .tbtn{padding:10px 14px;min-height:40px;line-height:20px;border:1px solid var(--border-primary);border-radius:9999px;background:transparent;color:#c7d2fe;white-space:nowrap}
     .tbtn:hover{background:rgba(167,139,250,.12)}
-    .tbtn[aria-pressed="true"]{background:rgba(167,139,250,.14);color:#fff;outline:2px solid var(--color-accent);outline-offset:1px}
+    .tbtn[aria-pressed="true"]{background:rgba(167,139,250,.14);color:#fff;outline:2px solid var(--color-accent);outline-offset:2px}
 
     .simple .adv-only{display:none !important}
 
@@ -96,7 +97,7 @@
       <h3 class="title">도움말(요약)</h3>
       <ul class="muted">
         <li>거리: km·m, 시간: 분·초, 페이스: 분:초/ km 또는 분:초/ mile</li>
-        <li>기록은 10K 또는 하프 하나만 입력해도 됩니다.</li>
+        <li>기록은 5K·10K·하프·마라톤 중 1개만 입력해도 됩니다(우선순위: 마라톤 → 하프 → 10K → 5K).</li>
         <li>날씨·단위 칩은 누르면 즉시 반영됩니다.</li>
         <li>상세 보기: 모든 주간 단계 카드가 펼쳐집니다.</li>
       </ul>
@@ -111,22 +112,31 @@
         <div class="field"><label>몸무게 (kg)<input id="in-weight" type="number" min="35" max="120" step="0.1" inputmode="decimal" /></label></div>
       </div>
 
-      <div class="row">
-        <div class="field" style="flex:1 1 220px">
-          <label>기록 입력(하나만 필요)</label>
-          <div class="row">
-            <input id="in-10k-m" type="number" min="25" max="80" placeholder="10K 분" style="flex:0 0 90px">
-            <span>:</span>
-            <input id="in-10k-s" type="number" min="0" max="59" placeholder="10K 초" style="flex:0 0 90px">
-            <span class="muted">또는</span>
-            <input id="in-hm-h" type="number" min="0" max="3" placeholder="하프 시" style="flex:0 0 80px">
-            <span>:</span>
-            <input id="in-hm-m" type="number" min="0" max="59" placeholder="하프 분" style="flex:0 0 80px">
-            <span>:</span>
-            <input id="in-hm-s" type="number" min="0" max="59" placeholder="하프 초" style="flex:0 0 80px">
-          </div>
-          <div class="muted">예: 10K 40:00 또는 하프 1:28:00</div>
+      <div class="field" style="flex:1 1 220px">
+        <label>기록 입력(하나만 필요)</label>
+        <div class="row" style="margin-bottom:6px">
+          <input id="in-5k-m" type="number" min="12" max="40" placeholder="5K 분" style="flex:0 0 80px">
+          <span>:</span>
+          <input id="in-5k-s" type="number" min="0" max="59" placeholder="5K 초" style="flex:0 0 80px">
+          <span class="muted">또는</span>
+          <input id="in-10k-m" type="number" min="25" max="80" placeholder="10K 분" style="flex:0 0 80px">
+          <span>:</span>
+          <input id="in-10k-s" type="number" min="0" max="59" placeholder="10K 초" style="flex:0 0 80px">
         </div>
+        <div class="row">
+          <input id="in-hm-h" type="number" min="0" max="3" placeholder="하프 시" style="flex:0 0 80px">
+          <span>:</span>
+          <input id="in-hm-m" type="number" min="0" max="59" placeholder="하프 분" style="flex:0 0 80px">
+          <span>:</span>
+          <input id="in-hm-s" type="number" min="0" max="59" placeholder="하프 초" style="flex:0 0 80px">
+          <span class="muted">또는</span>
+          <input id="in-m-h" type="number" min="2" max="7" placeholder="마라톤 시" style="flex:0 0 80px">
+          <span>:</span>
+          <input id="in-m-m" type="number" min="0" max="59" placeholder="마라톤 분" style="flex:0 0 80px">
+          <span>:</span>
+          <input id="in-m-s" type="number" min="0" max="59" placeholder="마라톤 초" style="flex:0 0 80px">
+        </div>
+        <div class="muted">예: 5K 19:30 / 10K 40:00 / 하프 1:28:00 / 마라톤 3:05:00</div>
       </div>
 
       <div class="row">
@@ -194,7 +204,6 @@
       <div id="plan-box" class="muted"></div>
     </section>
 
-    <!-- 상세 주간(모든 단계 카드) -->
     <section id="weekly-advanced" class="card adv-only">
       <h3 class="title">상세 주간(모든 단계)</h3>
       <div class="grid grid--2">
@@ -322,6 +331,55 @@
         <li><strong>MP 블록</strong>: 2×(6–8 km @MP, 세트 사이 2–3 km 조깅) 또는 연속 12–18 km @MP</li>
       </ul>
     </section>
+
+    <!-- 근거(정렬) -->
+    <section class="card">
+      <h3 class="title">근거(학술 문헌, 주제별)</h3>
+      <div class="grid grid--2">
+        <div class="card">
+          <h4 class="title">훈련 강도/분배</h4>
+          <ul class="muted">
+            <li>Seiler S. Training intensity distribution and endurance performance.</li>
+            <li>Stöggl & Sperlich. Polarized vs. threshold training.</li>
+            <li>Training intensity distribution among endurance athletes. (PMC)</li>
+            <li>Training periodization/intensity distribution in elite distance runners. IJSPP 2022;17(6):820.</li>
+            <li>Quantitative Analysis of 12-Week Sub-elite Marathon Plans. (PMC)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4 class="title">영양/수분</h4>
+          <ul class="muted">
+            <li>Thomas DT et al. Nutrition and Athletic Performance.</li>
+            <li>Jeukendrup AE. Multiple transportable carbohydrates.</li>
+            <li>ACSM. Exercise and Fluid Replacement.</li>
+            <li>Carbohydrate periodization & glycogen threshold. (PMC)</li>
+            <li>120 g/h carbohydrates and muscle damage in mountain marathon. (PMC)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4 class="title">회복</h4>
+          <ul class="muted">
+            <li>Bosquet L et al. Effects of tapering on performance.</li>
+            <li>Recovery strategies after training/competition: umbrella review. (PMC)</li>
+            <li>Nutrition and muscle recovery; performance enhancement. (PMC)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4 class="title">멘탈·심리</h4>
+          <ul class="muted">
+            <li>Mental toughness latent profiles in endurance athletes. (PMC)</li>
+            <li>Mental training effects during time trial. (PMC)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4 class="title">기술·장비/환경</h4>
+          <ul class="muted">
+            <li>Technological advances in elite marathon performance. J Appl Physiol.</li>
+            <li>Périard JD et al. Heat acclimation and endurance performance.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
   </div>
 
   <!-- 하단 요약바(상세 모드에서만) -->
@@ -340,7 +398,6 @@
       </div>
     </div>
   </div>
-  <!-- 접었을 때 작은 버튼(FAB) -->
   <button id="fab-showbar" class="fab" hidden title="요약 보기">▲</button>
 
   <script>
@@ -349,7 +406,6 @@
       const set = (el, v) => { if(el && el.textContent!==v) el.textContent = v; };
       const KM_PER_MILE = 1.609344;
 
-      // 모드/도움말/퀵바
       const body = document.body, quickbar=$('quickbar'), fab=$('fab-showbar');
       const btnSimple=$('mode-simple'), btnAdv=$('mode-advanced'), helpBtn=$('help-toggle'), helpPanel=$('help-panel');
       const MODE_KEY='sub3_simple';
@@ -358,7 +414,7 @@
         btnSimple.setAttribute('aria-pressed', String(simple));
         btnAdv.setAttribute('aria-pressed', String(!simple));
         quickbar.setAttribute('aria-hidden', String(simple));
-        fab.hidden = true; // 모드 전환 시 FAB 숨김
+        fab.hidden = true;
       }
       btnSimple.addEventListener('click', ()=>{applyMode(true); try{localStorage.setItem(MODE_KEY,'1')}catch(e){}});
       btnAdv.addEventListener('click', ()=>{applyMode(false);try{localStorage.setItem(MODE_KEY,'0')}catch(e){}});
@@ -373,7 +429,6 @@
         if(on) helpPanel.scrollIntoView({behavior:'smooth', block:'nearest'});
       });
 
-      // 간단 프리셋
       const planBox = $('plan-box');
       const PRESETS = {
         base:`- 월: Easy 10–14 km + 스트라이드<br/>- 화: 언덕 10회 × 60초 또는 CV 5회 × 5분(휴식 2분)<br/>- 수: Aerobic 12–16 km<br/>- 목: 템포 2세트 × 5 km 또는 30–40분<br/>- 금: Easy 8–12 km + S&C 25분<br/>- 토: Easy 10–14 km<br/>- 일: 롱런 24–28 km(후반 4–6 km 점증)`,
@@ -387,7 +442,6 @@
         if(btn) btn.setAttribute('aria-pressed','true');
         planBox.innerHTML = `<div class="muted">${PRESETS[key]}</div>`;
         if(key==='more'){
-          // 상세 모드로 전환하고 상세 섹션으로 스크롤
           document.getElementById('mode-advanced')?.click();
           document.getElementById('weekly-advanced')?.scrollIntoView({behavior:'smooth', block:'start'});
         }
@@ -395,14 +449,16 @@
       document.querySelectorAll('.tbtn').forEach(b=>b.addEventListener('click',()=>selectPreset(b.dataset.preset)));
       selectPreset('base');
 
-      // 칩 바인딩
       const els = {
         sex:$('in-sex'), age:$('in-age'), h:$('in-height'), kg:$('in-weight'),
         wx:$('in-weather'), units:$('in-units'),
         rMode:$('in-riegel-mode'), rExp:$('in-riegel'),
+        k5m:$('in-5k-m'), k5s:$('in-5k-s'),
         k10m:$('in-10k-m'), k10s:$('in-10k-s'),
-        hmH:$('in-hm-h'), hmM:$('in-hm-m'), hmS:$('in-hm-s')
+        hmH:$('in-hm-h'), hmM:$('in-hm-m'), hmS:$('in-hm-s'),
+        mH:$('in-m-h'), mM:$('in-m-m'), mS:$('in-m-s')
       };
+
       document.querySelectorAll('#wx-chips .chip').forEach(ch=>{
         ch.addEventListener('click',()=>{
           document.querySelectorAll('#wx-chips .chip').forEach(x=>x.setAttribute('aria-pressed','false'));
@@ -416,7 +472,6 @@
         });
       });
 
-      // 퀵바 접기/펼치기(FAB)
       $('btn-collapse')?.addEventListener('click', ()=>{
         quickbar.setAttribute('aria-hidden','true');
         if(document.body.classList.contains('simple')) return;
@@ -427,7 +482,6 @@
         $('fab-showbar').hidden = true;
       });
 
-      // 유틸
       function secToPace(sec){
         if(!isFinite(sec)||sec<=0) return '—';
         const useImp = els.units.value==='imperial';
@@ -451,33 +505,47 @@
         hail:{ml:[6,10],na:[300,600],adj:{e:15,a:15,t:25,c:20},lr:[-30,-10],sess:'실내 전환'}
       };
 
-      // 계산
       function calc(){
         const age=parseFloat(els.age.value)||0, masters=age>=40;
         const kg=read(els.kg), h=read(els.h), wx=WX[els.wx.value]||WX.normal;
-        const t10=normMS(els.k10m,els.k10s), tHM=(read(els.hmH)||0)*3600 + normMS(els.hmM,els.hmS);
-        const D10=10, DHM=21.0975, DM=42.195;
+        const t5=normMS(els.k5m,els.k5s), t10=normMS(els.k10m,els.k10s);
+        const tHM=(read(els.hmH)||0)*3600 + normMS(els.hmM,els.hmS);
+        const tM =(read(els.mH)||0)*3600 + normMS(els.mM,els.mS);
+
+        const D5=5, D10=10, DHM=21.0975, DM=42.195;
 
         let p10=0;
         if(t10>0) p10=t10/D10;
         else if(tHM>0) p10=(tHM*Math.pow(D10/DHM,getExp(tHM/DHM)))/D10;
+        else if(t5>0)  p10=(t5 *Math.pow(D10/D5, getExp(t5/D5)))/D10;
+        else if(tM>0)  p10=(tM *Math.pow(D10/DM, 1.06))/D10;
 
         let mp=0;
-        if(tHM>0) mp=(tHM*Math.pow(DM/DHM,getExp(p10||300)))/DM;
+        if(tM>0)  mp=tM/DM;
+        else if(tHM>0) mp=(tHM*Math.pow(DM/DHM,getExp(p10||300)))/DM;
         else if(t10>0) mp=(t10*Math.pow(DM/D10,getExp(p10||300)))/DM;
+        else if(t5>0)  mp=(t5 *Math.pow(DM/D5,  getExp(p10||300)))/DM;
+
+        let pHM=0;
+        if(tHM>0) pHM=tHM/DHM;
+        else if(t10>0) pHM=(t10*Math.pow(DHM/D10,getExp(p10)))/DHM;
+        else if(t5>0)  pHM=(t5 *Math.pow(DHM/D5, getExp(t5/D5)))/DHM;
+        else if(tM>0)  pHM=(tM *Math.pow(DHM/DM, 1.06))/DHM;
+
+        let p5=0;
+        if(t5>0)  p5=t5/D5;
+        else if(t10>0) p5=(t10*Math.pow(D5/D10,getExp(p10)))/D5;
+        else if(tHM>0) p5=(tHM*Math.pow(D5/DHM,getExp(tHM/DHM)))/D5;
+        else if(tM>0)  p5=(tM *Math.pow(D5/DM, 1.06))/D5;
 
         const adjM={e:masters?5:0,a:masters?5:0,t:masters?5:0,c:masters?3:0}, A=wx.adj;
         const easy = mp? [mp+60+adjM.e+A.e, mp+90+adjM.e+A.e] : null;
         const aer  = mp? [mp+30+adjM.a+A.a, mp+60+adjM.a+A.a] : null;
-
-        let pHM= tHM? tHM/DHM : (p10? (p10*D10)*Math.pow(DHM/D10,getExp(p10))/DHM : 0);
-        let p5 =  p10? (p10*D10)*Math.pow(5/D10,getExp(p10))/5 : (tHM? (tHM)*Math.pow(5/DHM,getExp(pHM))/5 : 0);
-
         const T = (pHM||p10) ? [ (pHM||p10+10)+0 + A.t, (pHM||p10+10)+10 + adjM.t + A.t ] : null;
         const CV= (p5||p10)  ? [ (p5||p10)+8 + A.c, (p5||p10)+12 + adjM.c + A.c ] : null;
 
         const cho = kg? [clamp(kg*0.8,60,120), clamp(kg*1.0,60,120)] : null;
-        const ml=wx.ml, hydr = kg? [clamp(kg*ml[0]/1000,0.3,1.2), clamp(kg*ml[1]/1000,0.3,1.2)] : null;
+        const hydr = kg? [clamp(kg*wx.ml[0]/1000,0.3,1.2), clamp(kg*wx.ml[1]/1000,0.3,1.2)] : null;
         const na = wx.na;
 
         set($('mp'), mp? secToPace(mp) : '—');
@@ -497,17 +565,15 @@
         set($('q-fuel'), fuelStr);
         set($('q-sess'), wx.sess);
 
-        // 상세 주간 롱런 배지 동기화
         const lrTxt = wx.lr[0]===wx.lr[1] ? `${wx.lr[0]}%` : `${wx.lr[0]}%~${wx.lr[1]}%`;
         document.querySelectorAll('.lr-badge').forEach(b=>b.textContent=lrTxt);
       }
 
       function bindInputs(){
-        ['in-sex','in-age','in-height','in-weight','in-weather','in-units','in-riegel-mode','in-riegel','in-10k-m','in-10k-s','in-hm-h','in-hm-m','in-hm-s']
+        ['in-sex','in-age','in-height','in-weight','in-weather','in-units','in-riegel-mode','in-riegel','in-5k-m','in-5k-s','in-10k-m','in-10k-s','in-hm-h','in-hm-m','in-hm-s','in-m-h','in-m-m','in-m-s']
           .forEach(id=>$(id)?.addEventListener('input',calc));
       }
 
-      // 복사/공유
       $('btn-copy')?.addEventListener('click', async ()=>{
         const txt = `MP: ${$('mp').textContent}\nEasy: ${$('easy').textContent}\nT: ${$('t').textContent}\nCV: ${$('cv').textContent}\n연료: ${$('fuel').textContent}\n오늘: ${$('today-sess').textContent}`;
         try{await navigator.clipboard.writeText(txt);}catch(e){prompt('복사하세요',txt);}
@@ -516,13 +582,14 @@
         const data = {
           sex: $('in-sex').value, age:$('in-age').value, h:$('in-height').value, kg:$('in-weight').value, wx:$('in-weather').value,
           units:$('in-units').value, rm:$('in-riegel-mode').value, re:$('in-riegel').value,
-          k10m:$('in-10k-m').value, k10s:$('in-10k-s').value, hmH:$('in-hm-h').value, hmM:$('in-hm-m').value, hmS:$('in-hm-s').value
+          k5m:$('in-5k-m').value, k5s:$('in-5k-s').value, k10m:$('in-10k-m').value, k10s:$('in-10k-s').value,
+          hmH:$('in-hm-h').value, hmM:$('in-hm-m').value, hmS:$('in-hm-s').value,
+          mH:$('in-m-h').value, mM:$('in-m-m').value, mS:$('in-m-s').value
         };
         const url = `${location.origin}${location.pathname}?s=${btoa(encodeURIComponent(JSON.stringify(data)))}`;
         try{await navigator.clipboard.writeText(url);}catch(e){prompt('링크를 복사하세요',url);}
       });
 
-      // 공유 링크 복원
       (function hydrateFromQS(){
         const qs = new URLSearchParams(location.search); const raw = qs.get('s'); if(!raw) return;
         try{
@@ -531,7 +598,6 @@
             const input = document.querySelector(`#in-${k}`) || document.getElementById(`in-${k}`);
             if(input!=null) input.value = v;
           });
-          // 칩 동기화
           document.querySelectorAll('#wx-chips .chip').forEach(x=>x.setAttribute('aria-pressed','false'));
           const wxBtn = document.querySelector(`#wx-chips .chip[data-wx="${$('in-weather').value}"]`); wxBtn?.setAttribute('aria-pressed','true');
           document.querySelectorAll('#unit-chips .chip').forEach(x=>x.setAttribute('aria-pressed','false'));
@@ -539,7 +605,16 @@
         }catch(e){}
       })();
 
-      // 초기
+      $('btn-collapse')?.addEventListener('click', ()=>{
+        quickbar.setAttribute('aria-hidden','true');
+        if(document.body.classList.contains('simple')) return;
+        $('fab-showbar').hidden = false;
+      });
+      $('fab-showbar')?.addEventListener('click', ()=>{
+        quickbar.setAttribute('aria-hidden','false');
+        $('fab-showbar').hidden = true;
+      });
+
       bindInputs(); calc();
     });
   </script>
