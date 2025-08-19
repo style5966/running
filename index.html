@@ -69,16 +69,19 @@
     .fab{position:fixed;right:16px;bottom:16px;z-index:11;width:48px;height:48px;border-radius:999px;border:1px solid var(--border-primary);background:rgba(15,23,42,.9);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,.35)}
     .fab[hidden]{display:none}
 
-    /* 프리셋 탭: 원형 버튼 잘림 방지 */
     .tabs{display:flex;gap:8px;overflow-x:auto;overflow-y:visible;margin:10px 0;padding:6px 0}
     .tbtn{padding:10px 14px;min-height:40px;line-height:20px;border:1px solid var(--border-primary);border-radius:9999px;background:transparent;color:#c7d2fe;white-space:nowrap}
     .tbtn:hover{background:rgba(167,139,250,.12)}
     .tbtn[aria-pressed="true"]{background:rgba(167,139,250,.14);color:#fff;outline:2px solid var(--color-accent);outline-offset:2px}
 
     .simple .adv-only{display:none !important}
+    .hidden-input{display:none !important}
 
     .help-panel{display:none}
     .help-panel.is-open{display:block;border-color:rgba(167,139,250,.5)}
+
+    .evidence-panel{display:none}
+    .evidence-panel.is-open{display:block;border-color:rgba(167,139,250,.5)}
   </style>
 </head>
 <body class="simple">
@@ -90,6 +93,7 @@
         <button id="mode-simple" class="btn" aria-pressed="true">간단 보기</button>
         <button id="mode-advanced" class="btn" aria-pressed="false">상세 보기</button>
         <button id="help-toggle" class="btn" aria-pressed="false" aria-controls="help-panel" aria-expanded="false">도움말</button>
+        <button id="evidence-toggle" class="btn" aria-pressed="false" aria-controls="evidence-panel" aria-expanded="false">근거</button>
       </div>
     </header>
 
@@ -97,10 +101,58 @@
       <h3 class="title">도움말(요약)</h3>
       <ul class="muted">
         <li>거리: km·m, 시간: 분·초, 페이스: 분:초/ km 또는 분:초/ mile</li>
-        <li>기록은 5K·10K·하프·마라톤 중 1개만 입력해도 됩니다(우선순위: 마라톤 → 하프 → 10K → 5K).</li>
+        <li>기록은 5K·10K·하프·마라톤 중 1개만 입력(우선: 마라톤 → 하프 → 10K → 5K)</li>
         <li>날씨·단위 칩은 누르면 즉시 반영됩니다.</li>
-        <li>상세 보기: 모든 주간 단계 카드가 펼쳐집니다.</li>
+        <li>상세 보기: 모든 주간 단계 카드를 토글로 열고 닫을 수 있습니다.</li>
       </ul>
+    </section>
+
+    <section id="evidence-panel" class="card evidence-panel" aria-hidden="true">
+      <h3 class="title">근거(학술 문헌, 주제별)</h3>
+      <div class="grid grid--2">
+        <div class="card">
+          <h4 class="title">훈련 강도/분배</h4>
+          <ul class="muted">
+            <li>Seiler S. Training intensity distribution and endurance performance.</li>
+            <li>Stöggl & Sperlich. Polarized vs. threshold training.</li>
+            <li>Training intensity distribution among endurance athletes. (PMC)</li>
+            <li>Training periodization/intensity distribution in elite distance runners. IJSPP 2022;17(6):820.</li>
+            <li>Quantitative Analysis of 12-Week Sub-elite Marathon Plans. (PMC)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4 class="title">영양/수분</h4>
+          <ul class="muted">
+            <li>Thomas DT et al. Nutrition and Athletic Performance.</li>
+            <li>Jeukendrup AE. Multiple transportable carbohydrates.</li>
+            <li>ACSM. Exercise and Fluid Replacement.</li>
+            <li>Carbohydrate periodization & glycogen threshold. (PMC)</li>
+            <li>120 g/h carbs & muscle damage in mountain marathon. (PMC)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4 class="title">회복</h4>
+          <ul class="muted">
+            <li>Bosquet L et al. Effects of tapering on performance.</li>
+            <li>Recovery strategies after training/competition: umbrella review. (PMC)</li>
+            <li>Nutrition and muscle recovery; performance enhancement. (PMC)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4 class="title">멘탈·심리</h4>
+          <ul class="muted">
+            <li>Mental toughness latent profiles in endurance athletes. (PMC)</li>
+            <li>Mental training effects during time trial. (PMC)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4 class="title">기술·장비/환경</h4>
+          <ul class="muted">
+            <li>Technological advances in elite marathon performance. J Appl Physiol.</li>
+            <li>Périard JD et al. Heat acclimation and endurance performance.</li>
+          </ul>
+        </div>
+      </div>
     </section>
 
     <section class="card">
@@ -151,7 +203,7 @@
             <button class="chip adv-only" data-wx="snow">눈·결빙</button>
             <button class="chip adv-only" data-wx="hail">우박·악천후</button>
           </div>
-          <select id="in-weather" class="adv-only" style="margin-top:6px">
+          <select id="in-weather" class="hidden-input" aria-hidden="true" tabindex="-1">
             <option value="normal" selected>보통</option><option value="heat">더위</option><option value="cold">추위</option>
             <option value="rain">비</option><option value="wind">강풍</option><option value="snow">눈·결빙</option><option value="hail">우박·악천후</option>
           </select>
@@ -162,7 +214,7 @@
             <button class="chip" data-unit="metric" aria-pressed="true">km · 분:초/ km</button>
             <button class="chip" data-unit="imperial">mile · 분:초/ mile</button>
           </div>
-          <select id="in-units" class="adv-only" style="margin-top:6px">
+          <select id="in-units" class="hidden-input" aria-hidden="true" tabindex="-1">
             <option value="metric" selected>km · 분:초/ km</option>
             <option value="imperial">mile · 분:초/ mile</option>
           </select>
@@ -204,9 +256,13 @@
       <div id="plan-box" class="muted"></div>
     </section>
 
-    <section id="weekly-advanced" class="card adv-only">
-      <h3 class="title">상세 주간(모든 단계)</h3>
-      <div class="grid grid--2">
+    <!-- 상세 주간(모든 단계) 토글 섹션 -->
+    <section id="weekly-advanced" class="card adv-only" hidden aria-hidden="true">
+      <div class="row" style="justify-content:space-between;align-items:center">
+        <h3 class="title" style="margin:0">상세 주간(모든 단계)</h3>
+        <button id="toggle-weekly-adv" class="btn" aria-pressed="true">숨기기</button>
+      </div>
+      <div class="grid grid--2" id="weekly-adv-cards">
         <div class="card"><h4 class="title">프렙 주</h4>
           <ul class="muted">
             <li>월: Easy 6–10 km + 모빌리티 10분</li>
@@ -331,58 +387,8 @@
         <li><strong>MP 블록</strong>: 2×(6–8 km @MP, 세트 사이 2–3 km 조깅) 또는 연속 12–18 km @MP</li>
       </ul>
     </section>
-
-    <!-- 근거(정렬) -->
-    <section class="card">
-      <h3 class="title">근거(학술 문헌, 주제별)</h3>
-      <div class="grid grid--2">
-        <div class="card">
-          <h4 class="title">훈련 강도/분배</h4>
-          <ul class="muted">
-            <li>Seiler S. Training intensity distribution and endurance performance.</li>
-            <li>Stöggl & Sperlich. Polarized vs. threshold training.</li>
-            <li>Training intensity distribution among endurance athletes. (PMC)</li>
-            <li>Training periodization/intensity distribution in elite distance runners. IJSPP 2022;17(6):820.</li>
-            <li>Quantitative Analysis of 12-Week Sub-elite Marathon Plans. (PMC)</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h4 class="title">영양/수분</h4>
-          <ul class="muted">
-            <li>Thomas DT et al. Nutrition and Athletic Performance.</li>
-            <li>Jeukendrup AE. Multiple transportable carbohydrates.</li>
-            <li>ACSM. Exercise and Fluid Replacement.</li>
-            <li>Carbohydrate periodization & glycogen threshold. (PMC)</li>
-            <li>120 g/h carbohydrates and muscle damage in mountain marathon. (PMC)</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h4 class="title">회복</h4>
-          <ul class="muted">
-            <li>Bosquet L et al. Effects of tapering on performance.</li>
-            <li>Recovery strategies after training/competition: umbrella review. (PMC)</li>
-            <li>Nutrition and muscle recovery; performance enhancement. (PMC)</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h4 class="title">멘탈·심리</h4>
-          <ul class="muted">
-            <li>Mental toughness latent profiles in endurance athletes. (PMC)</li>
-            <li>Mental training effects during time trial. (PMC)</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h4 class="title">기술·장비/환경</h4>
-          <ul class="muted">
-            <li>Technological advances in elite marathon performance. J Appl Physiol.</li>
-            <li>Périard JD et al. Heat acclimation and endurance performance.</li>
-          </ul>
-        </div>
-      </div>
-    </section>
   </div>
 
-  <!-- 하단 요약바(상세 모드에서만) -->
   <div class="helper" id="quickbar" aria-hidden="true">
     <div class="helper__in">
       <div class="pair"><strong>MP</strong><span id="q-mp">—</span></div>
@@ -407,8 +413,11 @@
       const KM_PER_MILE = 1.609344;
 
       const body = document.body, quickbar=$('quickbar'), fab=$('fab-showbar');
-      const btnSimple=$('mode-simple'), btnAdv=$('mode-advanced'), helpBtn=$('help-toggle'), helpPanel=$('help-panel');
+      const btnSimple=$('mode-simple'), btnAdv=$('mode-advanced');
+      const helpBtn=$('help-toggle'), helpPanel=$('help-panel');
+      const evidBtn=$('evidence-toggle'), evidPanel=$('evidence-panel');
       const MODE_KEY='sub3_simple';
+
       function applyMode(simple=true){
         body.classList.toggle('simple', simple);
         btnSimple.setAttribute('aria-pressed', String(simple));
@@ -420,35 +429,58 @@
       btnAdv.addEventListener('click', ()=>{applyMode(false);try{localStorage.setItem(MODE_KEY,'0')}catch(e){}});
       (function initMode(){const s=localStorage.getItem(MODE_KEY);applyMode(s!=='0');})();
 
-      helpBtn.addEventListener('click', ()=>{
-        const on = helpBtn.getAttribute('aria-pressed')!=='true';
-        helpBtn.setAttribute('aria-pressed', String(on));
-        helpBtn.setAttribute('aria-expanded', String(on));
-        helpPanel.classList.toggle('is-open', on);
-        helpPanel.setAttribute('aria-hidden', String(!on));
-        if(on) helpPanel.scrollIntoView({behavior:'smooth', block:'nearest'});
-      });
+      function togglePanel(btn, panel){
+        const on = btn.getAttribute('aria-pressed')!=='true';
+        btn.setAttribute('aria-pressed', String(on));
+        btn.setAttribute('aria-expanded', String(on));
+        panel.classList.toggle('is-open', on);
+        panel.setAttribute('aria-hidden', String(!on));
+        if(on) panel.scrollIntoView({behavior:'smooth', block:'nearest'});
+      }
+      helpBtn.addEventListener('click', ()=>togglePanel(helpBtn, helpPanel));
+      evidBtn.addEventListener('click', ()=>togglePanel(evidBtn, evidPanel));
 
-      const planBox = $('plan-box');
+      // 간단 프리셋(‘상세(모든 단계)’ 토글 포함)
+      const planBox = $('plan-box'), weeklyAdv = $('weekly-advanced'), weeklyToggle = $('toggle-weekly-adv');
       const PRESETS = {
         base:`- 월: Easy 10–14 km + 스트라이드<br/>- 화: 언덕 10회 × 60초 또는 CV 5회 × 5분(휴식 2분)<br/>- 수: Aerobic 12–16 km<br/>- 목: 템포 2세트 × 5 km 또는 30–40분<br/>- 금: Easy 8–12 km + S&C 25분<br/>- 토: Easy 10–14 km<br/>- 일: 롱런 24–28 km(후반 4–6 km 점증)`,
         spec:`- 화: 10회 × 1 km @10K(휴식 60–75초)<br/>- 목: MP 블록 2세트 × (6–8 km) 또는 MP 14–18 km<br/>- 일: 롱런 28–32 km(후반 8–12 km @MP~MP+10초/ km)`,
         taper:`- 화: 6회 × 1 km(가볍게) · 목: MP 12–16 km · 일: 롱런 18–24 km(편한 페이스)`,
-        more:`상세 보기 모드에서 아래 ‘상세 주간(모든 단계)’ 카드가 보입니다.`
+        more:`상세(모든 단계) 카드를 토글로 표시/숨김합니다.`
       };
+      function openWeeklyAdvanced(){
+        weeklyAdv.hidden = false;
+        weeklyAdv.setAttribute('aria-hidden','false');
+        weeklyToggle.setAttribute('aria-pressed','true');
+        weeklyToggle.textContent = '숨기기';
+        weeklyAdv.scrollIntoView({behavior:'smooth', block:'start'});
+      }
+      function closeWeeklyAdvanced(){
+        weeklyAdv.hidden = true;
+        weeklyAdv.setAttribute('aria-hidden','true');
+        weeklyToggle.setAttribute('aria-pressed','false');
+        weeklyToggle.textContent = '표시하기';
+      }
+      weeklyToggle.addEventListener('click', ()=>{
+        const on = weeklyToggle.getAttribute('aria-pressed')!=='true';
+        if(on) openWeeklyAdvanced(); else closeWeeklyAdvanced();
+      });
       function selectPreset(key){
         document.querySelectorAll('.tbtn').forEach(b=>b.setAttribute('aria-pressed','false'));
         const btn=[...document.querySelectorAll('.tbtn')].find(b=>b.dataset.preset===key);
         if(btn) btn.setAttribute('aria-pressed','true');
         planBox.innerHTML = `<div class="muted">${PRESETS[key]}</div>`;
         if(key==='more'){
+          // 상세 모드로 전환 후 토글
           document.getElementById('mode-advanced')?.click();
-          document.getElementById('weekly-advanced')?.scrollIntoView({behavior:'smooth', block:'start'});
+          const isHidden = weeklyAdv.hasAttribute('hidden');
+          if(isHidden) openWeeklyAdvanced(); else closeWeeklyAdvanced();
         }
       }
       document.querySelectorAll('.tbtn').forEach(b=>b.addEventListener('click',()=>selectPreset(b.dataset.preset)));
       selectPreset('base');
 
+      // 폼/칩
       const els = {
         sex:$('in-sex'), age:$('in-age'), h:$('in-height'), kg:$('in-weight'),
         wx:$('in-weather'), units:$('in-units'),
@@ -458,7 +490,6 @@
         hmH:$('in-hm-h'), hmM:$('in-hm-m'), hmS:$('in-hm-s'),
         mH:$('in-m-h'), mM:$('in-m-m'), mS:$('in-m-s')
       };
-
       document.querySelectorAll('#wx-chips .chip').forEach(ch=>{
         ch.addEventListener('click',()=>{
           document.querySelectorAll('#wx-chips .chip').forEach(x=>x.setAttribute('aria-pressed','false'));
@@ -472,6 +503,7 @@
         });
       });
 
+      // 퀵바 접기/펼치기(FAB)
       $('btn-collapse')?.addEventListener('click', ()=>{
         quickbar.setAttribute('aria-hidden','true');
         if(document.body.classList.contains('simple')) return;
@@ -482,6 +514,7 @@
         $('fab-showbar').hidden = true;
       });
 
+      // 유틸
       function secToPace(sec){
         if(!isFinite(sec)||sec<=0) return '—';
         const useImp = els.units.value==='imperial';
@@ -574,6 +607,7 @@
           .forEach(id=>$(id)?.addEventListener('input',calc));
       }
 
+      // 복사/공유
       $('btn-copy')?.addEventListener('click', async ()=>{
         const txt = `MP: ${$('mp').textContent}\nEasy: ${$('easy').textContent}\nT: ${$('t').textContent}\nCV: ${$('cv').textContent}\n연료: ${$('fuel').textContent}\n오늘: ${$('today-sess').textContent}`;
         try{await navigator.clipboard.writeText(txt);}catch(e){prompt('복사하세요',txt);}
@@ -590,6 +624,7 @@
         try{await navigator.clipboard.writeText(url);}catch(e){prompt('링크를 복사하세요',url);}
       });
 
+      // 공유 링크 복원
       (function hydrateFromQS(){
         const qs = new URLSearchParams(location.search); const raw = qs.get('s'); if(!raw) return;
         try{
@@ -605,6 +640,7 @@
         }catch(e){}
       })();
 
+      // 퀵바 접기/펼치기
       $('btn-collapse')?.addEventListener('click', ()=>{
         quickbar.setAttribute('aria-hidden','true');
         if(document.body.classList.contains('simple')) return;
