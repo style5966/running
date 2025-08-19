@@ -149,7 +149,7 @@
       <h1 class="hero__title">Sub-3 통합 프로그램 v4.0</h1>
       <p class="hero__subtitle">개인화 · 과학적 근거 · 리스크 관리 · 레이스 실행까지 한 화면에</p>
       <div class="hero__tags">
-        <span class="hero__tag"><i>🎯</i> 목표 MP 4:14–4:16/km</span>
+        <span class="hero__tag"><i>🎯</i> 목표 MP 4:14–4:16/ km</span>
         <span class="hero__tag"><i>📆</i> 52주(2피크 가능)</span>
         <span class="hero__tag"><i>🧪</i> 근거 기반</span>
         <span class="hero__tag"><i>🧭</i> 의사결정 트리</span>
@@ -163,7 +163,7 @@
         <button class="tabs__button" role="tab" aria-selected="false" aria-controls="panel-personalize" id="tab-personalize" tabindex="-1">개인화</button>
         <button class="tabs__button" role="tab" aria-selected="false" aria-controls="panel-weather" id="tab-weather" tabindex="-1">날씨</button>
         <button class="tabs__button" role="tab" aria-selected="false" aria-controls="panel-tests" id="tab-tests" tabindex="-1">테스트</button>
-        <button class="tabs__button" role="tab" aria-selected="false" aria-controls="panel-glossary" id="tab-glossary" tabindex="-1">용어집</button>
+        <button class="tabs__button" role="tab" aria-selected="false" aria-controls="panel-guide" id="tab-guide" tabindex="-1">가이드</button>
         <button class="tabs__button" role="tab" aria-selected="false" aria-controls="panel-macro" id="tab-macro" tabindex="-1">52주</button>
         <button class="tabs__button" role="tab" aria-selected="false" aria-controls="panel-weekly" id="tab-weekly" tabindex="-1">주간</button>
         <button class="tabs__button" role="tab" aria-selected="false" aria-controls="panel-guard" id="tab-guard" tabindex="-1">튜닝</button>
@@ -185,19 +185,18 @@
             <div class="kpi-card">
               <div>
                 <div class="kpi-card__value"><span id="kpi-mp">4:14–4:16</span></div>
-                <div class="kpi-card__label">MP (<span id="kpi-mp-unit">min/km</span>)</div>
+                <div class="kpi-card__label">MP (<span id="kpi-mp-unit">분:초/ km</span>)</div>
               </div>
             </div>
-            <div class="kpi-card"><div><div class="kpi-card__value">75–110 km</div><div class="kpi-card__label">주간 피크 볼륨(레벨별)</div></div></div>
+            <div class="kpi-card"><div><div class="kpi-card__value">75–110 km</div><div class="kpi-card__label">주간 피크 볼륨</div></div></div>
             <div class="kpi-card"><div><div class="kpi-card__value"><span id="kpi-cho">60–90(120)</span> g/h</div><div class="kpi-card__label">CHO 섭취(>90분)</div></div></div>
             <div class="kpi-card"><div><div class="kpi-card__value">−41~60%</div><div class="kpi-card__label">테이퍼 볼륨 감량</div></div><div class="kpi-card__ring" style="--p:55" aria-hidden="true"></div></div>
           </div>
           <details class="help" style="margin-top:12px">
             <summary>도움말</summary>
             <ul class="text-small text-muted" style="margin-top:8px">
-              <li><strong>MP</strong>: 마라톤에서 1 km(또는 1 mile)마다 목표로 삼는 분:초.</li>
-              <li><strong>CHO g/h</strong>: 시간당 탄수화물 섭취량. 장거리·고강도일수록 상단 권장.</li>
-              <li><strong>즉시 갱신</strong>: 개인화/날씨/단위를 바꾸면 수치가 즉시 반영됩니다.</li>
+              <li>페이스는 항상 <strong>분:초/ km</strong> 또는 <strong>분:초/ mile</strong>로 표시됩니다.</li>
+              <li>거리 단위는 <strong>km·m</strong>, 시간 단위는 <strong>분·초</strong>로 표기합니다.</li>
             </ul>
           </details>
         </div>
@@ -209,17 +208,17 @@
           <div class="grid grid--3-cols">
             <div>
               <h3 class="card__subtitle">기본</h3>
-              <span class="chip">Easy: MP +60~90s</span>
-              <span class="chip">Aerobic: MP +30~60s</span>
-              <span class="chip">Strides: 6–10×80–120m</span>
+              <span class="chip">Easy: MP +60~90초/ km</span>
+              <span class="chip">Aerobic: MP +30~60초/ km</span>
+              <span class="chip">Strides: 6–10회 × 80–120 m</span>
               <span class="chip" id="chip-easy">Easy(개인화): —</span>
               <span class="chip" id="chip-aerobic">Aerobic(개인화): —</span>
             </div>
             <div>
               <h3 class="card__subtitle">품질</h3>
-              <span class="chip">T: HM pace ±0–10s 또는 20–40′</span>
+              <span class="chip">T: 하프마라톤 페이스 ±0–10초/ km 또는 20–40분</span>
               <span class="chip">10K pace: 최근 10K 기준</span>
-              <span class="chip">CV: 5K pace +8–12s</span>
+              <span class="chip">CV: 5K 페이스 +8–12초/ km</span>
               <span class="chip" id="chip-t">T(개인화): —</span>
               <span class="chip" id="chip-10k">10K(개인화): —</span>
               <span class="chip" id="chip-cv">CV(개인화): —</span>
@@ -227,18 +226,10 @@
             <div>
               <h3 class="card__subtitle">롱런</h3>
               <span class="chip">Prog LR: 후반 6–12 km 점증</span>
-              <span class="chip">MP Blocks: 2×(5–8 km @MP)</span>
+              <span class="chip">MP Blocks: 2세트 × (6–8 km @MP)</span>
               <span class="chip">상한: 32–34 km</span>
             </div>
           </div>
-          <details class="help" style="margin-top:12px">
-            <summary>도움말</summary>
-            <ul class="text-small text-muted" style="margin-top:8px">
-              <li><strong>Easy/Aerobic</strong>: 대화 가능한 강도. MP에 초/킬로(또는 초/마일)를 더해 느리게.</li>
-              <li><strong>T(템포)</strong>: 젖산역치 근처. 20–40분 유지 가능한 ‘약간 힘듦’.</li>
-              <li><strong>CV</strong>: 5K 페이스보다 약간 느리게, 인터벌로 수행.</li>
-            </ul>
-          </details>
         </div>
       </section>
 
@@ -276,8 +267,8 @@
               </label>
               <label class="field">단위
                 <select id="in-units" aria-label="표시 단위">
-                  <option value="metric">km · 분/킬로</option>
-                  <option value="imperial">mile · 분/마일</option>
+                  <option value="metric">km · 분:초/ km</option>
+                  <option value="imperial">mile · 분:초/ mile</option>
                 </select>
               </label>
               <label class="field">리겔 모드
@@ -345,11 +336,10 @@
           <details class="help" style="margin-top:12px">
             <summary>도움말</summary>
             <ul class="text-small text-muted" style="margin-top:8px">
-              <li><strong>계산식</strong>: 마라톤 예측시간 = 입력기록 × (42.195 / 입력거리)<sup>exp</sup> → 1km 페이스. exp는 자동/수동 선택.</li>
-              <li><strong>CHO</strong>: 0.8–1.0 g × 체중(kg)/h, 최소 60 g/h, 최대 120 g/h.</li>
-              <li><strong>수분</strong>: 보통 6–10, 더위 8–12 mL × 체중(kg)/h → L/h로 표기(상한 1.2 L/h).</li>
-              <li><strong>Na</strong>: 보통 300–600 mg/h, 더위 600–1000 mg/h.</li>
-              <li><strong>마스터스(≥40세)</strong>: 상단 보수(+3~5 s/km) 자동 적용.</li>
+              <li>마라톤 예측시간 = 입력기록 × (42.195 / 입력거리)<sup>exp</sup> → 1 km 페이스(분:초/ km). exp는 자동/수동 선택.</li>
+              <li>CHO: 0.8–1.0 g × 체중(kg)/h(최소 60 g/h, 최대 120 g/h).</li>
+              <li>수분: 보통 6–10, 더위 8–12 mL × 체중(kg)/h → L/h(상한 1.2 L/h).</li>
+              <li>Na: 보통 300–600 mg/h, 더위 600–1000 mg/h.</li>
             </ul>
           </details>
         </div>
@@ -360,7 +350,7 @@
           <h2 class="card__title">날씨별 대응 가이드</h2>
           <div class="grid grid--3-cols">
             <div>
-              <h3 class="card__subtitle">페이스 보정(+s/km)</h3>
+              <h3 class="card__subtitle">페이스 보정(+초/ km)</h3>
               <div class="text-small">Easy <strong id="wx-easy">+0</strong>, Aerobic <strong id="wx-aer">+0</strong>, T <strong id="wx-t">+0</strong>, CV <strong id="wx-cv">+0</strong></div>
             </div>
             <div>
@@ -383,34 +373,54 @@
       <section id="panel-tests" class="tab-panel" role="tabpanel" aria-labelledby="tab-tests" hidden data-print="1">
         <div class="card">
           <h2 class="card__title">테스트(입력 최신화 일정)</h2>
-          <ul>
-            <li>W8: 5K 타임 트라이얼</li>
-            <li>W12: 10K 레이스/테스트</li>
-            <li>W18±2: 하프마라톤 B-레이스</li>
-            <li>W28: (옵션) 5K 재측정</li>
-            <li>W30: (옵션) 8–10K 템포/레이스</li>
-            <li>W32: 마라톤 A 레이스</li>
-          </ul>
-          <p class="text-small text-muted">테스트 후 <a href="#panel-personalize">개인화</a> 기록을 갱신하면 모든 수치가 즉시 업데이트됩니다.</p>
+        <ul>
+          <li>W8: 5K 타임 트라이얼</li>
+          <li>W12: 10K 레이스/테스트</li>
+          <li>W18±2: 하프마라톤 B-레이스</li>
+          <li>W28: (옵션) 5K 재측정</li>
+          <li>W30: (옵션) 8–10K 템포/레이스</li>
+          <li>W32: 마라톤 A 레이스</li>
+        </ul>
+        <p class="text-small text-muted">테스트 후 <a href="#panel-personalize">개인화</a>에서 기록을 갱신하면 모든 강도/영양이 즉시 업데이트됩니다.</p>
         </div>
       </section>
 
-      <section id="panel-glossary" class="tab-panel" role="tabpanel" aria-labelledby="tab-glossary" hidden>
+      <section id="panel-guide" class="tab-panel" role="tabpanel" aria-labelledby="tab-guide" hidden data-print="1">
         <div class="card">
-          <h2 class="card__title">용어집(쉽게 보기)</h2>
-          <dl class="text-small">
-            <dt><strong>MP</strong></dt><dd>마라톤 목표 페이스(분:초/킬로 또는 분:초/마일).</dd>
-            <dt><strong>Easy</strong></dt><dd>편안한 달리기. MP +60~90초.</dd>
-            <dt><strong>Aerobic</strong></dt><dd>조금 더 빠른 기본 달리기. MP +30~60초.</dd>
-            <dt><strong>T(템포)</strong></dt><dd>젖산역치 근처. 20–40분 지속 가능한 ‘약간 힘듦’.</dd>
-            <dt><strong>CV</strong></dt><dd>임계속도. 5K 페이스보다 약간 느리게 인터벌.</dd>
-            <dt><strong>Strides</strong></dt><dd>80–120m 짧고 빠르게 6–10회, 자세/리듬 개선.</dd>
-            <dt><strong>CHO g/h</strong></dt><dd>시간당 탄수화물 섭취량.</dd>
-            <dt><strong>수분 L/h</strong></dt><dd>시간당 물 섭취량. 날씨·체중 조절.</dd>
-            <dt><strong>Na mg/h</strong></dt><dd>시간당 나트륨 섭취량.</dd>
-            <dt><strong>Riegel</strong></dt><dd>다른 거리 기록으로 마라톤 시간 예측 지수.</dd>
-            <dt><strong>LR</strong></dt><dd>롱런(Long Run). 주간 최장 거리.</dd>
-          </dl>
+          <h2 class="card__title">표기 규칙</h2>
+          <ul class="text-small">
+            <li><strong>거리</strong>: km·m (예: 10–14 km, 80–120 m)</li>
+            <li><strong>시간</strong>: 분·초 (예: 20–40분, 60–75초)</li>
+            <li><strong>페이스</strong>: 분:초/ km 또는 분:초/ mile</li>
+            <li><strong>반복</strong>: 회 × 거리/시간(휴식 …) (예: 10회 × 1 km(휴식 60–75초))</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h2 class="card__title">세션별 정의 + 바로 실행</h2>
+          <ul>
+            <li><strong>언덕 스프린트</strong>: 파워·힘줄 강화(짧고 세게) — 6–10회 × 8–12초, 경사 6–10%, 워크백 완전회복</li>
+            <li><strong>스트라이드</strong>: 주법·리듬(부드럽게 빠르게) — 6–10회 × 80–120 m, 회당 20–30초 조깅</li>
+            <li><strong>LT 입문</strong>: 역치 적응 — 3세트 × 8분(세트 사이 2분) 또는 4세트 × 6분(세트 사이 90초), 하프 페이스 ±0–10초/ km</li>
+            <li><strong>템포(지속)</strong>: 역치 강화 — 20–40분, 하프 페이스 ±0–10초/ km</li>
+            <li><strong>템포(블록)</strong>: 2세트 × 20분(세트 사이 3분) 또는 3세트 × 12분(세트 사이 2분)</li>
+            <li><strong>CV</strong>: 산소운반·경제성 — 6–8회 × 1 km(휴식 60–75초) 또는 5–6회 × 4분(휴식 2분), 5K +8–12초/ km</li>
+            <li><strong>10K 인터벌</strong>: 레이스 속도 — 8–10회 × 1 km(휴식 60–75초) 또는 5–6회 × 1.5 km(휴식 90초) @10K</li>
+            <li><strong>MP 블록</strong>: 대회 페이스 리허설 — 2세트 × (6–8 km @MP, 세트 사이 2–3 km 조깅) 또는 연속 12–18 km @MP</li>
+            <li><strong>Prog 롱런</strong>: 후반 점증 — 총 24–34 km, 마지막 6–12 km를 MP~MP+10초/ km</li>
+            <li><strong>Aerobic/Easy</strong>: 기반/회복 — Aerobic=MP+30–60초/ km, Easy=MP+60–90초/ km</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h2 class="card__title">워밍업/쿨다운(핵심)</h2>
+          <ul>
+            <li><strong>공통 전</strong>: 조깅 5분 → 동적(레그 스윙 10/10, 워킹 런지 10/10, 발목 10/10)</li>
+            <li><strong>Easy/Aerobic 전</strong>: 공통 + 종아리 리프트 15회 × 2세트</li>
+            <li><strong>템포/LT 전</strong>: 조깅 10분 → A/B-스킵·앵클링 각 20 m × 2 → 스트라이드 4–6회</li>
+            <li><strong>CV/10K 전</strong>: 조깅 10분 → 드릴 2세트 → 짧은 힐 바운딩 3회 × 6초 → 스트라이드 4–6회</li>
+            <li><strong>언덕 스프린트 전</strong>: 조깅 8–10분 → 발목·종아리 활성 → 완만한 언덕 2–3회 × 20초(느린 가속)</li>
+            <li><strong>롱런 전</strong>: 조깅 5–8분 + 발목/엉덩이 동적 1세트</li>
+            <li><strong>공통 후</strong>: 아주 느린 조깅/워킹 5–10분 → 정적 스트레칭(각 20–30초 × 2세트)</li>
+          </ul>
         </div>
       </section>
 
@@ -419,16 +429,15 @@
           <h2 class="card__title">52주 로드맵</h2>
           <div class="timeline">
             <div class="timeline__item"><strong>프렙 W1–4</strong> · 습관·회복 · Easy/언덕 스프린트</div>
-            <div class="timeline__item"><strong>베이스1 W5–12</strong> · 유산소 토대 · T(짧게)/언덕 · LR 24–28 km</div>
-            <div class="timeline__item"><strong>베이스2 W13–20</strong> · LT/10K 강화 · HM B-레이스</div>
-            <div class="timeline__item"><strong>스페시픽1 W21–28</strong> · MP 블록/Prog LR · 연료 전략 리허설</div>
-            <div class="timeline__item"><strong>피크·테이퍼 W29–32</strong> · LR 32–34 km 1–2회 후 점감 · 레이스</div>
+            <div class="timeline__item"><strong>베이스1 W5–12</strong> · 유산소 토대 · 템포(짧게)/언덕 · 롱런 24–28 km</div>
+            <div class="timeline__item"><strong>베이스2 W13–20</strong> · LT/10K 강화 · 하프 B-레이스</div>
+            <div class="timeline__item"><strong>스페시픽1 W21–28</strong> · MP 블록/Prog 롱런 · 연료 전략 리허설</div>
+            <div class="timeline__item"><strong>피크·테이퍼 W29–32</strong> · 롱런 32–34 km 1–2회 후 점감 · 레이스</div>
             <div class="timeline__item"><strong>리커버리 W33–36</strong> · 구조적 회복 · Easy/크로스</div>
             <div class="timeline__item"><strong>스페시픽2 W37–46</strong> · 가을 A' 또는 B 레이스 준비</div>
             <div class="timeline__item"><strong>테이퍼B W47–50</strong> · 볼륨 −30~50%</div>
             <div class="timeline__item"><strong>오프·리셋 W51–52</strong> · 걷기/요가/가벼운 조깅</div>
           </div>
-          <p class="text-small text-muted" style="margin-top:12px">3–4주마다 컷백(−20~35%). HM 약 W18±2, 마라톤 A W32, 선택 B W50.</p>
         </div>
       </section>
 
@@ -440,13 +449,13 @@
             <div>
               <h3 class="card__subtitle">프렙 주 (W1–4)</h3>
               <ul>
-                <li>월: Easy 6–10 + 모빌리티 10′</li>
-                <li>화: 언덕 스프린트 8–10×10–15″(걷기 완전회복) 또는 Strides 6–8</li>
-                <li>수: Aerobic 8–12</li>
-                <li>목: LT 입문 3×8′(2′) 또는 템포 20′(가볍게)</li>
-                <li>금: Easy 6–10 + S&C 20′(코어·힙)</li>
-                <li>토: Easy 8–12(잔디/트레일)</li>
-                <li>일: LR 14–20(후반 2–4 km 점증) <span class="badge" id="lr-advice-prep">0%</span></li>
+                <li>월: Easy 6–10 km + 모빌리티 10분</li>
+                <li>화: 언덕 스프린트 8–10회 × 8–12초(워크백 완전회복) 또는 스트라이드 6–8회 × 80–120 m</li>
+                <li>수: Aerobic 8–12 km</li>
+                <li>목: LT 입문 3세트 × 8분(세트 사이 2분) 또는 템포 20분(가볍게)</li>
+                <li>금: Easy 6–10 km + S&C 20분</li>
+                <li>토: Easy 8–12 km(잔디/트레일)</li>
+                <li>일: 롱런 14–20 km(후반 2–4 km 점증) <span class="badge" id="lr-advice-prep">0%</span></li>
               </ul>
               <p class="text-small text-muted">옵션: 피로↑ 시 화/목 중 1개를 Easy로 대체.</p>
             </div>
@@ -454,26 +463,26 @@
             <div>
               <h3 class="card__subtitle">베이스1 주</h3>
               <ul>
-                <li>월: Easy 10–14 + Strides</li>
-                <li>화: 언덕 10×60″ 또는 CV 5×5′(2′)</li>
-                <li>수: Aerobic 12–16</li>
-                <li>목: T 2×5 km(2–3′) 또는 T 30–40′</li>
-                <li>금: Easy 8–12 + S&C 25′</li>
-                <li>토: Easy 10–14(잔디/트레일)</li>
-                <li>일: LR 24–28(후반 4–6 km 점증) <span class="badge" id="lr-advice-base">0%</span></li>
+                <li>월: Easy 10–14 km + 스트라이드</li>
+                <li>화: 언덕 10회 × 60초(휴식 조깅) 또는 CV 5회 × 5분(휴식 2분)</li>
+                <li>수: Aerobic 12–16 km</li>
+                <li>목: 템포 2세트 × 5 km(세트 사이 2–3분) 또는 템포 30–40분</li>
+                <li>금: Easy 8–12 km + S&C 25분</li>
+                <li>토: Easy 10–14 km(잔디/트레일)</li>
+                <li>일: 롱런 24–28 km(후반 4–6 km 점증) <span class="badge" id="lr-advice-base">0%</span></li>
               </ul>
             </div>
 
             <div>
               <h3 class="card__subtitle">베이스2 주 (강도·지구력 강화)</h3>
               <ul>
-                <li>월: 회복 8–12 + 모빌리티</li>
-                <li>화: 10×1 km @10K(60–75″) 또는 CV 6×4′(2′)</li>
-                <li>수: Aerobic 12–16 + Strides</li>
-                <li>목: T 2×6 km(2–3′) 또는 템포 35–45′</li>
-                <li>금: Easy 8–12 + S&C 20′(점진 로드)</li>
-                <li>토: Easy 10–12</li>
-                <li>일: LR 24–30(후반 6–8 km 점증) <span class="badge" id="lr-advice-base2">0%</span></li>
+                <li>월: 회복 8–12 km + 모빌리티</li>
+                <li>화: 10회 × 1 km @10K(휴식 60–75초) 또는 CV 6회 × 4분(휴식 2분)</li>
+                <li>수: Aerobic 12–16 km + 스트라이드</li>
+                <li>목: 템포 2세트 × 6 km(세트 사이 2–3분) 또는 템포 35–45분</li>
+                <li>금: Easy 8–12 km + S&C 20분(점진 로드)</li>
+                <li>토: Easy 10–12 km</li>
+                <li>일: 롱런 24–30 km(후반 6–8 km 점증) <span class="badge" id="lr-advice-base2">0%</span></li>
               </ul>
               <p class="text-small text-muted">옵션: 3–4주차에 하프 템포 14–18 km(연속)로 대체 가능.</p>
             </div>
@@ -481,91 +490,91 @@
             <div>
               <h3 class="card__subtitle">스페시픽1 주</h3>
               <ul>
-                <li>월: 회복 8–12 + 모빌리티</li>
-                <li>화: 10×1 km @10K(60–75″)</li>
-                <li>수: Aerobic 14–18 + Strides</li>
-                <li>목: MP 블록 2×(6–8 km) / 2–3 km 조깅</li>
-                <li>금: Easy 8–12 + S&C 20′</li>
-                <li>토: Easy 10–12</li>
-                <li>일: LR 28–32(후반 8–12 km @MP~MP+10s) <span class="badge" id="lr-advice-spec">0%</span></li>
+                <li>월: 회복 8–12 km + 모빌리티</li>
+                <li>화: 10회 × 1 km @10K(휴식 60–75초)</li>
+                <li>수: Aerobic 14–18 km + 스트라이드</li>
+                <li>목: MP 블록 2세트 × (6–8 km) / 세트 사이 2–3 km 조깅</li>
+                <li>금: Easy 8–12 km + S&C 20분</li>
+                <li>토: Easy 10–12 km</li>
+                <li>일: 롱런 28–32 km(후반 8–12 km @MP~MP+10초/ km) <span class="badge" id="lr-advice-spec">0%</span></li>
               </ul>
             </div>
 
             <div>
               <h3 class="card__subtitle">피크-1 주 (최대 특이성)</h3>
               <ul>
-                <li>월: 회복 8–10 + 드릴</li>
-                <li>화: 6×2 km @10K(90″) 또는 3×3 km @10K(2′)</li>
-                <li>수: Aerobic 12–16</li>
-                <li>목: MP 블록 2×(8–10 km) / 2–3 km 조깅</li>
-                <li>금: Easy 8–10 + 가벼운 S&C</li>
-                <li>토: Easy 8–10</li>
-                <li>일: LR 32–34(후반 10–12 km @MP) <span class="badge" id="lr-advice-peak1">0%</span></li>
+                <li>월: 회복 8–10 km + 드릴</li>
+                <li>화: 6회 × 2 km @10K(휴식 90초) 또는 3회 × 3 km @10K(휴식 2분)</li>
+                <li>수: Aerobic 12–16 km</li>
+                <li>목: MP 블록 2세트 × (8–10 km) / 세트 사이 2–3 km 조깅</li>
+                <li>금: Easy 8–10 km + 가벼운 S&C</li>
+                <li>토: Easy 8–10 km</li>
+                <li>일: 롱런 32–34 km(후반 10–12 km @MP) <span class="badge" id="lr-advice-peak1">0%</span></li>
               </ul>
             </div>
 
             <div>
               <h3 class="card__subtitle">테이퍼-1 주 (−30~40%)</h3>
               <ul>
-                <li>월: 회복 6–8 + 모빌리티</li>
-                <li>화: 6×1 km(가볍게, T감각)</li>
-                <li>수: Aerobic 8–12</li>
+                <li>월: 회복 6–8 km + 모빌리티</li>
+                <li>화: 6회 × 1 km(가볍게, 역치 감각)</li>
+                <li>수: Aerobic 8–12 km</li>
                 <li>목: MP 12–16 km(연속)</li>
-                <li>금: Easy 6–8</li>
-                <li>토: Easy 6–8</li>
-                <li>일: LR 18–24(평탄, 여유 페이스) <span class="badge" id="lr-advice-taper1">0%</span></li>
+                <li>금: Easy 6–8 km</li>
+                <li>토: Easy 6–8 km</li>
+                <li>일: 롱런 18–24 km(편한 페이스) <span class="badge" id="lr-advice-taper1">0%</span></li>
               </ul>
             </div>
 
             <div>
               <h3 class="card__subtitle">리커버리 주 (컷백 −20~35%)</h3>
               <ul>
-                <li>월: 휴식 또는 걷기/요가 30–45′</li>
-                <li>화: Easy 6–10</li>
-                <li>수: 크로스트레이닝 40–60′(사이클/수영)</li>
-                <li>목: Easy 8–12 + 4×Strides</li>
-                <li>금: 휴식 또는 Easy 6–8</li>
-                <li>토: Easy 8–10</li>
-                <li>일: LR 16–22(노강도) <span class="badge" id="lr-advice-recov">0%</span></li>
+                <li>월: 휴식 또는 걷기/요가 30–45분</li>
+                <li>화: Easy 6–10 km</li>
+                <li>수: 크로스트레이닝 40–60분(사이클/수영)</li>
+                <li>목: Easy 8–12 km + 스트라이드 4회</li>
+                <li>금: 휴식 또는 Easy 6–8 km</li>
+                <li>토: Easy 8–10 km</li>
+                <li>일: 롱런 16–22 km(강도 없음) <span class="badge" id="lr-advice-recov">0%</span></li>
               </ul>
             </div>
 
             <div>
               <h3 class="card__subtitle">스페시픽2 주 (가을/2차 피크)</h3>
               <ul>
-                <li>월: 회복 8–12</li>
-                <li>화: 5×2 km @10K(90″) 또는 3×3 km @10K(2′)</li>
-                <li>수: Aerobic 14–18 + Strides</li>
-                <li>목: MP 연속 14–18 km 또는 MP 블록 3×(5–6 km)</li>
-                <li>금: Easy 8–12</li>
-                <li>토: Easy 10–12</li>
-                <li>일: LR 28–32(후반 8–12 km @MP~MP+10s) <span class="badge" id="lr-advice-spec2">0%</span></li>
+                <li>월: 회복 8–12 km</li>
+                <li>화: 5회 × 2 km @10K(휴식 90초) 또는 3회 × 3 km @10K(휴식 2분)</li>
+                <li>수: Aerobic 14–18 km + 스트라이드</li>
+                <li>목: MP 연속 14–18 km 또는 MP 블록 3세트 × (5–6 km)</li>
+                <li>금: Easy 8–12 km</li>
+                <li>토: Easy 10–12 km</li>
+                <li>일: 롱런 28–32 km(후반 8–12 km @MP~MP+10초/ km) <span class="badge" id="lr-advice-spec2">0%</span></li>
               </ul>
             </div>
 
             <div>
               <h3 class="card__subtitle">테이퍼B 주 (보조 피크, −30~50%)</h3>
               <ul>
-                <li>월: 회복 6–8</li>
-                <li>화: 5×1 km(가볍게)</li>
-                <li>수: Aerobic 8–10</li>
+                <li>월: 회복 6–8 km</li>
+                <li>화: 5회 × 1 km(가볍게)</li>
+                <li>수: Aerobic 8–10 km</li>
                 <li>목: MP 8–12 km</li>
-                <li>금: Easy 6–8</li>
-                <li>토: Easy 6–8</li>
-                <li>일: LR 16–22(노강도) <span class="badge" id="lr-advice-taperb">0%</span></li>
+                <li>금: Easy 6–8 km</li>
+                <li>토: Easy 6–8 km</li>
+                <li>일: 롱런 16–22 km(편한 페이스) <span class="badge" id="lr-advice-taperb">0%</span></li>
               </ul>
             </div>
 
             <div>
               <h3 class="card__subtitle">오프·리셋 주 (W51–52)</h3>
               <ul>
-                <li>월: 가벼운 걷기 30–60′</li>
-                <li>화: 요가/스트레칭 30′</li>
-                <li>수: Easy 조깅 20–40′</li>
-                <li>목: 휴식 또는 크로스 30–45′</li>
-                <li>금: Easy 조깅 20–40′</li>
-                <li>토: 산책/트레일 40–60′</li>
-                <li>일: 옵션 LR 12–16(매우 여유) <span class="badge" id="lr-advice-off">0%</span></li>
+                <li>월: 가벼운 걷기 30–60분</li>
+                <li>화: 요가/스트레칭 30분</li>
+                <li>수: Easy 조깅 20–40분</li>
+                <li>목: 휴식 또는 크로스 30–45분</li>
+                <li>금: Easy 조깅 20–40분</li>
+                <li>토: 산책/트레일 40–60분</li>
+                <li>일: 옵션 롱런 12–16 km(매우 여유) <span class="badge" id="lr-advice-off">0%</span></li>
               </ul>
             </div>
           </div>
@@ -573,9 +582,9 @@
           <details style="margin-top:10px">
             <summary>공통 유연 규칙</summary>
             <ul class="text-small" style="margin-top:12px">
-              <li>상태 신호: RHR 베이스+≥5 bpm, HRV 저하, RPE≥7 → 그 주 가장 높은 난이도 세션 제거/완화.</li>
+              <li>상태 신호: RHR 베이스+≥5 bpm, HRV 저하, RPE≥7 → 그 주 가장 높은 난이도 세션 삭제/완화.</li>
               <li>날씨: 더위/강풍/눈·결빙 시 인터벌은 실내 전환, 롱런은 <strong>배지</strong>만큼 거리 단축.</li>
-              <li>마스터스(≥40): 품질 간 회복 48–72 h, 강도 상단 +3~5 s/km 보수 적용.</li>
+              <li>마스터스(≥40): 품질 간 회복 48–72시간, 강도 상단 +3~5초/ km 보수 적용.</li>
             </ul>
           </details>
         </div>
@@ -595,9 +604,9 @@
         <div class="card">
           <h2 class="card__title">특수 군: 여성·마스터스·부상 복귀</h2>
           <div class="grid grid--3-cols">
-            <div><h3 class="card__subtitle">여성</h3><ul><li>황체기: T/VO2 10–15 s/km 완화 또는 볼륨 −10~15%</li><li>수분·Na 상향</li></ul></div>
-            <div><h3 class="card__subtitle">마스터스(40세↑)</h3><ul><li>품질 간 회복 48–72 h</li><li>점진적 플라이오메트릭스</li><li>2:1 적재:컷백 허용</li></ul></div>
-            <div><h3 class="card__subtitle">부상 복귀</h3><ol class="text-small"><li>1'/1'×10–15 → 3'/2'×6–8 → 10–30' 연속 Easy</li><li>통증 2/10↑ 또는 다음날 잔존 시 단계 −1</li><li>품질·언덕 금지</li></ol></div>
+            <div><h3 class="card__subtitle">여성</h3><ul><li>황체기: T/VO2 10–15초/ km 완화 또는 볼륨 −10~15%</li><li>수분·Na 상향</li></ul></div>
+            <div><h3 class="card__subtitle">마스터스(40세↑)</h3><ul><li>품질 간 회복 48–72시간</li><li>점진적 플라이오메트릭스</li><li>2:1 적재:컷백 허용</li></ul></div>
+            <div><h3 class="card__subtitle">부상 복귀</h3><ol class="text-small"><li>1분 달리기/1분 걷기 × 10–15 → 3분/2분 × 6–8 → 10–30분 연속 Easy</li><li>통증 2/10↑ 또는 다음날 잔존 시 단계 −1</li><li>품질·언덕 금지</li></ol></div>
           </div>
         </div>
       </section>
@@ -605,7 +614,7 @@
       <section id="panel-taper" class="tab-panel" role="tabpanel" aria-labelledby="tab-taper" hidden>
         <div class="card">
           <h2 class="card__title">테이퍼(2–3주)</h2>
-          <ul><li>주간 볼륨 −41~60% 점감, 강도·빈도 유지</li><li>마지막 7–10일: MP 촉감 6–10 km 1회, 400 m×6 가볍게</li></ul>
+          <ul><li>주간 볼륨 −41~60% 점감, 강도·빈도 유지</li><li>마지막 7–10일: MP 촉감 6–10 km 1회, 400 m × 6 가볍게</li></ul>
         </div>
       </section>
 
@@ -613,7 +622,7 @@
         <div class="card">
           <h2 class="card__title">레이스 실행(서브3)</h2>
           <div class="grid grid--3-cols">
-            <div><h3 class="card__subtitle">페이싱</h3><ul><li>0–5 km: MP+5–8s</li><li>5–35 km: MP 안정</li><li>35–42.2 km: 상황별 −5~+10s</li></ul></div>
+            <div><h3 class="card__subtitle">페이싱</h3><ul><li>0–5 km: MP+5–8초/ km</li><li>5–35 km: MP 안정</li><li>35–42.2 km: 상황별 −5~+10초/ km</li></ul></div>
             <div><h3 class="card__subtitle">급수/영양</h3><ul><li>젤: 30–35분마다 1개(20–30 g)</li><li>CHO 60–90(적응 시 90–110) g/h</li><li>수분 0.4–0.8 L/h · Na 300–600 mg/h(더위 800–1000)</li></ul></div>
             <div><h3 class="card__subtitle">체크리스트</h3><ul><li>레이스화 2–3회 사전 검증</li><li>젤/음료 브랜드 리허설 완료</li><li>날씨 플랜 A/B/C 준비</li></ul></div>
           </div>
@@ -622,7 +631,7 @@
 
       <section id="panel-evidence" class="tab-panel" role="tabpanel" aria-labelledby="tab-evidence" hidden>
         <div class="card">
-          <h2 class="card__title">근거</h2>
+          <h2 class="card__title">근거(학술 문헌, 중복 제거)</h2>
           <ol class="cols-2 text-small">
             <li>Thomas DT, Erdman KA, Burke LM. Nutrition and Athletic Performance. J Acad Nutr Diet. 2016;116(3):501–528; Med Sci Sports Exerc. 48(3):543–568.</li>
             <li>ACSM Position Stand. Exercise and Fluid Replacement. Med Sci Sports Exerc. 2007;39(2):377–390.</li>
@@ -786,7 +795,7 @@
       const clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
       const KM_PER_MILE = 1.609344;
       const getUnits = () => (els.units?.value || 'metric');
-      const unitLabel = () => getUnits()==='imperial' ? '/mile' : '/km';
+      const unitLabel = () => getUnits()==='imperial' ? '/ mile' : '/ km';
       const secToPaceStr = (sec) => {
         if (!isFinite(sec) || sec <= 0) return '—';
         const sConv = Math.round(getUnits()==='imperial' ? sec * KM_PER_MILE : sec);
@@ -900,8 +909,8 @@
       }
 
       function recommendSession(weatherKey){
-        if (weatherKey==='hail' || weatherKey==='snow') return '실내 Easy 30–60′ + S&C';
-        if (weatherKey==='heat') return 'Aerobic 40–70′(RPE 5~6) · 반복수 10–20%↓';
+        if (weatherKey==='hail' || weatherKey==='snow') return '실내 Easy 30–60분 + S&C';
+        if (weatherKey==='heat') return 'Aerobic 40–70분(RPE 5~6) · 반복수 10–20%↓';
         if (weatherKey==='wind') return '템포 대신 루프형 Aerobic';
         if (weatherKey==='rain') return '인터벌→트레드밀 또는 템포 단일';
         return '계획대로';
@@ -914,8 +923,8 @@
           return (v>=1.03 && v<=1.10) ? v : 1.06;
         }
         if (!Number.isFinite(pace10kSecPerKm) || pace10kSecPerKm<=0) return 1.06;
-        if (pace10kSecPerKm <= 240) return 1.04; // ≤ 4:00/km
-        if (pace10kSecPerKm >= 330) return 1.08; // ≥ 5:30/km
+        if (pace10kSecPerKm <= 240) return 1.04; // ≤ 4:00/ km
+        if (pace10kSecPerKm >= 330) return 1.08; // ≥ 5:30/ km
         return 1.06;
       }
 
@@ -1008,7 +1017,7 @@
         setText(els.outBMI, s.bmi);
         setText(els.outMP, s.mpStr || '—');
         setText(els.kpiMP, s.mpStr || '4:14–4:16');
-        setText(els.kpiMPUnit, getUnits()==='imperial' ? 'min/mile' : 'min/km');
+        setText(els.kpiMPUnit, getUnits()==='imperial' ? '분:초/ mile' : '분:초/ km');
 
         setText(els.outCHO, s.choStr);
         setText(els.kpiCHO, s.kpiCho);
@@ -1020,7 +1029,6 @@
         setText(els.chipAer,  s.aerStr==='—'  ? 'Aerobic(개인화): —' : `Aerobic(개인화): ${s.aerStr}`);
         setText(els.chipT,    s.tStr==='—'    ? 'T(개인화): —' : `T(개인화): ${s.tStr}`);
         setText(els.chipCV,   s.cvStr==='—'   ? 'CV(개인화): —' : `CV(개인화): ${s.cvStr}`);
-        setText(els.chip10K,  s.mpStr==='—' && s.cvStr==='—' ? '10K(개인화): —' : els.chip10K.textContent); // 유지
 
         if (els.wx.easy){
           setText(els.wx.easy, `+${s.WR.paceAdj.easy}`);
@@ -1109,7 +1117,7 @@
         if (e.target.matches('input,select,textarea')) return;
         if (e.key === '?' || (e.shiftKey && e.key === '/')) { e.preventDefault(); els.helpToggle?.click(); }
         if (e.key.toLowerCase() === 'p') { e.preventDefault(); $('tab-personalize')?.click(); }
-        if (e.key.toLowerCase() === 'g') { e.preventDefault(); $('tab-glossary')?.click(); }
+        if (e.key.toLowerCase() === 'g') { e.preventDefault(); $('tab-guide')?.click(); }
       });
 
       loadState();
