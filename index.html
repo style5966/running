@@ -97,16 +97,18 @@
       </div>
     </header>
 
+    <!-- 도움말 -->
     <section id="help-panel" class="card help-panel" aria-hidden="true">
       <h3 class="title">도움말(요약)</h3>
       <ul class="muted">
         <li>거리: km·m, 시간: 분·초, 페이스: 분:초/ km 또는 분:초/ mile</li>
-        <li>기록은 5K·10K·하프·마라톤 중 1개만 입력(우선: 마라톤 → 하프 → 10K → 5K)</li>
-        <li>날씨·단위 칩은 누르면 즉시 반영됩니다.</li>
-        <li>상세 보기: 모든 주간 단계 카드를 토글로 열고 닫을 수 있습니다.</li>
+        <li>기록: 5K·10K·하프·마라톤 중 1개만 입력(우선: 마라톤 → 하프 → 10K → 5K)</li>
+        <li>날씨·단위: 칩 터치 즉시 반영(드롭다운은 숨김)</li>
+        <li>상세 보기: 주간(모든 단계) 카드를 토글로 표시/숨김</li>
       </ul>
     </section>
 
+    <!-- 근거 -->
     <section id="evidence-panel" class="card evidence-panel" aria-hidden="true">
       <h3 class="title">근거(학술 문헌, 주제별)</h3>
       <div class="grid grid--2">
@@ -155,6 +157,7 @@
       </div>
     </section>
 
+    <!-- 입력 -->
     <section class="card">
       <h3 class="title">1) 빠른 설정</h3>
       <div class="row">
@@ -232,6 +235,7 @@
       </div>
     </section>
 
+    <!-- 결과 -->
     <section class="card">
       <h3 class="title">2) 결과(즉시 계산)</h3>
       <div class="kpi">
@@ -240,13 +244,40 @@
         <div class="kpi__item"><div class="kpi__val" id="aer">—</div><div class="kpi__lab">Aerobic 범위</div></div>
         <div class="kpi__item"><div class="kpi__val" id="t">—</div><div class="kpi__lab">T(템포) 범위</div></div>
         <div class="kpi__item"><div class="kpi__val" id="cv">—</div><div class="kpi__lab">CV 범위</div></div>
-        <div class="kpi__item"><div class="kpi__val" id="fuel">—</div><div class="kpi__lab">영양/수분/Na</div></div>
+        <div class="kpi__item"><div class="kpi__val" id="fuel">—</div><div class="kpi__lab">영양/수분/Na/PRO</div></div>
       </div>
       <div class="muted" style="margin-top:8px">오늘 권장 세션: <span id="today-sess" class="badge">계획대로</span></div>
     </section>
 
+    <!-- 영양 타임라인(훈련/시합) -->
     <section class="card">
-      <h3 class="title">3) 주간(간단 프리셋)</h3>
+      <h3 class="title">3) 영양 타임라인(kg 기반 자동 계산)</h3>
+      <div class="grid grid--2">
+        <div class="card">
+          <h4 class="title">훈련(Training)</h4>
+          <ul class="muted">
+            <li><strong>전(1–3시간 전)</strong>: CHO <span id="train-pre-cho">—</span> · PRO <span id="train-pre-pro">—</span> · 물 <span id="train-pre-h2o">—</span></li>
+            <li><strong>중(≤90분)</strong>: CHO <span id="train-dur-cho-s">—</span> · 물 <span id="train-dur-h2o">—</span> · Na <span id="train-dur-na">—</span></li>
+            <li><strong>중(>90분)</strong>: CHO <span id="train-dur-cho-l">—</span> · 물/Na 위와 동일</li>
+            <li><strong>후(0–1시간)</strong>: CHO <span id="train-post-cho">—</span> · PRO <span id="train-post-pro">—</span> · 물 <span id="train-post-h2o">—</span></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4 class="title">시합(Race)</h4>
+          <ul class="muted">
+            <li><strong>전날</strong>: CHO <span id="race-day-cho">—</span>/일</li>
+            <li><strong>아침(3–4시간 전)</strong>: CHO <span id="race-morn-cho">—</span> · PRO <span id="race-morn-pro">—</span></li>
+            <li><strong>중</strong>: CHO <span id="race-dur-cho">—</span> · 물 <span id="race-dur-h2o">—</span> · Na <span id="race-dur-na">—</span></li>
+            <li><strong>후(0–1시간)</strong>: CHO <span id="race-post-cho">—</span> · PRO <span id="race-post-pro">—</span> · 물 <span id="race-post-h2o">—</span></li>
+          </ul>
+        </div>
+      </div>
+      <p class="muted" style="margin-top:6px">기준: CHO(탄수화물), PRO(단백질), 물(수분), Na(나트륨)</p>
+    </section>
+
+    <!-- 주간 간단 프리셋 -->
+    <section class="card">
+      <h3 class="title">4) 주간(간단 프리셋)</h3>
       <div class="tabs" role="tablist" aria-label="주간 프리셋">
         <button class="tbtn" aria-pressed="true" data-preset="base">베이스</button>
         <button class="tbtn" aria-pressed="false" data-preset="spec">스페시픽</button>
@@ -256,7 +287,7 @@
       <div id="plan-box" class="muted"></div>
     </section>
 
-    <!-- 상세 주간(모든 단계) 토글 섹션 -->
+    <!-- 상세 주간(토글) -->
     <section id="weekly-advanced" class="card adv-only" hidden aria-hidden="true">
       <div class="row" style="justify-content:space-between;align-items:center">
         <h3 class="title" style="margin:0">상세 주간(모든 단계)</h3>
@@ -266,7 +297,7 @@
         <div class="card"><h4 class="title">프렙 주</h4>
           <ul class="muted">
             <li>월: Easy 6–10 km + 모빌리티 10분</li>
-            <li>화: 언덕 스프린트 8–10회 × 8–12초(워크백 완전회복)</li>
+            <li>화: 언덕 스프린트 8–10회 × 8–12초</li>
             <li>수: Aerobic 8–12 km</li>
             <li>목: LT 입문 3×8분(세트 사이 2분)</li>
             <li>금: Easy 6–10 km + S&C 20분</li>
@@ -288,7 +319,7 @@
         <div class="card"><h4 class="title">베이스2 주</h4>
           <ul class="muted">
             <li>월: 회복 8–12 km</li>
-            <li>화: 10×1 km @10K(휴식 60–75초) 또는 CV 6×4분(휴식 2분)</li>
+            <li>화: 10×1 km @10K 또는 CV 6×4분</li>
             <li>수: Aerobic 12–16 km + 스트라이드</li>
             <li>목: 템포 2×6 km 또는 35–45분</li>
             <li>금: Easy 8–12 km + S&C 20분</li>
@@ -299,7 +330,7 @@
         <div class="card"><h4 class="title">스페시픽1 주</h4>
           <ul class="muted">
             <li>월: 회복 8–12 km</li>
-            <li>화: 10×1 km @10K(휴식 60–75초)</li>
+            <li>화: 10×1 km @10K</li>
             <li>수: Aerobic 14–18 km + 스트라이드</li>
             <li>목: MP 블록 2×(6–8 km) / 세트 사이 2–3 km 조깅</li>
             <li>금: Easy 8–12 km</li>
@@ -310,9 +341,9 @@
         <div class="card"><h4 class="title">스페시픽2 주</h4>
           <ul class="muted">
             <li>월: 회복 8–12 km</li>
-            <li>화: 5×2 km @10K(휴식 90초) 또는 3×3 km @10K(휴식 2분)</li>
+            <li>화: 5×2 km @10K 또는 3×3 km @10K</li>
             <li>수: Aerobic 14–18 km + 스트라이드</li>
-            <li>목: MP 연속 14–18 km 또는 MP 블록 3×(5–6 km)</li>
+            <li>목: MP 14–18 km 또는 MP 블록 3×(5–6 km)</li>
             <li>금: Easy 8–12 km</li>
             <li>토: Easy 10–12 km</li>
             <li>일: 롱런 28–32 km <span class="badge lr-badge">0%</span></li>
@@ -321,9 +352,9 @@
         <div class="card"><h4 class="title">피크-1 주</h4>
           <ul class="muted">
             <li>월: 회복 8–10 km</li>
-            <li>화: 6×2 km @10K(휴식 90초) 또는 3×3 km @10K(휴식 2분)</li>
+            <li>화: 6×2 km @10K 또는 3×3 km @10K</li>
             <li>수: Aerobic 12–16 km</li>
-            <li>목: MP 블록 2×(8–10 km) / 세트 사이 2–3 km 조깅</li>
+            <li>목: MP 블록 2×(8–10 km)</li>
             <li>금: Easy 8–10 km</li>
             <li>토: Easy 8–10 km</li>
             <li>일: 롱런 32–34 km <span class="badge lr-badge">0%</span></li>
@@ -375,20 +406,9 @@
         </div>
       </div>
     </section>
-
-    <section class="card">
-      <h3 class="title">가이드(핵심)</h3>
-      <ul class="list">
-        <li><strong>언덕 스프린트</strong>: 6–10회 × 8–12초(경사 6–10%, 워크백 완전회복)</li>
-        <li><strong>스트라이드</strong>: 6–10회 × 80–120 m(회당 20–30초 조깅)</li>
-        <li><strong>LT 입문</strong>: 3×8분(세트 사이 2분) 또는 4×6분(세트 사이 90초), 하프 페이스 ±0–10초/ km</li>
-        <li><strong>템포</strong>: 20–40분, 하프 페이스 ±0–10초/ km</li>
-        <li><strong>CV</strong>: 6–8회 × 1 km(휴식 60–75초) 또는 5–6회 × 4분(휴식 2분), 5K +8–12초/ km</li>
-        <li><strong>MP 블록</strong>: 2×(6–8 km @MP, 세트 사이 2–3 km 조깅) 또는 연속 12–18 km @MP</li>
-      </ul>
-    </section>
   </div>
 
+  <!-- 하단 요약바 -->
   <div class="helper" id="quickbar" aria-hidden="true">
     <div class="helper__in">
       <div class="pair"><strong>MP</strong><span id="q-mp">—</span></div>
@@ -440,14 +460,8 @@
       helpBtn.addEventListener('click', ()=>togglePanel(helpBtn, helpPanel));
       evidBtn.addEventListener('click', ()=>togglePanel(evidBtn, evidPanel));
 
-      // 간단 프리셋(‘상세(모든 단계)’ 토글 포함)
-      const planBox = $('plan-box'), weeklyAdv = $('weekly-advanced'), weeklyToggle = $('toggle-weekly-adv');
-      const PRESETS = {
-        base:`- 월: Easy 10–14 km + 스트라이드<br/>- 화: 언덕 10회 × 60초 또는 CV 5회 × 5분(휴식 2분)<br/>- 수: Aerobic 12–16 km<br/>- 목: 템포 2세트 × 5 km 또는 30–40분<br/>- 금: Easy 8–12 km + S&C 25분<br/>- 토: Easy 10–14 km<br/>- 일: 롱런 24–28 km(후반 4–6 km 점증)`,
-        spec:`- 화: 10회 × 1 km @10K(휴식 60–75초)<br/>- 목: MP 블록 2세트 × (6–8 km) 또는 MP 14–18 km<br/>- 일: 롱런 28–32 km(후반 8–12 km @MP~MP+10초/ km)`,
-        taper:`- 화: 6회 × 1 km(가볍게) · 목: MP 12–16 km · 일: 롱런 18–24 km(편한 페이스)`,
-        more:`상세(모든 단계) 카드를 토글로 표시/숨김합니다.`
-      };
+      // 상세 주간 토글
+      const weeklyAdv = $('weekly-advanced'), weeklyToggle = $('toggle-weekly-adv');
       function openWeeklyAdvanced(){
         weeklyAdv.hidden = false;
         weeklyAdv.setAttribute('aria-hidden','false');
@@ -461,17 +475,25 @@
         weeklyToggle.setAttribute('aria-pressed','false');
         weeklyToggle.textContent = '표시하기';
       }
-      weeklyToggle.addEventListener('click', ()=>{
+      weeklyToggle?.addEventListener('click', ()=>{
         const on = weeklyToggle.getAttribute('aria-pressed')!=='true';
         if(on) openWeeklyAdvanced(); else closeWeeklyAdvanced();
       });
+
+      // 간단 프리셋
+      const planBox = $('plan-box');
+      const PRESETS = {
+        base:`- 월: Easy 10–14 km + 스트라이드<br/>- 화: 언덕 10회 × 60초 또는 CV 5회 × 5분(휴식 2분)<br/>- 수: Aerobic 12–16 km<br/>- 목: 템포 2세트 × 5 km 또는 30–40분<br/>- 금: Easy 8–12 km + S&C 25분<br/>- 토: Easy 10–14 km<br/>- 일: 롱런 24–28 km(후반 4–6 km 점증)`,
+        spec:`- 화: 10회 × 1 km @10K(휴식 60–75초)<br/>- 목: MP 블록 2세트 × (6–8 km) 또는 MP 14–18 km<br/>- 일: 롱런 28–32 km(후반 8–12 km @MP~MP+10초/ km)`,
+        taper:`- 화: 6회 × 1 km(가볍게) · 목: MP 12–16 km · 일: 롱런 18–24 km(편한 페이스)`,
+        more:`상세(모든 단계) 카드를 토글로 표시/숨김합니다.`
+      };
       function selectPreset(key){
         document.querySelectorAll('.tbtn').forEach(b=>b.setAttribute('aria-pressed','false'));
         const btn=[...document.querySelectorAll('.tbtn')].find(b=>b.dataset.preset===key);
         if(btn) btn.setAttribute('aria-pressed','true');
         planBox.innerHTML = `<div class="muted">${PRESETS[key]}</div>`;
         if(key==='more'){
-          // 상세 모드로 전환 후 토글
           document.getElementById('mode-advanced')?.click();
           const isHidden = weeklyAdv.hasAttribute('hidden');
           if(isHidden) openWeeklyAdvanced(); else closeWeeklyAdvanced();
@@ -480,7 +502,7 @@
       document.querySelectorAll('.tbtn').forEach(b=>b.addEventListener('click',()=>selectPreset(b.dataset.preset)));
       selectPreset('base');
 
-      // 폼/칩
+      // 폼/칩 요소
       const els = {
         sex:$('in-sex'), age:$('in-age'), h:$('in-height'), kg:$('in-weight'),
         wx:$('in-weather'), units:$('in-units'),
@@ -503,7 +525,7 @@
         });
       });
 
-      // 퀵바 접기/펼치기(FAB)
+      // 퀵바 접기/펼치기
       $('btn-collapse')?.addEventListener('click', ()=>{
         quickbar.setAttribute('aria-hidden','true');
         if(document.body.classList.contains('simple')) return;
@@ -540,7 +562,7 @@
 
       function calc(){
         const age=parseFloat(els.age.value)||0, masters=age>=40;
-        const kg=read(els.kg), h=read(els.h), wx=WX[els.wx.value]||WX.normal;
+        const kg=read(els.kg), wx=WX[els.wx.value]||WX.normal;
         const t5=normMS(els.k5m,els.k5s), t10=normMS(els.k10m,els.k10s);
         const tHM=(read(els.hmH)||0)*3600 + normMS(els.hmM,els.hmS);
         const tM =(read(els.mH)||0)*3600 + normMS(els.mM,els.mS);
@@ -577,20 +599,25 @@
         const T = (pHM||p10) ? [ (pHM||p10+10)+0 + A.t, (pHM||p10+10)+10 + adjM.t + A.t ] : null;
         const CV= (p5||p10)  ? [ (p5||p10)+8 + A.c, (p5||p10)+12 + adjM.c + A.c ] : null;
 
-        const cho = kg? [clamp(kg*0.8,60,120), clamp(kg*1.0,60,120)] : null;
+        // 수분/Na (시/훈련 중 공통)
         const hydr = kg? [clamp(kg*wx.ml[0]/1000,0.3,1.2), clamp(kg*wx.ml[1]/1000,0.3,1.2)] : null;
         const na = wx.na;
 
+        // KPI
         set($('mp'), mp? secToPace(mp) : '—');
         set($('easy'), easy? `${secToPace(easy[0])} ~ ${secToPace(easy[1])}` : '—');
         set($('aer'),  aer?  `${secToPace(aer[0])} ~ ${secToPace(aer[1])}`   : '—');
         set($('t'),    T?    `${secToPace(T[0])} ~ ${secToPace(T[1])}`       : '—');
         set($('cv'),   CV?   `${secToPace(CV[0])} ~ ${secToPace(CV[1])}`     : '—');
 
-        const fuelStr = `${cho? `${Math.round(cho[0])}–${Math.round(cho[1])} g/h` : '60–90 g/h'} · ${hydr? `${hydr[0].toFixed(1)}–${hydr[1].toFixed(1)} L/h` : (wx===WX.heat?'0.6–1.0 L/h':'0.4–0.8 L/h')} · ${na[0]}–${na[1]} mg/h`;
+        // CHO/PRO/H2O/Na(요약)
+        const choDuring = '60–90 g/h' + (wx===WX.heat?'(상단 권장)':'') + ' (적응 시 90–120)';
+        const h2oDuring = hydr? `${hydr[0].toFixed(1)}–${hydr[1].toFixed(1)} L/h` : (wx===WX.heat?'0.6–1.0 L/h':'0.4–0.8 L/h');
+        const fuelStr = `${choDuring} · ${h2oDuring} · ${na[0]}–${na[1]} mg/h · PRO 0.3 g/kg(후)`;
         set($('fuel'), fuelStr);
         set($('today-sess'), wx.sess);
 
+        // Quickbar
         set($('q-mp'), $('mp').textContent);
         set($('q-easy'), $('easy').textContent);
         set($('q-t'), $('t').textContent);
@@ -598,18 +625,76 @@
         set($('q-fuel'), fuelStr);
         set($('q-sess'), wx.sess);
 
+        // 상세 주간 롱런 배지
         const lrTxt = wx.lr[0]===wx.lr[1] ? `${wx.lr[0]}%` : `${wx.lr[0]}%~${wx.lr[1]}%`;
         document.querySelectorAll('.lr-badge').forEach(b=>b.textContent=lrTxt);
+
+        // 영양 타임라인(동적)
+        // 훈련 전
+        if(kg>0){
+          const preCho = [kg*1, kg*2]; // 1–2 g/kg
+          const prePro = kg*0.3;       // 0.3 g/kg
+          const preH2O = (wx===WX.heat?[kg*7,kg*10]:[kg*5,kg*7]); // mL/kg
+          set($('train-pre-cho'), `${Math.round(preCho[0])}–${Math.round(preCho[1])} g`);
+          set($('train-pre-pro'), `${prePro.toFixed(1)} g`);
+          set($('train-pre-h2o'), `${Math.round(preH2O[0])}–${Math.round(preH2O[1])} mL`);
+        }else{
+          set($('train-pre-cho'),'kg 입력'); set($('train-pre-pro'),'kg 입력'); set($('train-pre-h2o'),'kg 입력');
+        }
+        // 훈련 중
+        set($('train-dur-cho-s'), '30–45 g/h'); // ≤90분
+        set($('train-dur-cho-l'), '60–90 g/h(적응 시 90–120)');
+        set($('train-dur-h2o'), h2oDuring);
+        set($('train-dur-na'), `${na[0]}–${na[1]} mg/h`);
+        // 훈련 후
+        if(kg>0){
+          const postCho = [kg*1.0, kg*1.2]; // 1.0–1.2 g/kg
+          const postPro = kg*0.3;           // 0.3 g/kg
+          set($('train-post-cho'), `${Math.round(postCho[0])}–${Math.round(postCho[1])} g`);
+          set($('train-post-pro'), `${postPro.toFixed(1)} g`);
+          set($('train-post-h2o'), '체중감량 1 kg당 1.25–1.5 L');
+        }else{
+          set($('train-post-cho'),'kg 입력'); set($('train-post-pro'),'kg 입력'); set($('train-post-h2o'),'체중감량 기준');
+        }
+
+        // 시합 전날/아침/중/후
+        if(kg>0){
+          const raceDayCho=[kg*7, kg*10]; // 7–10 g/kg/day
+          const raceMornCho=[kg*1, kg*4]; // 1–4 g/kg
+          const raceMornPro=kg*0.3;       // 선택적 0.3 g/kg
+          set($('race-day-cho'), `${Math.round(raceDayCho[0])}–${Math.round(raceDayCho[1])} g`);
+          set($('race-morn-cho'), `${Math.round(raceMornCho[0])}–${Math.round(raceMornCho[1])} g`);
+          set($('race-morn-pro'), `${raceMornPro.toFixed(1)} g`);
+        }else{
+          set($('race-day-cho'),'kg 입력'); set($('race-morn-cho'),'kg 입력'); set($('race-morn-pro'),'kg 입력');
+        }
+        set($('race-dur-cho'), '60–90 g/h(적응 시 90–120)');
+        set($('race-dur-h2o'), h2oDuring);
+        set($('race-dur-na'), `${na[0]}–${na[1]} mg/h`);
+        if(kg>0){
+          const postChoR=[kg*1.0, kg*1.2], postProR=kg*0.3;
+          set($('race-post-cho'), `${Math.round(postChoR[0])}–${Math.round(postChoR[1])} g`);
+          set($('race-post-pro'), `${postProR.toFixed(1)} g`);
+          set($('race-post-h2o'),'체중감량 1 kg당 1.25–1.5 L');
+        }else{
+          set($('race-post-cho'),'kg 입력'); set($('race-post-pro'),'kg 입력'); set($('race-post-h2o'),'체중감량 기준');
+        }
       }
 
       function bindInputs(){
-        ['in-sex','in-age','in-height','in-weight','in-weather','in-units','in-riegel-mode','in-riegel','in-5k-m','in-5k-s','in-10k-m','in-10k-s','in-hm-h','in-hm-m','in-hm-s','in-m-h','in-m-m','in-m-s']
-          .forEach(id=>$(id)?.addEventListener('input',calc));
+        ['in-sex','in-age','in-height','in-weight','in-weather','in-units','in-riegel-mode','in-riegel',
+         'in-5k-m','in-5k-s','in-10k-m','in-10k-s','in-hm-h','in-hm-m','in-hm-s','in-m-h','in-m-m','in-m-s'
+        ].forEach(id=>$(id)?.addEventListener('input',calc));
       }
 
       // 복사/공유
       $('btn-copy')?.addEventListener('click', async ()=>{
-        const txt = `MP: ${$('mp').textContent}\nEasy: ${$('easy').textContent}\nT: ${$('t').textContent}\nCV: ${$('cv').textContent}\n연료: ${$('fuel').textContent}\n오늘: ${$('today-sess').textContent}`;
+        const txt = `MP: ${$('mp').textContent}
+Easy: ${$('easy').textContent}
+T: ${$('t').textContent}
+CV: ${$('cv').textContent}
+연료: ${$('fuel').textContent}
+오늘: ${$('today-sess').textContent}`;
         try{await navigator.clipboard.writeText(txt);}catch(e){prompt('복사하세요',txt);}
       });
       $('btn-share')?.addEventListener('click', async ()=>{
