@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="format-detection" content="telephone=no" />
-  <title>Sub-3 통합 프로그램 v4.0 — 간단 보기</title>
+  <title>Sub-3 통합 프로그램 v4.0 — 간단/상세</title>
   <style>
     :root{
       --bg-primary:#0b1220; --bg-secondary:#0f172a; --bg-card:rgba(17,24,39,.6); --bg-blur:rgba(11,18,32,.7);
@@ -66,6 +66,8 @@
     .helper__in .pair{display:flex;gap:6px;align-items:center;font-size:13px}
     .helper[aria-hidden="true"]{display:none}
     @supports(padding:env(safe-area-inset-bottom)){.helper__in{padding-bottom:calc(8px + env(safe-area-inset-bottom))}}
+    .fab{position:fixed;right:16px;bottom:16px;z-index:11;width:48px;height:48px;border-radius:999px;border:1px solid var(--border-primary);background:rgba(15,23,42,.9);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+    .fab[hidden]{display:none}
 
     .tabs{display:flex;gap:8px;overflow:auto;margin:10px 0}
     .tbtn{padding:10px 12px;border:1px solid var(--border-primary);border-radius:999px;background:transparent;color:#c7d2fe;white-space:nowrap}
@@ -74,9 +76,8 @@
 
     .simple .adv-only{display:none !important}
 
-    /* 도움말 패널 */
     .help-panel{display:none}
-    .help-panel.is-open{display:block; border-color:rgba(167,139,250,.5)}
+    .help-panel.is-open{display:block;border-color:rgba(167,139,250,.5)}
   </style>
 </head>
 <body class="simple">
@@ -91,13 +92,13 @@
       </div>
     </header>
 
-    <!-- 도움말 패널(토글) -->
     <section id="help-panel" class="card help-panel" aria-hidden="true">
       <h3 class="title">도움말(요약)</h3>
       <ul class="muted">
         <li>거리: km·m, 시간: 분·초, 페이스: 분:초/ km 또는 분:초/ mile</li>
         <li>기록은 10K 또는 하프 하나만 입력해도 됩니다.</li>
-        <li>날씨·단위 칩을 누르면 바로 반영됩니다.</li>
+        <li>날씨·단위 칩은 누르면 즉시 반영됩니다.</li>
+        <li>상세 보기: 모든 주간 단계 카드가 펼쳐집니다.</li>
       </ul>
     </section>
 
@@ -183,7 +184,7 @@
     </section>
 
     <section class="card">
-      <h3 class="title">3) 주간(간단 버전)</h3>
+      <h3 class="title">3) 주간(간단 프리셋)</h3>
       <div class="tabs" role="tablist" aria-label="주간 프리셋">
         <button class="tbtn" aria-pressed="true" data-preset="base">베이스</button>
         <button class="tbtn" aria-pressed="false" data-preset="spec">스페시픽</button>
@@ -193,37 +194,137 @@
       <div id="plan-box" class="muted"></div>
     </section>
 
+    <!-- 상세 주간(모든 단계 카드) -->
+    <section id="weekly-advanced" class="card adv-only">
+      <h3 class="title">상세 주간(모든 단계)</h3>
+      <div class="grid grid--2">
+        <div class="card"><h4 class="title">프렙 주</h4>
+          <ul class="muted">
+            <li>월: Easy 6–10 km + 모빌리티 10분</li>
+            <li>화: 언덕 스프린트 8–10회 × 8–12초(워크백 완전회복)</li>
+            <li>수: Aerobic 8–12 km</li>
+            <li>목: LT 입문 3×8분(세트 사이 2분)</li>
+            <li>금: Easy 6–10 km + S&C 20분</li>
+            <li>토: Easy 8–12 km</li>
+            <li>일: 롱런 14–20 km <span class="badge lr-badge">0%</span></li>
+          </ul>
+        </div>
+        <div class="card"><h4 class="title">베이스1 주</h4>
+          <ul class="muted">
+            <li>월: Easy 10–14 km + 스트라이드</li>
+            <li>화: 언덕 10회 × 60초 또는 CV 5×5분(휴식 2분)</li>
+            <li>수: Aerobic 12–16 km</li>
+            <li>목: 템포 2×5 km 또는 30–40분</li>
+            <li>금: Easy 8–12 km + S&C 25분</li>
+            <li>토: Easy 10–14 km</li>
+            <li>일: 롱런 24–28 km <span class="badge lr-badge">0%</span></li>
+          </ul>
+        </div>
+        <div class="card"><h4 class="title">베이스2 주</h4>
+          <ul class="muted">
+            <li>월: 회복 8–12 km</li>
+            <li>화: 10×1 km @10K(휴식 60–75초) 또는 CV 6×4분(휴식 2분)</li>
+            <li>수: Aerobic 12–16 km + 스트라이드</li>
+            <li>목: 템포 2×6 km 또는 35–45분</li>
+            <li>금: Easy 8–12 km + S&C 20분</li>
+            <li>토: Easy 10–12 km</li>
+            <li>일: 롱런 24–30 km <span class="badge lr-badge">0%</span></li>
+          </ul>
+        </div>
+        <div class="card"><h4 class="title">스페시픽1 주</h4>
+          <ul class="muted">
+            <li>월: 회복 8–12 km</li>
+            <li>화: 10×1 km @10K(휴식 60–75초)</li>
+            <li>수: Aerobic 14–18 km + 스트라이드</li>
+            <li>목: MP 블록 2×(6–8 km) / 세트 사이 2–3 km 조깅</li>
+            <li>금: Easy 8–12 km</li>
+            <li>토: Easy 10–12 km</li>
+            <li>일: 롱런 28–32 km <span class="badge lr-badge">0%</span></li>
+          </ul>
+        </div>
+        <div class="card"><h4 class="title">스페시픽2 주</h4>
+          <ul class="muted">
+            <li>월: 회복 8–12 km</li>
+            <li>화: 5×2 km @10K(휴식 90초) 또는 3×3 km @10K(휴식 2분)</li>
+            <li>수: Aerobic 14–18 km + 스트라이드</li>
+            <li>목: MP 연속 14–18 km 또는 MP 블록 3×(5–6 km)</li>
+            <li>금: Easy 8–12 km</li>
+            <li>토: Easy 10–12 km</li>
+            <li>일: 롱런 28–32 km <span class="badge lr-badge">0%</span></li>
+          </ul>
+        </div>
+        <div class="card"><h4 class="title">피크-1 주</h4>
+          <ul class="muted">
+            <li>월: 회복 8–10 km</li>
+            <li>화: 6×2 km @10K(휴식 90초) 또는 3×3 km @10K(휴식 2분)</li>
+            <li>수: Aerobic 12–16 km</li>
+            <li>목: MP 블록 2×(8–10 km) / 세트 사이 2–3 km 조깅</li>
+            <li>금: Easy 8–10 km</li>
+            <li>토: Easy 8–10 km</li>
+            <li>일: 롱런 32–34 km <span class="badge lr-badge">0%</span></li>
+          </ul>
+        </div>
+        <div class="card"><h4 class="title">테이퍼-1 주</h4>
+          <ul class="muted">
+            <li>월: 회복 6–8 km</li>
+            <li>화: 6×1 km(가볍게)</li>
+            <li>수: Aerobic 8–12 km</li>
+            <li>목: MP 12–16 km</li>
+            <li>금: Easy 6–8 km</li>
+            <li>토: Easy 6–8 km</li>
+            <li>일: 롱런 18–24 km <span class="badge lr-badge">0%</span></li>
+          </ul>
+        </div>
+        <div class="card"><h4 class="title">테이퍼B 주</h4>
+          <ul class="muted">
+            <li>월: 회복 6–8 km</li>
+            <li>화: 5×1 km(가볍게)</li>
+            <li>수: Aerobic 8–10 km</li>
+            <li>목: MP 8–12 km</li>
+            <li>금: Easy 6–8 km</li>
+            <li>토: Easy 6–8 km</li>
+            <li>일: 롱런 16–22 km <span class="badge lr-badge">0%</span></li>
+          </ul>
+        </div>
+        <div class="card"><h4 class="title">리커버리 주</h4>
+          <ul class="muted">
+            <li>월: 휴식 또는 걷기/요가 30–45분</li>
+            <li>화: Easy 6–10 km</li>
+            <li>수: 크로스 40–60분</li>
+            <li>목: Easy 8–12 km + 스트라이드</li>
+            <li>금: 휴식 또는 Easy 6–8 km</li>
+            <li>토: Easy 8–10 km</li>
+            <li>일: 롱런 16–22 km <span class="badge lr-badge">0%</span></li>
+          </ul>
+        </div>
+        <div class="card"><h4 class="title">오프·리셋 주</h4>
+          <ul class="muted">
+            <li>월: 걷기 30–60분</li>
+            <li>화: 요가/스트레칭 30분</li>
+            <li>수: Easy 조깅 20–40분</li>
+            <li>목: 휴식 또는 크로스 30–45분</li>
+            <li>금: Easy 조깅 20–40분</li>
+            <li>토: 산책/트레일 40–60분</li>
+            <li>일: 옵션 롱런 12–16 km <span class="badge lr-badge">0%</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
     <section class="card">
-      <h3 class="title">가이드(핵심만)</h3>
+      <h3 class="title">가이드(핵심)</h3>
       <ul class="list">
         <li><strong>언덕 스프린트</strong>: 6–10회 × 8–12초(경사 6–10%, 워크백 완전회복)</li>
         <li><strong>스트라이드</strong>: 6–10회 × 80–120 m(회당 20–30초 조깅)</li>
         <li><strong>LT 입문</strong>: 3×8분(세트 사이 2분) 또는 4×6분(세트 사이 90초), 하프 페이스 ±0–10초/ km</li>
         <li><strong>템포</strong>: 20–40분, 하프 페이스 ±0–10초/ km</li>
         <li><strong>CV</strong>: 6–8회 × 1 km(휴식 60–75초) 또는 5–6회 × 4분(휴식 2분), 5K +8–12초/ km</li>
-        <li><strong>MP 블록</strong>: 2세트 × (6–8 km @MP, 세트 사이 2–3 km 조깅) 또는 연속 12–18 km @MP</li>
+        <li><strong>MP 블록</strong>: 2×(6–8 km @MP, 세트 사이 2–3 km 조깅) 또는 연속 12–18 km @MP</li>
       </ul>
-      <div class="row" style="margin-top:8px">
-        <div style="flex:1">
-          <div class="badge">워밍업</div>
-          <div class="muted" style="margin-top:6px">
-            공통: 조깅 5분 → 동적(레그 스윙 10/10, 런지 10/10, 발목 10/10)<br/>
-            템포/LT: 조깅 10분 → A/B-스킵·앵클링 각 20 m × 2 → 스트라이드 4–6회<br/>
-            CV/10K: 조깅 10분 → 드릴 2세트 → 짧은 힐 바운딩 3회 × 6초 → 스트라이드 4–6회
-          </div>
-        </div>
-        <div style="flex:1">
-          <div class="badge">쿨다운</div>
-          <div class="muted" style="margin-top:6px">
-            공통: 아주 느린 조깅/워킹 5–10분 → 정적 스트레칭(각 20–30초 × 2세트)<br/>
-            템포/LT: 대퇴사두·TFL 추가, 발바닥 볼 60–90초<br/>
-            롱런: 장요근·대퇴사두 추가, 1–2시간 내 CHO+단백질(3:1)
-          </div>
-        </div>
-      </div>
     </section>
   </div>
 
+  <!-- 하단 요약바(상세 모드에서만) -->
   <div class="helper" id="quickbar" aria-hidden="true">
     <div class="helper__in">
       <div class="pair"><strong>MP</strong><span id="q-mp">—</span></div>
@@ -233,11 +334,14 @@
       <div class="pair"><strong>연료</strong><span id="q-fuel">—</span></div>
       <div class="pair"><strong>오늘</strong><span id="q-sess">—</span></div>
       <div style="margin-left:auto" class="row">
+        <button class="btn" id="btn-collapse" title="하단바 접기">접기</button>
         <button class="btn" id="btn-copy">복사</button>
         <button class="btn" id="btn-share">공유</button>
       </div>
     </div>
   </div>
+  <!-- 접었을 때 작은 버튼(FAB) -->
+  <button id="fab-showbar" class="fab" hidden title="요약 보기">▲</button>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -245,8 +349,8 @@
       const set = (el, v) => { if(el && el.textContent!==v) el.textContent = v; };
       const KM_PER_MILE = 1.609344;
 
-      // 모드
-      const body = document.body, quickbar=$('quickbar');
+      // 모드/도움말/퀵바
+      const body = document.body, quickbar=$('quickbar'), fab=$('fab-showbar');
       const btnSimple=$('mode-simple'), btnAdv=$('mode-advanced'), helpBtn=$('help-toggle'), helpPanel=$('help-panel');
       const MODE_KEY='sub3_simple';
       function applyMode(simple=true){
@@ -254,12 +358,12 @@
         btnSimple.setAttribute('aria-pressed', String(simple));
         btnAdv.setAttribute('aria-pressed', String(!simple));
         quickbar.setAttribute('aria-hidden', String(simple));
+        fab.hidden = true; // 모드 전환 시 FAB 숨김
       }
       btnSimple.addEventListener('click', ()=>{applyMode(true); try{localStorage.setItem(MODE_KEY,'1')}catch(e){}});
       btnAdv.addEventListener('click', ()=>{applyMode(false);try{localStorage.setItem(MODE_KEY,'0')}catch(e){}});
       (function initMode(){const s=localStorage.getItem(MODE_KEY);applyMode(s!=='0');})();
 
-      // 도움말 패널 토글
       helpBtn.addEventListener('click', ()=>{
         const on = helpBtn.getAttribute('aria-pressed')!=='true';
         helpBtn.setAttribute('aria-pressed', String(on));
@@ -269,7 +373,29 @@
         if(on) helpPanel.scrollIntoView({behavior:'smooth', block:'nearest'});
       });
 
-      // 요소
+      // 간단 프리셋
+      const planBox = $('plan-box');
+      const PRESETS = {
+        base:`- 월: Easy 10–14 km + 스트라이드<br/>- 화: 언덕 10회 × 60초 또는 CV 5회 × 5분(휴식 2분)<br/>- 수: Aerobic 12–16 km<br/>- 목: 템포 2세트 × 5 km 또는 30–40분<br/>- 금: Easy 8–12 km + S&C 25분<br/>- 토: Easy 10–14 km<br/>- 일: 롱런 24–28 km(후반 4–6 km 점증)`,
+        spec:`- 화: 10회 × 1 km @10K(휴식 60–75초)<br/>- 목: MP 블록 2세트 × (6–8 km) 또는 MP 14–18 km<br/>- 일: 롱런 28–32 km(후반 8–12 km @MP~MP+10초/ km)`,
+        taper:`- 화: 6회 × 1 km(가볍게) · 목: MP 12–16 km · 일: 롱런 18–24 km(편한 페이스)`,
+        more:`상세 보기 모드에서 아래 ‘상세 주간(모든 단계)’ 카드가 보입니다.`
+      };
+      function selectPreset(key){
+        document.querySelectorAll('.tbtn').forEach(b=>b.setAttribute('aria-pressed','false'));
+        const btn=[...document.querySelectorAll('.tbtn')].find(b=>b.dataset.preset===key);
+        if(btn) btn.setAttribute('aria-pressed','true');
+        planBox.innerHTML = `<div class="muted">${PRESETS[key]}</div>`;
+        if(key==='more'){
+          // 상세 모드로 전환하고 상세 섹션으로 스크롤
+          document.getElementById('mode-advanced')?.click();
+          document.getElementById('weekly-advanced')?.scrollIntoView({behavior:'smooth', block:'start'});
+        }
+      }
+      document.querySelectorAll('.tbtn').forEach(b=>b.addEventListener('click',()=>selectPreset(b.dataset.preset)));
+      selectPreset('base');
+
+      // 칩 바인딩
       const els = {
         sex:$('in-sex'), age:$('in-age'), h:$('in-height'), kg:$('in-weight'),
         wx:$('in-weather'), units:$('in-units'),
@@ -277,8 +403,6 @@
         k10m:$('in-10k-m'), k10s:$('in-10k-s'),
         hmH:$('in-hm-h'), hmM:$('in-hm-m'), hmS:$('in-hm-s')
       };
-
-      // 칩 바인딩
       document.querySelectorAll('#wx-chips .chip').forEach(ch=>{
         ch.addEventListener('click',()=>{
           document.querySelectorAll('#wx-chips .chip').forEach(x=>x.setAttribute('aria-pressed','false'));
@@ -290,6 +414,17 @@
           document.querySelectorAll('#unit-chips .chip').forEach(x=>x.setAttribute('aria-pressed','false'));
           ch.setAttribute('aria-pressed','true'); els.units.value = ch.dataset.unit; calc();
         });
+      });
+
+      // 퀵바 접기/펼치기(FAB)
+      $('btn-collapse')?.addEventListener('click', ()=>{
+        quickbar.setAttribute('aria-hidden','true');
+        if(document.body.classList.contains('simple')) return;
+        $('fab-showbar').hidden = false;
+      });
+      $('fab-showbar')?.addEventListener('click', ()=>{
+        quickbar.setAttribute('aria-hidden','false');
+        $('fab-showbar').hidden = true;
       });
 
       // 유틸
@@ -305,6 +440,7 @@
       function normMS(m,s){let M=Math.max(0,Math.floor(read(m))), S=Math.floor(read(s));if(S<0)S=0;if(S>=60){M+=Math.floor(S/60);S%=60;}return M*60+S;}
       function getExp(p10){const mode=els.rMode?.value||'auto'; if(mode==='manual'){const v=parseFloat(els.rExp?.value); return (v>=1.03&&v<=1.10)?v:1.06;}
         if(!isFinite(p10)||p10<=0) return 1.06; if(p10<=240) return 1.04; if(p10>=330) return 1.08; return 1.06;}
+
       const WX = {
         normal:{ml:[6,10],na:[300,600],adj:{e:0,a:0,t:0,c:0},lr:[0,0],sess:'계획대로'},
         heat:{ml:[8,12],na:[600,1000],adj:{e:10,a:8,t:12,c:8},lr:[-20,-10],sess:'Aerobic 40–70분(반복 10–20%↓)'},
@@ -314,23 +450,6 @@
         snow:{ml:[6,10],na:[300,600],adj:{e:12,a:12,t:20,c:15},lr:[-30,-10],sess:'실내 Easy 30–60분 + S&C'},
         hail:{ml:[6,10],na:[300,600],adj:{e:15,a:15,t:25,c:20},lr:[-30,-10],sess:'실내 전환'}
       };
-
-      // 주간 프리셋
-      const planBox = $('plan-box');
-      const PRESETS = {
-        base:`- 월: Easy 10–14 km + 스트라이드<br/>- 화: 언덕 10회 × 60초 또는 CV 5회 × 5분(휴식 2분)<br/>- 수: Aerobic 12–16 km<br/>- 목: 템포 2세트 × 5 km 또는 30–40분<br/>- 금: Easy 8–12 km + S&C 25분<br/>- 토: Easy 10–14 km<br/>- 일: 롱런 24–28 km(후반 4–6 km 점증)`,
-        spec:`- 화: 10회 × 1 km @10K(휴식 60–75초)<br/>- 목: MP 블록 2세트 × (6–8 km) 또는 MP 14–18 km<br/>- 일: 롱런 28–32 km(후반 8–12 km @MP~MP+10초/ km)`,
-        taper:`- 화: 6회 × 1 km(가볍게)·목: MP 12–16 km·일: 롱런 18–24 km(편한 페이스)`,
-        more:`프렙/베이스2/스페시픽2/피크/테이퍼B/리커버리/오프·리셋은 ‘상세 보기’에서 전체 카드 확인`
-      };
-      function selectPreset(key){
-        document.querySelectorAll('.tbtn').forEach(b=>b.setAttribute('aria-pressed','false'));
-        const btn=[...document.querySelectorAll('.tbtn')].find(b=>b.dataset.preset===key);
-        if(btn) btn.setAttribute('aria-pressed','true');
-        planBox.innerHTML = `<div class="muted">${PRESETS[key]}</div>`;
-      }
-      document.querySelectorAll('.tbtn').forEach(b=>b.addEventListener('click',()=>selectPreset(b.dataset.preset)));
-      selectPreset('base');
 
       // 계산
       function calc(){
@@ -377,6 +496,10 @@
         set($('q-cv'), $('cv').textContent);
         set($('q-fuel'), fuelStr);
         set($('q-sess'), wx.sess);
+
+        // 상세 주간 롱런 배지 동기화
+        const lrTxt = wx.lr[0]===wx.lr[1] ? `${wx.lr[0]}%` : `${wx.lr[0]}%~${wx.lr[1]}%`;
+        document.querySelectorAll('.lr-badge').forEach(b=>b.textContent=lrTxt);
       }
 
       function bindInputs(){
@@ -405,9 +528,10 @@
         try{
           const d = JSON.parse(decodeURIComponent(atob(raw)));
           Object.entries(d).forEach(([k,v])=>{
-            const input = document.querySelector(`#in-${k}`); if(input!=null) input.value = v;
+            const input = document.querySelector(`#in-${k}`) || document.getElementById(`in-${k}`);
+            if(input!=null) input.value = v;
           });
-          // 칩 상태 동기화
+          // 칩 동기화
           document.querySelectorAll('#wx-chips .chip').forEach(x=>x.setAttribute('aria-pressed','false'));
           const wxBtn = document.querySelector(`#wx-chips .chip[data-wx="${$('in-weather').value}"]`); wxBtn?.setAttribute('aria-pressed','true');
           document.querySelectorAll('#unit-chips .chip').forEach(x=>x.setAttribute('aria-pressed','false'));
