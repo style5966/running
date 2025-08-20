@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="format-detection" content="telephone=no" />
-  <title>Sub-3 통합 프로그램 v5.0</title>
+  <title>Sub-3 통합 프로그램 — 간단/상세 + 타임라인</title>
   <style>
     :root{
       --bg-primary:#0b1220; --bg-secondary:#0f172a; --bg-card:rgba(17,24,39,.6);
@@ -41,20 +41,21 @@
     .hidden{display:none !important}
     [data-view="simple"] .detail-only{display:none !important}
     [data-view="detail"] .simple-only{display:none !important}
-    /* 상세 보기에서는 프리셋 버튼 줄 숨김 */
     [data-view="detail"] #panel-weekly .title .row{display:none !important}
     .evidence-panel{display:none}
     .evidence-panel.is-open{display:block}
     .fab{position:fixed;right:16px;bottom:16px;z-index:50;padding:12px 14px;border-radius:999px;background:rgba(17,24,39,.9);border:1px solid var(--border-primary);color:var(--text-primary);box-shadow:0 6px 22px rgba(0,0,0,.35)}
     .preset-btn{padding:10px 14px;border-radius:9999px;border:1px solid var(--border-primary);background:rgba(17,24,39,.6);color:var(--text-primary);cursor:pointer}
     .preset-btn[aria-pressed="true"]{border-color:var(--color-accent);box-shadow:0 0 0 2px rgba(167,139,250,.25) inset}
-    /* WU/CD */
     .wucd-card{border:1px solid var(--border-primary);border-radius:12px;padding:12px;background:rgba(15,23,42,.5)}
     .wucd-title{margin:0 0 8px;font-size:16px}
     .wucd-vals{display:flex;gap:8px;flex-wrap:wrap}
     .wucd-extra{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
     ul.clean{margin:0;padding-left:18px}
     ul.clean li{margin:6px 0}
+    .strike{text-decoration:line-through;opacity:.7}
+    .banner{display:flex;gap:8px;align-items:center;margin-top:8px}
+    .banner .badge{border-color:rgba(245,158,11,.6)}
     @supports(padding:env(safe-area-inset-bottom)){
       .container{padding-bottom:calc(16px + env(safe-area-inset-bottom))}
     }
@@ -64,11 +65,11 @@
   <div class="container">
     <div class="card">
       <div class="title">
-        <h1>Sub-3 통합 프로그램 v5.0</h1>
+        <h1>Sub-3 통합 프로그램</h1>
         <div class="tabs" role="toolbar" aria-label="보기 전환">
           <button class="btn" id="btn-simple" aria-pressed="true" title="간단 보기">간단</button>
           <button class="btn" id="btn-detail" aria-pressed="false" title="상세 보기">상세</button>
-          <button class="btn" id="btn-evidence" aria-pressed="false" title="핵심 문헌">참조</button>
+          <button class="btn" id="btn-evidence" aria-pressed="false" title="핵심 문헌">근거</button>
         </div>
       </div>
       <div class="row" style="margin-top:8px">
@@ -171,9 +172,57 @@
           <span class="badge"><strong>CD</strong> <span id="wucd-cd">—</span></span>
         </div>
       </div>
-      <!-- 세션별로만 노출되는 스트라이드/드릴/동적 -->
       <div id="wucd-extra" class="wucd-extra hidden" aria-label="세션별 보조 요소"></div>
       <p class="muted" style="margin-top:6px">추위: WU +5~10분, 더위: WU 5–8분(짧게) 권장.</p>
+    </div>
+
+    <!-- 운영 가이드: 테스트 + 부하 관리 -->
+    <div class="card" id="card-ops" style="margin-top:12px">
+      <div class="title">
+        <h2>운영 가이드</h2>
+      </div>
+      <div class="grid grid--2" style="margin-top:6px">
+        <div class="card">
+          <h3>정기 테스트(기록 최신화)</h3>
+          <ul class="clean">
+            <li>5K: 프렙/베이스 말(4·8주차 권장)</li>
+            <li>10K: 베이스2·피크 초(6·10주차)</li>
+            <li>하프: 스페시픽2 말(레이스 시뮬)</li>
+            <li>풀: 드레스 리허설(롱런 내 MP 블록)</li>
+          </ul>
+          <div class="row" style="margin-top:6px">
+            <button class="chip" data-jump="#in-5k">5K 입력</button>
+            <button class="chip" data-jump="#in-10k">10K 입력</button>
+            <button class="chip" data-jump="#in-hm">하프 입력</button>
+            <button class="chip" data-jump="#in-m">풀 입력</button>
+          </div>
+          <p class="muted">기록 1개만 입력해도 전체 페이스·영양이 자동 갱신됩니다.</p>
+        </div>
+        <div class="card">
+          <h3>부하 관리(결정 규칙)</h3>
+          <div class="row">
+            <label class="field" style="width:120px">
+              <span class="muted">아침 RPE(1–10)</span>
+              <input id="lrpe" class="input" type="number" min="1" max="10" value="5" />
+            </label>
+            <label class="field" style="width:140px">
+              <span class="muted">휴식 심박 +bpm</span>
+              <input id="lrhr" class="input" type="number" min="0" max="30" value="0" />
+            </label>
+            <label class="badge"><input id="lrpe2d" type="checkbox" /> RPE 2일 연속</label>
+            <label class="badge"><input id="lrhr2d" type="checkbox" /> RHR 2일 연속</label>
+          </div>
+          <div class="row" style="margin-top:6px">
+            <label class="badge warn"><input id="pain48" type="checkbox" /> 통증 48h 지속</label>
+            <label class="badge warn"><input id="fat3w" type="checkbox" /> 3주 연속 과피로</label>
+            <label class="badge"><input id="auto-apply" type="checkbox" checked /> 자동 적용</label>
+          </div>
+          <div class="banner">
+            <span class="badge">규칙</span>
+            <span class="muted">RPE↑(≥7) 또는 RHR+≥5 bpm 2일 연속 → 품질 1개 삭제 · 통증 48h → 품질 전면 중지 · 3주 과피로 → 다음 주 거리 −30%, 품질 0–1</span>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- 영양 타임라인 -->
@@ -186,7 +235,6 @@
         </div>
       </div>
 
-      <!-- 훈련 모드 -->
       <div id="nutri-train" style="margin-top:8px">
         <div class="row" style="margin-bottom:6px">
           <label class="badge">세션 시간</label>
@@ -230,7 +278,6 @@
         </div>
       </div>
 
-      <!-- 시합 모드 -->
       <div id="nutri-race" class="hidden" style="margin-top:8px">
         <div class="row">
           <span class="badge">예상 완주: <strong id="nt-ra-dur-time">—</strong></span>
@@ -290,6 +337,7 @@
 
       <div id="week-simple" class="simple-only" style="margin-top:8px">
         <ul class="clean" id="week-list"></ul>
+        <div id="nextweek-banner" class="banner hidden"><span class="badge">다음 주 권고</span><span class="muted">거리 −30%, 품질 0–1</span></div>
       </div>
 
       <div id="week-all" class="detail-only" style="margin-top:10px">
@@ -298,7 +346,7 @@
             <h3>프렙</h3>
             <ul class="clean">
               <li data-s="easy">월: Easy 6–10 km</li>
-              <li data-s="hill" data-x-drill="1" data-x-strides="1" data-x-dyn="1">화: 언덕 스프린트 6–10회 × 10–12분</li>
+              <li data-s="hill" data-x-drill="1" data-x-strides="1" data-x-dyn="1">화: 언덕 스프린트 6–10회 × 10–12초</li>
               <li data-s="aer">수: Aerobic 8–12 km</li>
               <li data-s="tempo" data-x-strides="1">목: LT 입문 3×8분(회복 2분)</li>
               <li data-s="easy">금: Easy 6–10 km</li>
@@ -384,48 +432,16 @@
 
     <!-- 근거 패널 -->
     <div id="panel-evidence" class="card evidence-panel" aria-live="polite" style="margin-top:12px">
-      <h2>참조(핵심 문헌)</h2>
+      <h2>근거(핵심 문헌)</h2>
       <ol class="clean">
-            <li>Thomas DT, Erdman KA, Burke LM. Nutrition and Athletic Performance. J Acad Nutr Diet. 2016;116(3):501–528; Med Sci Sports Exerc. 48(3):543–568.</li>
-            <li>ACSM Position Stand. Exercise and Fluid Replacement. Med Sci Sports Exerc. 2007;39(2):377–390.</li>
-            <li>Jeukendrup AE. Multiple transportable carbohydrates and endurance performance. Sports Med. 2010–2014.</li>
-            <li>Bosquet L, et al. Effects of tapering on performance: meta-analysis. Med Sci Sports Exerc. 2007;39(8):1358–1365.</li>
-            <li>Seiler S. Training intensity distribution and endurance performance. 2009–2010.</li>
-            <li>Stöggl T, Sperlich B. Polarized vs. threshold training. Front Physiol. 2014;5:33.</li>
-            <li>Périard JD, et al. Heat acclimation and endurance performance. Sports Med. 2015–2021.</li>
-            <li>Quantitative Analysis of 92 12-Week Sub-elite Marathon Training Plans. PMC.</li>
-            <li>The Training Characteristics of World-Class Distance Runners.</li>
-            <li>Factors Influencing Running Performance During a Marathon: Breaking the 2-h Barrier. PMC.</li>
-            <li>Genes and Elite Marathon Running Performance: Systematic Review. PMC.</li>
-            <li>Post-analysis methods for lactate threshold in runners. PMC.</li>
-            <li>Physiological and training characteristics of recreational marathon runners. PMC.</li>
-            <li>Strength training and running economy: systematic reviews/meta-analyses. PMC.</li>
-            <li>Advanced footwear technology and elite marathon speed.</li>
-            <li>Training periodization/intensity distribution in elite distance runners. IJSPP 2022;17(6):820.</li>
-            <li>Training intensity distribution among endurance athletes. PMC.</li>
-            <li>Editorial: training intensity, volume, recovery distribution. PMC.</li>
-            <li>Training intensity distribution of marathon runners across performance levels. PubMed.</li>
-            <li>Training for a (half-)marathon: volume/longest run vs performance/injury. PMC.</li>
-            <li>Determinants of marathon performance: meta-analysis with meta-regression. PubMed.</li>
-            <li>Lactate-guided intervals within high-volume low-intensity approach. PMC.</li>
-            <li>HIIT effects in recreational endurance runners: systematic review. PMC.</li>
-            <li>Running-specific strength/endurance/concurrent training effects. PMC.</li>
-            <li>Nutrition concepts for elite distance runners. PMC.</li>
-            <li>Marathon nutrition: fuel for training and racing. PubMed.</li>
-            <li>Post-exercise recovery nutrition frameworks/reviews. PMC.</li>
-            <li>Carbohydrate periodization & glycogen threshold. PMC.</li>
-            <li>Sleep-low train-low intervention in women. EJ-Sport.</li>
-            <li>Nutrition/training periodization case study. PubMed.</li>
-            <li>Glycogen loading case report (racewalker). PMC.</li>
-            <li>Ultra runners’ dietary observations (24h). PMC.</li>
-            <li>Marathon runners’ intake/timing vs finish time. PMC.</li>
-            <li>120 g/h carbohydrates and muscle damage in mountain marathon. PMC.</li>
-            <li>Nutrition and muscle recovery; performance enhancement. PMC.</li>
-            <li>Recovery strategies after training/competition: umbrella review. PMC.</li>
-            <li>Mental toughness/resilience/mental training effects. PMC/Frontiers.</li>
-            <li>Technological advances in elite marathon performance. J Appl Physiol.</li>
-            <li>World-class 800/1500-m training science/practice. PMC.</li>
-            <li>Recommender systems & ML for marathon runners. PMC.</li>
+        <li>Stöggl T, Sperlich B. The Training Characteristics of World-Class Distance Runners. Sports Med. 2023.</li>
+        <li>Bossi AH, et al. Factors Influencing Running Performance During a Marathon. Sports Med. 2022.</li>
+        <li>Trexler ET, et al. Contemporary Nutrition Strategies for Distance Runners. World Athletics, 2022.</li>
+        <li>Ojanen T, et al. Quantitative Analysis of Sub-Elite Marathon Training Plans. 2023–2024.</li>
+        <li>Bosquet L, et al. Strength Training and Running Economy: Systematic Review. 2024.</li>
+        <li>Ardigò LP, et al. Lactate Threshold Post-analysis Methods Depend on Intensity. 2023.</li>
+        <li>de Lucas RD, et al. Physiological and Training Characteristics of Recreational Marathoners. 2017.</li>
+        <li>Ahmetov II, et al. Genes and Elite Marathon Performance: Systematic Review. 2019.</li>
       </ol>
       <p class="muted">요약: 주 2 품질+롱런, 역치·CV, CHO 60–90 g/h(적응 시 90–120), 물 0.4–0.8 L/h, Na 300–600 mg/h(더위 상향), 단백질 0.3–0.4 g/kg(세션 후).</p>
     </div>
@@ -467,12 +483,19 @@
       wucd:{ type:$('#wucd-type'), wu:$('#wucd-wu'), cd:$('#wucd-cd'), extra:$('#wucd-extra') },
       weekList: $('#week-list'),
       weekAll: $('#week-all'),
+      nextWeekBanner: $('#nextweek-banner'),
       toggleMini: $('#toggle-mini-wucd'),
       fabOpen: $('#fab-open'),
       nutri:{
         cardTrain: $('#nutri-train'),
         cardRace: $('#nutri-race'),
         selDur: $('#train-duration')
+      },
+      ops:{
+        lrpe: $('#lrpe'), lrhr: $('#lrhr'),
+        lrpe2d: $('#lrpe2d'), lrhr2d: $('#lrhr2d'),
+        pain48: $('#pain48'), fat3w: $('#fat3w'),
+        auto: $('#auto-apply')
       }
     };
 
@@ -504,7 +527,6 @@
     }
     function riegel(T1,D1,D2,k=1.06){ return T1*Math.pow(D2/D1,k); }
 
-    // 날씨 보정(강풍/악천후 포함)
     const weatherAdj = {
       normal:{ pace:+0, water:1.0, na:1.0 },
       hot:{ pace:+8, water:1.3, na:1.3 },
@@ -546,7 +568,7 @@
 
     function computeNutrition(){
       const w=weatherAdj[state.weather]||weatherAdj.normal;
-      const cho=[60,90]; // g/h
+      const cho=[60,90];
       const waterBase=[6,10]; // mL/kg/h
       const na=[300,600]; // mg/h
       const water=[Math.round(waterBase[0]*w.water), Math.round(waterBase[1]*w.water)];
@@ -572,6 +594,7 @@
       updateWUCDExtras(els.wucd.type.value);
       annotateMiniBadges();
       updateNutritionTimeline(P, N);
+      applyLoadRules(); // 운영 규칙 반영
     }
 
     const WUCD_BASE = {
@@ -602,7 +625,6 @@
       setText(els.wucd.cd, rangeStr(cd));
     }
 
-    // 세션별 보조 요소 매핑
     const EXTRA_MAP = {
       easy: {strides:false, drill:false, dyn:false},
       tempo:{strides:true,  drill:false, dyn:false},
@@ -638,47 +660,41 @@
       }
     }
 
-    // 주간 항목 미니 배지
     function annotateMiniBadges(){
       const show=state.showMiniWUCD;
-      const targets = Array.from(document.querySelectorAll('[data-s]'));
-      targets.forEach(li=>{
-        li.querySelectorAll('.wucd-mini,.extra-mini').forEach(n=>n.remove());
-        // WU/CD
-        if(show){
-          const key = li.getAttribute('data-s');
-          const base=WUCD_BASE[key]||WUCD_BASE.easy;
-          const wu=adjustByWeather([...base.wu],'wu'), cd=[...base.cd];
-          if(!(base.wu[0]===0 && base.cd[0]===0)){
-            const span=document.createElement('span');
-            span.className='badge mini wucd-mini'; span.style.marginLeft='6px';
-            span.textContent=`WU ${wu[0]}–${wu[1]} · CD ${cd[0]}–${cd[1]}`;
-            li.appendChild(span);
+      const addBadges = (scope)=>{
+        scope.querySelectorAll('li[data-s]').forEach(li=>{
+          li.querySelectorAll('.wucd-mini,.extra-mini').forEach(n=>n.remove());
+          if(show){
+            const key = li.getAttribute('data-s');
+            const base=WUCD_BASE[key]||WUCD_BASE.easy;
+            const wu=adjustByWeather([...base.wu],'wu'), cd=[...base.cd];
+            if(!(base.wu[0]===0 && base.cd[0]===0)){
+              const span=document.createElement('span');
+              span.className='badge mini wucd-mini'; span.style.marginLeft='6px';
+              span.textContent=`WU ${wu[0]}–${wu[1]} · CD ${cd[0]}–${cd[1]}`;
+              li.appendChild(span);
+            }
           }
-        }
-        // 세션별 보조(DYN/DRILL/STR)
-        if(li.hasAttribute('data-x-dyn')){
-          const b=document.createElement('span'); b.className='badge mini extra-mini'; b.style.marginLeft='6px'; b.textContent='DYN';
-          li.appendChild(b);
-        }
-        if(li.hasAttribute('data-x-drill')){
-          const b=document.createElement('span'); b.className='badge mini extra-mini'; b.style.marginLeft='6px'; b.textContent='DRILL';
-          li.appendChild(b);
-        }
-        if(li.hasAttribute('data-x-strides')){
-          const b=document.createElement('span'); b.className='badge mini extra-mini'; b.style.marginLeft='6px'; b.textContent='STR';
-          li.appendChild(b);
-        }
-      });
+          if(li.hasAttribute('data-x-dyn')){
+            const b=document.createElement('span'); b.className='badge mini extra-mini'; b.style.marginLeft='6px'; b.textContent='DYN'; li.appendChild(b);
+          }
+          if(li.hasAttribute('data-x-drill')){
+            const b=document.createElement('span'); b.className='badge mini extra-mini'; b.style.marginLeft='6px'; b.textContent='DRILL'; li.appendChild(b);
+          }
+          if(li.hasAttribute('data-x-strides')){
+            const b=document.createElement('span'); b.className='badge mini extra-mini'; b.style.marginLeft='6px'; b.textContent='STR'; li.appendChild(b);
+          }
+        });
+      };
+      addBadges(document);
     }
 
     function fmt1(n){ return (Math.round(n*10)/10).toFixed(1); }
     function updateNutritionTimeline(P, N){
       const w = state.weight||0;
-      // 훈련 - 전
       setById('nt-tr-pre-cho', w? `${Math.round(w*1)}–${Math.round(w*3)} g`:'—');
       setById('nt-tr-pre-water', w? `${Math.round(w*5)}–${Math.round(w*7)} mL`:'—');
-      // 훈련 - 중
       const minutes = state.trainDurMin||90; const hrs = minutes/60;
       setById('nt-tr-dur-cho-hr', `${N.cho[0]}–${N.cho[1]} g/시간`);
       setById('nt-tr-dur-cho-total', `${Math.round(N.cho[0]*hrs)}–${Math.round(N.cho[1]*hrs)} g`);
@@ -689,11 +705,9 @@
       setById('nt-tr-dur-na-total', `${Math.round(N.na[0]*hrs)}–${Math.round(N.na[1]*hrs)} mg`);
       setById('nt-tr-dur-gels', `${Math.round(N.cho[0]*hrs/25)}–${Math.round(N.cho[1]*hrs/25)} 개(25 g)`);
       setById('nt-tr-dur-bottles', w? `${Math.round((waterHrLlo*hrs)/0.5)}–${Math.round((waterHrLhi*hrs)/0.5)} 개(500 mL)`:'—');
-      // 훈련 - 후
       setById('nt-tr-post-cho', w? `${Math.round(w*1.0)}–${Math.round(w*1.2)} g`:'—');
       setById('nt-tr-post-pro', w? `${Math.round(w*0.3)}–${Math.round(w*0.4)} g`:'—');
 
-      // 시합
       const sec = P.pred.M||0; const H = sec? (sec/3600):0;
       setById('nt-ra-dur-time', sec? secToHMS(sec):'—');
       setById('nt-ra-pre-load', w? `${Math.round(w*8)}–${Math.round(w*12)} g/일`:'—');
@@ -716,7 +730,6 @@
       setById('nt-ra-post-pro', w? `${Math.round(w*0.3)}–${Math.round(w*0.4)} g`:'—');
     }
 
-    // 프리셋(간단 보기에서 사용)
     const PRESETS={
       prep:[
         {t:'월: Easy 6–10 km', s:'easy'},
@@ -796,28 +809,27 @@
         els.weekList.appendChild(li);
       });
       annotateMiniBadges();
+      clearRuleMarks($('#week-simple'));
+      clearRuleMarks($('#week-all'));
     }
 
-    // 보기 전환
     function applyView(){
       root.setAttribute('data-view', state.detail?'detail':'simple');
     }
 
-    // 이벤트
+    // 이벤트: 단위/날씨/보기/근거
     $$('.chip[data-units]').forEach(btn=>{
       btn.addEventListener('click',()=>{
         $$('.chip[data-units]').forEach(b=>b.setAttribute('aria-pressed','false'));
         btn.setAttribute('aria-pressed','true');
-        state.units=btn.getAttribute('data-units');
-        render();
+        state.units=btn.getAttribute('data-units'); render();
       });
     });
     $$('.chip[data-weather]').forEach(btn=>{
       btn.addEventListener('click',()=>{
         $$('.chip[data-weather]').forEach(b=>b.setAttribute('aria-pressed','false'));
         btn.setAttribute('aria-pressed','true');
-        state.weather=btn.getAttribute('data-weather');
-        render();
+        state.weather=btn.getAttribute('data-weather'); render();
       });
     });
     $$('.chip[data-nmode]').forEach(btn=>{
@@ -831,15 +843,11 @@
     });
 
     $('#btn-simple').addEventListener('click',()=>{
-      state.detail=false;
-      $('#btn-simple').setAttribute('aria-pressed','true');
-      $('#btn-detail').setAttribute('aria-pressed','false');
+      state.detail=false; $('#btn-simple').setAttribute('aria-pressed','true'); $('#btn-detail').setAttribute('aria-pressed','false');
       applyView(); window.scrollTo({top:0,behavior:'smooth'});
     });
     $('#btn-detail').addEventListener('click',()=>{
-      state.detail=true;
-      $('#btn-simple').setAttribute('aria-pressed','false');
-      $('#btn-detail').setAttribute('aria-pressed','true');
+      state.detail=true; $('#btn-simple').setAttribute('aria-pressed','false'); $('#btn-detail').setAttribute('aria-pressed','true');
       applyView(); window.scrollTo({top:0,behavior:'smooth'});
     });
     $('#btn-evidence').addEventListener('click',()=>{
@@ -854,6 +862,7 @@
       annotateMiniBadges();
     });
 
+    // 입력
     Object.values(els.inputs).forEach(inp=>{
       inp.addEventListener('input', debounce(()=>{
         state.sex=els.inputs.sex.value;
@@ -884,6 +893,88 @@
         renderPreset(b.getAttribute('data-preset'));
       });
     });
+
+    // 정기 테스트 입력 바로가기
+    $$('[data-jump]').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const sel = btn.getAttribute('data-jump');
+        const target = document.querySelector(sel);
+        if(target){ target.scrollIntoView({behavior:'smooth', block:'center'}); setTimeout(()=>target.focus(),300); }
+      });
+    });
+
+    // 부하 관리 규칙
+    ['lrpe','lrhr','lrpe2d','lrhr2d','pain48','fat3w','auto-apply'].forEach(id=>{
+      const el = document.getElementById(id);
+      if(el) el.addEventListener('change', ()=>applyLoadRules());
+      if(el && el.tagName==='INPUT' && el.type==='number') el.addEventListener('input', debounce(()=>applyLoadRules(),200));
+    });
+
+    // 규칙 적용
+    function clearRuleMarks(scope){
+      if(!scope) return;
+      scope.querySelectorAll('li[data-s]').forEach(li=>{
+        li.classList.remove('strike');
+        li.querySelectorAll('.rule-badge').forEach(n=>n.remove());
+      });
+    }
+    function addRuleBadge(li, text){
+      const b=document.createElement('span');
+      b.className='badge mini rule-badge'; b.style.marginLeft='6px'; b.textContent=text;
+      li.appendChild(b);
+    }
+    function applyLoadRules(){
+      clearRuleMarks($('#week-simple'));
+      clearRuleMarks($('#week-all'));
+      els.nextWeekBanner.classList.add('hidden');
+
+      if(!els.ops.auto.checked) return;
+
+      const rpe = parseInt(els.ops.lrpe.value||'0',10);
+      const rhr = parseInt(els.ops.lrhr.value||'0',10);
+      const rpe2 = els.ops.lrpe2d.checked;
+      const rhr2 = els.ops.lrhr2d.checked;
+      const pain = els.ops.pain48.checked;
+      const fat = els.ops.fat3w.checked;
+
+      const quality = ['cv','tempo','mp','hill'];
+
+      // 통증 48h → 품질 전면 중지
+      if(pain){
+        markQuality($('#week-simple'), quality, true);
+        markQuality($('#week-all'), quality, true);
+        return;
+      }
+
+      // RPE↑ 또는 RHR↑ 2일 연속 → 품질 1개 삭제
+      if((rpe>=7 && rpe2) || (rhr>=5 && rhr2)){
+        removeOneQuality($('#week-simple'), quality);
+        removeOneQuality($('#week-all'), quality);
+      }
+
+      // 3주 연속 과피로 → 다음 주 권고 배지
+      if(fat){
+        els.nextWeekBanner.classList.remove('hidden');
+      }
+    }
+    function markQuality(scope, types, all){
+      if(!scope) return;
+      const items = Array.from(scope.querySelectorAll('li[data-s]'));
+      items.forEach(li=>{
+        if(types.includes(li.getAttribute('data-s'))){
+          li.classList.add('strike');
+          addRuleBadge(li,'삭제');
+        }
+      });
+    }
+    function removeOneQuality(scope, types){
+      if(!scope) return;
+      const items = Array.from(scope.querySelectorAll('li[data-s]'));
+      for(const t of types){
+        const li = items.find(x=>x.getAttribute('data-s')===t);
+        if(li){ li.classList.add('strike'); addRuleBadge(li,'삭제'); break; }
+      }
+    }
 
     // 초기
     renderPreset('prep');
