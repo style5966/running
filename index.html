@@ -249,6 +249,37 @@
         </div>
         <p class="muted">계획적 컷백(주기)과 과피로 3주(반응)는 별개입니다.</p>
       </div>
+
+      <div class="card" id="card-lactate" style="margin-top:8px">
+        <h3>젖산 목표(LT)</h3>
+        <div class="row">
+          <label class="field" style="width:170px">
+            <span class="muted">하한 (mmol/L)</span>
+            <input id="lac-low" class="input" type="range" min="2.0" max="4.0" step="0.1" value="2.3" />
+          </label>
+          <label class="field" style="width:170px">
+            <span class="muted">상한 (mmol/L)</span>
+            <input id="lac-high" class="input" type="range" min="2.0" max="4.0" step="0.1" value="3.0" />
+          </label>
+          <span class="badge" id="lac-badge">LAC 2.3–3.0</span>
+          <label class="badge"><input id="lac-apply" type="checkbox" checked /> 노르웨이 세션에 적용</label>
+          <span class="muted" style="margin-left:8px">단위</span>
+          <button class="chip" data-lacunit="mmol" aria-pressed="true">mmol/L</button>
+          <button class="chip" data-lacunit="percent" aria-pressed="false">%LT</button>
+          <span class="muted" style="margin-left:8px">HR 기준</span>
+          <button class="chip" data-hrref="hrmax" aria-pressed="true">HRmax</button>
+          <button class="chip" data-hrref="lthr" aria-pressed="false">LTHR</button>
+          <label class="field" style="width:140px">
+            <span class="muted">HRmax (bpm)</span>
+            <input id="in-hrmax" class="input" type="number" min="100" max="230" placeholder="예: 190" />
+          </label>
+          <label class="field" style="width:140px">
+            <span class="muted">LTHR (bpm)</span>
+            <input id="in-lthr" class="input" type="number" min="80" max="220" placeholder="예: 175" />
+          </label>
+        </div>
+        <p class="muted">권장 범위(더블 서레숄드): 2.3–3.0 mmol/L</p>
+      </div>
     </div>
 
     <div class="card" id="card-nutri" style="margin-top:12px">
@@ -257,6 +288,7 @@
         <div class="row">
           <button class="chip" data-nmode="train" aria-pressed="true">훈련</button>
           <button class="chip" data-nmode="race" aria-pressed="false">시합</button>
+          <label class="badge"><input id="gut-trained" type="checkbox" /> 고CHO(120 g/h)</label>
         </div>
       </div>
 
@@ -359,6 +391,10 @@
           <button class="preset-btn" data-preset="taperb" aria-pressed="false">테이퍼B</button>
           <button class="preset-btn" data-preset="recovery" aria-pressed="false">리커버리</button>
           <button class="preset-btn" data-preset="off" aria-pressed="false">오프·리셋</button>
+          <button class="preset-btn" data-preset="norway" aria-pressed="false">노르웨이(더블)</button>
+          <button class="preset-btn" data-preset="tid_pyr" aria-pressed="false">피라미드</button>
+          <button class="preset-btn" data-preset="tid_pol" aria-pressed="false">양극화</button>
+          <button class="preset-btn" data-preset="tid_thr" aria-pressed="false">역치형</button>
         </div>
       </div>
 
@@ -499,6 +535,58 @@
               <li data-s="rest">일: 오프</li>
             </ul>
           </div>
+
+          <div class="card">
+            <h3>노르웨이(더블 서레숄드)</h3>
+            <ul class="clean">
+              <li data-s="easy">월: Easy 8–10 km</li>
+              <li data-s="tempo" data-x-lac="2.3–3.0">화: 더블 LT — 오전 5×6분 @LT / 오후 10×1000m @LT</li>
+              <li data-s="aer">수: Aerobic 10–12 km</li>
+              <li data-s="tempo" data-x-lac="2.3–3.0">목: 더블 LT — 오전 5×6분 @LT / 오후 25×400m @LT</li>
+              <li data-s="easy">금: Easy 6–8 km</li>
+              <li data-s="long">토: 롱런 24–30 km</li>
+              <li data-s="rest">일: 휴식</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3>피라미드형 TID 주간</h3>
+            <ul class="clean">
+              <li data-s="easy">월: Easy 8–10 km</li>
+              <li data-s="tempo" data-x-strides="1">화: 템포 20–30분</li>
+              <li data-s="aer">수: Aerobic 10–14 km</li>
+              <li data-s="cv" data-x-drill="1" data-x-strides="1">목: CV 6×1 km(회복 60–75초)</li>
+              <li data-s="easy">금: Easy 8–10 km</li>
+              <li data-s="long">토: Prog 롱런 26–32 km</li>
+              <li data-s="rest">일: 휴식</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3>양극화 TID 주간</h3>
+            <ul class="clean">
+              <li data-s="easy">월: Easy 8–10 km</li>
+              <li data-s="cv" data-x-drill="1" data-x-strides="1">화: VO2 6×3분(회복 2분)</li>
+              <li data-s="aer">수: Aerobic 8–12 km</li>
+              <li data-s="hill" data-x-dyn="1" data-x-drill="1" data-x-strides="1">목: 언덕 스프린트 8–10회 × 10–12초</li>
+              <li data-s="easy">금: Easy 6–8 km</li>
+              <li data-s="long">토: 롱런 22–28 km(편안히)</li>
+              <li data-s="rest">일: 휴식</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3>역치형 TID 주간</h3>
+            <ul class="clean">
+              <li data-s="easy">월: Easy 8–10 km</li>
+              <li data-s="tempo" data-x-strides="1">화: 템포 25–35분</li>
+              <li data-s="aer">수: Aerobic 10–12 km</li>
+              <li data-s="tempo">목: 크루즈 8–12×1 km @LT(회복 60–75초)</li>
+              <li data-s="easy">금: Easy 6–8 km</li>
+              <li data-s="mp">토: MP 연속 12–16 km</li>
+              <li data-s="rest">일: 휴식</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -563,7 +651,10 @@
       sex:'male', age:30, height:175, weight:65,
       rec5k:'', rec10k:'', recHM:'', recM:'',
       showMiniWUCD:true, detail:false, evidence:false,
-      nmode:'train', trainDurMin:90,
+      nmode:'train', trainDurMin:90, gutTrained:false,
+      lacUnit:'mmol',
+      lacStore:{ mmol:{low:2.3, high:3.0}, percent:{low:95, high:100} },
+      hrRef:'hrmax', hrMax:0, ltHr:0,
       currentPreset:'prep'
     };
 
@@ -595,7 +686,18 @@
       nutri:{
         cardTrain: $('#nutri-train'),
         cardRace: $('#nutri-race'),
-        selDur: $('#train-duration')
+        selDur: $('#train-duration'),
+        gutTrained: $('#gut-trained')
+      },
+      lactate:{
+        low: $('#lac-low'),
+        high: $('#lac-high'),
+        badge: $('#lac-badge'),
+        apply: $('#lac-apply'),
+        chips: $$('[data-lacunit]'),
+        hrref: $$('[data-hrref]'),
+        inHrMax: $('#in-hrmax'),
+        inLtHr: $('#in-lthr')
       },
       ops:{
         lrpe: $('#lrpe'), lrhr: $('#lrhr'),
@@ -610,6 +712,7 @@
     const pad2=n=>String(n).padStart(2,'0');
     const setText=(el,txt)=>{ if(el && el.textContent!==txt) el.textContent=txt; };
     const setById=(id,txt)=>{ const el=document.getElementById(id); if(el && el.textContent!==txt) el.textContent=txt; };
+    const clamp=(v,min,max)=>Math.min(max,Math.max(min,v));
 
     function parseTimeToSec(v){
       if(!v) return 0;
@@ -676,13 +779,13 @@
 
     function computeNutrition(){
       const w=weatherAdj[state.weather]||weatherAdj.normal;
-      const cho=[60,90];
+      const cho = state.gutTrained ? [90,120] : [60,90]; // g/h
       const waterBase=[6,10]; // mL/kg/h
       const na=[300,600]; // mg/h
       const water=[Math.round(waterBase[0]*w.water), Math.round(waterBase[1]*w.water)];
       const naRec=[Math.round(na[0]*w.na), Math.round(na[1]*w.na)];
-      const proPost = Math.round(state.weight*0.35);
-      return { cho, water, na:naRec, proPost };
+      const proPostRange = [Math.round(state.weight*0.3), Math.round(state.weight*0.4)];
+      return { cho, water, na:naRec, proPostRange };
     }
 
     function resetRuleMarks(scope){
@@ -710,7 +813,7 @@
       setText(els.kpi.cho, `${N.cho[0]}–${N.cho[1]}`);
       setText(els.kpi.water, `${N.water[0]}–${N.water[1]}`);
       setText(els.kpi.na, `${N.na[0]}–${N.na[1]}`);
-      setText(els.kpi.pro, `${N.proPost}`);
+      setText(els.kpi.pro, `${N.proPostRange[0]}–${N.proPostRange[1]}`);
 
       applyWUCD(els.wucd.type.value);
       updateWUCDExtras(els.wucd.type.value);
@@ -787,21 +890,14 @@
     }
 
     function annotateMiniBadges(){
-      const show=state.showMiniWUCD;
-      document.querySelectorAll('li[data-s]').forEach(li=>{
-        li.querySelectorAll('.wucd-mini,.extra-mini').forEach(n=>n.remove());
-        if(show){
-          const key = li.getAttribute('data-s');
-          const base=WUCD_BASE[key]||WUCDBASE.easy;
-        }
-      });
-      // 안전: 오타 방지용 다시 구현
+      const P = computePaces();
       document.querySelectorAll('li[data-s]').forEach(li=>{
         li.querySelectorAll('.wucd-mini,.extra-mini').forEach(n=>n.remove());
         if(state.showMiniWUCD){
           const key = li.getAttribute('data-s');
-          const base=(WUCD_BASE[key]||WUCD_BASE.easy);
-          const wu=adjustByWeather([...base.wu],'wu'), cd=[...base.cd];
+          const base = (WUCD_BASE[key] || WUCD_BASE.easy);
+          const wu = adjustByWeather([...base.wu], 'wu');
+          const cd = [...base.cd];
           if(!(base.wu[0]===0 && base.cd[0]===0)){
             const span=document.createElement('span');
             span.className='badge mini wucd-mini'; span.style.marginLeft='6px';
@@ -817,6 +913,62 @@
         }
         if(li.hasAttribute('data-x-strides')){
           const b=document.createElement('span'); b.className='badge mini extra-mini'; b.style.marginLeft='6px'; b.textContent='STR'; li.appendChild(b);
+        }
+        if(li.hasAttribute('data-x-lac')){
+          let val = li.getAttribute('data-x-lac') || '2.3–3.0';
+          let label = `LAC ${val}`;
+          if(els.lactate.apply?.checked){
+            const lo = parseFloat(els.lactate.low?.value||'2.3');
+            const hi = parseFloat(els.lactate.high?.value||'3.0');
+            if(state.lacUnit==='mmol') label = `LAC ${lo.toFixed(1)}–${hi.toFixed(1)} mmol/L`;
+            else label = `LAC ${Math.round(lo)}–${Math.round(hi)}% LT`;
+          }
+          const b=document.createElement('span'); b.className='badge mini extra-mini'; b.style.marginLeft='6px'; b.textContent=label; li.appendChild(b);
+
+          // 추가 보조 배지: %LT → 페이스/HR
+          if(els.lactate.apply?.checked && state.lacUnit==='percent'){
+            const loP = clamp(parseFloat(els.lactate.low?.value||'95'),80,110);
+            const hiP = clamp(parseFloat(els.lactate.high?.value||'100'),80,110);
+            // LT 기준 페이스 추정: T 페이스 평균 또는 하프 페이스 기반
+            let ltSec = 0;
+            if(P.t && P.t[0] && P.t[1]){ ltSec = (P.t[0]+P.t[1])/2; }
+            else if(P.pred && P.pred.HM){ ltSec = (P.pred.HM/21.0975); }
+            else if(P.k10){ ltSec = P.k10*1.04; } // 10K보다 약간 느리게 보정
+            else if(P.mp){ ltSec = P.mp-15; }
+            if(ltSec && ltSec>0){
+              const s1 = ltSec/(loP/100), s2 = ltSec/(hiP/100);
+              const slow = Math.max(s1,s2), fast = Math.min(s1,s2);
+              const paceBadge=document.createElement('span');
+              paceBadge.className='badge mini extra-mini'; paceBadge.style.marginLeft='6px';
+              paceBadge.textContent=`PACE ${paceStrFromKm(fast)} ~ ${paceStrFromKm(slow)}`;
+              li.appendChild(paceBadge);
+
+              // HR: HRmax 또는 LTHR 기준으로 bpm 범위를 산출
+              const hrRef = state.hrRef || 'hrmax';
+              const hrMax = state.hrMax>0 ? state.hrMax : 0;
+              const ltHr  = state.ltHr>0 ? state.ltHr : 0;
+              let hrText='';
+              if(hrRef==='hrmax'){
+                // LT ≈ 90% HRmax 가정, %LT를 HRmax에 곱해 대략 범위 산출
+                const base = hrMax>0 ? hrMax : 200; // 기본값 200 가정
+                const bpm1 = Math.round(base*(loP/100));
+                const bpm2 = Math.round(base*(hiP/100));
+                const loB = Math.min(bpm1,bpm2), hiB = Math.max(bpm1,bpm2);
+                hrText = `HR ${loB}–${hiB} bpm`;
+              }else{
+                // LTHR 기준에서 ±0~+5%대 범위로 표시(간단 모델)
+                const base = ltHr>0 ? ltHr : 170; // 기본값 170 가정
+                const bpm1 = Math.round(base*(loP/100));
+                const bpm2 = Math.round(base*(hiP/100));
+                const loB = Math.min(bpm1,bpm2), hiB = Math.max(bpm1,bpm2);
+                hrText = `HR ${loB}–${hiB} bpm (vs LTHR)`;
+              }
+              const hrBadge=document.createElement('span');
+              hrBadge.className='badge mini extra-mini'; hrBadge.style.marginLeft='6px';
+              hrBadge.textContent=hrText;
+              li.appendChild(hrBadge);
+            }
+          }
         }
       });
     }
@@ -841,8 +993,8 @@
 
       const sec = P.pred.M||0; const H = sec? (sec/3600):0;
       setById('nt-ra-dur-time', sec? secToHMS(sec):'—');
-      setById('nt-ra-pre-load', w? `${Math.round(w*8)}–${Math.round(w*12)} g/일`:'—');
-      setById('nt-ra-pre-morn-cho', w? `${Math.round(w*1)}–${Math.round(w*3)} g`:'—');
+      setById('nt-ra-pre-load', w? `${Math.round(w*10)}–${Math.round(w*12)} g/일`:'—');
+      setById('nt-ra-pre-morn-cho', w? `${Math.round(w*1)}–${Math.round(w*4)} g`:'—');
       setById('nt-ra-pre-morn-water', w? `${Math.round(w*5)}–${Math.round(w*7)} mL`:'—');
       setById('nt-ra-dur-cho-hr', `${N.cho[0]}–${N.cho[1]} g/시간`);
       setById('nt-ra-dur-water-hr', `${N.water[0]}–${N.water[1]} mL/kg/시간`);
@@ -951,6 +1103,42 @@
         {t:'금: Easy 5–6 km', s:'easy'},
         {t:'토: 오프', s:'rest'},
         {t:'일: 오프', s:'rest'}
+      ],
+      norway:[
+        {t:'월: Easy 8–10 km', s:'easy'},
+        {t:'화: 더블 LT — 오전 5×6분 @LT / 오후 10×1000m @LT', s:'tempo', x:{lac:'2.3–3.0'}},
+        {t:'수: Aerobic 10–12 km', s:'aer'},
+        {t:'목: 더블 LT — 오전 5×6분 @LT / 오후 25×400m @LT', s:'tempo', x:{lac:'2.3–3.0'}},
+        {t:'금: Easy 6–8 km', s:'easy'},
+        {t:'토: 롱런 24–30 km', s:'long'},
+        {t:'일: 휴식', s:'rest'}
+      ],
+      tid_pyr:[
+        {t:'월: Easy 8–10 km', s:'easy'},
+        {t:'화: 템포 20–30분', s:'tempo', x:{strides:true}},
+        {t:'수: Aerobic 10–14 km', s:'aer'},
+        {t:'목: CV 6×1 km(회복 60–75초)', s:'cv', x:{drill:true, strides:true}},
+        {t:'금: Easy 8–10 km', s:'easy'},
+        {t:'토: Prog 롱런 26–32 km', s:'long'},
+        {t:'일: 휴식', s:'rest'}
+      ],
+      tid_pol:[
+        {t:'월: Easy 8–10 km', s:'easy'},
+        {t:'화: VO2 6×3분(회복 2분)', s:'cv', x:{drill:true, strides:true}},
+        {t:'수: Aerobic 8–12 km', s:'aer'},
+        {t:'목: 언덕 스프린트 8–10회 × 10–12초', s:'hill', x:{dyn:true, drill:true, strides:true}},
+        {t:'금: Easy 6–8 km', s:'easy'},
+        {t:'토: 롱런 22–28 km(편안히)', s:'long'},
+        {t:'일: 휴식', s:'rest'}
+      ],
+      tid_thr:[
+        {t:'월: Easy 8–10 km', s:'easy'},
+        {t:'화: 템포 25–35분', s:'tempo', x:{strides:true}},
+        {t:'수: Aerobic 10–12 km', s:'aer'},
+        {t:'목: 크루즈 8–12×1 km @LT(회복 60–75초)', s:'tempo'},
+        {t:'금: Easy 6–8 km', s:'easy'},
+        {t:'토: MP 연속 12–16 km', s:'mp'},
+        {t:'일: 휴식', s:'rest'}
       ]
     };
     function renderPreset(name){
@@ -964,6 +1152,7 @@
         if(item.x?.dyn) li.setAttribute('data-x-dyn','1');
         if(item.x?.drill) li.setAttribute('data-x-drill','1');
         if(item.x?.strides) li.setAttribute('data-x-strides','1');
+        if(item.x?.lac) li.setAttribute('data-x-lac', item.x.lac);
         els.weekList.appendChild(li);
       });
       annotateMiniBadges();
@@ -1040,6 +1229,76 @@
       state.trainDurMin = parseInt(els.nutri.selDur.value,10)||90;
       render();
     });
+    if(els.nutri.gutTrained){
+      els.nutri.gutTrained.addEventListener('change',()=>{
+        state.gutTrained = !!els.nutri.gutTrained.checked;
+        render();
+      });
+    }
+
+    // Lactate sliders
+    function updateLactateBadge(){
+      const loV = parseFloat(els.lactate.low?.value||'2.3');
+      const hiV = parseFloat(els.lactate.high?.value||'3.0');
+      if(state.lacUnit==='mmol'){
+        const loC = clamp(loV,2.0,4.0), hiC = clamp(hiV,2.0,4.0);
+        if(els.lactate.badge){ els.lactate.badge.textContent = `LAC ${loC.toFixed(1)}–${hiC.toFixed(1)} mmol/L`; }
+      }else{
+        const loC = clamp(loV,80,110), hiC = clamp(hiV,80,110);
+        if(els.lactate.badge){ els.lactate.badge.textContent = `LAC ${Math.round(loC)}–${Math.round(hiC)}% LT`; }
+      }
+    }
+    if(els.lactate.low){ els.lactate.low.addEventListener('input',()=>{
+      const v = parseFloat(els.lactate.low.value||'0');
+      if(state.lacUnit==='mmol'){ state.lacStore.mmol.low = clamp(v,2.0,4.0); }
+      else { state.lacStore.percent.low = clamp(v,80,110); }
+      updateLactateBadge(); annotateMiniBadges();
+    }); }
+    if(els.lactate.high){ els.lactate.high.addEventListener('input',()=>{
+      const v = parseFloat(els.lactate.high.value||'0');
+      if(state.lacUnit==='mmol'){ state.lacStore.mmol.high = clamp(v,2.0,4.0); }
+      else { state.lacStore.percent.high = clamp(v,80,110); }
+      updateLactateBadge(); annotateMiniBadges();
+    }); }
+    if(els.lactate.apply){ els.lactate.apply.addEventListener('change',()=>{ annotateMiniBadges(); }); }
+    function setLactateUnit(unit){
+      state.lacUnit = unit;
+      if(els.lactate.chips){
+        els.lactate.chips.forEach(b=>b.setAttribute('aria-pressed','false'));
+        const b = document.querySelector(`[data-lacunit="${unit}"]`); if(b) b.setAttribute('aria-pressed','true');
+      }
+      if(unit==='mmol'){
+        if(els.lactate.low){ els.lactate.low.min='2.0'; els.lactate.low.max='4.0'; els.lactate.low.step='0.1'; els.lactate.low.value=String(state.lacStore.mmol.low); }
+        if(els.lactate.high){ els.lactate.high.min='2.0'; els.lactate.high.max='4.0'; els.lactate.high.step='0.1'; els.lactate.high.value=String(state.lacStore.mmol.high); }
+      }else{
+        if(els.lactate.low){ els.lactate.low.min='80'; els.lactate.low.max='110'; els.lactate.low.step='1'; els.lactate.low.value=String(state.lacStore.percent.low); }
+        if(els.lactate.high){ els.lactate.high.min='80'; els.lactate.high.max='110'; els.lactate.high.step='1'; els.lactate.high.value=String(state.lacStore.percent.high); }
+      }
+      updateLactateBadge();
+      annotateMiniBadges();
+    }
+    if(els.lactate.chips){
+      els.lactate.chips.forEach(btn=>{
+        btn.addEventListener('click',()=>{
+          els.lactate.chips.forEach(b=>b.setAttribute('aria-pressed','false'));
+          btn.setAttribute('aria-pressed','true');
+          const unit = btn.getAttribute('data-lacunit')||'mmol';
+          setLactateUnit(unit);
+        });
+      });
+    }
+    if(els.lactate.hrref){
+      els.lactate.hrref.forEach(btn=>{
+        btn.addEventListener('click',()=>{
+          els.lactate.hrref.forEach(b=>b.setAttribute('aria-pressed','false'));
+          btn.setAttribute('aria-pressed','true');
+          state.hrRef = btn.getAttribute('data-hrref')||'hrmax';
+          annotateMiniBadges();
+        });
+      });
+    }
+    if(els.lactate.inHrMax){ els.lactate.inHrMax.addEventListener('input',()=>{ state.hrMax = parseInt(els.lactate.inHrMax.value||'0',10)||0; annotateMiniBadges(); }); }
+    if(els.lactate.inLtHr){ els.lactate.inLtHr.addEventListener('input',()=>{ state.ltHr = parseInt(els.lactate.inLtHr.value||'0',10)||0; annotateMiniBadges(); }); }
 
     $$('.preset-btn').forEach(b=>{
       b.addEventListener('click',()=>{
@@ -1137,6 +1396,8 @@
     renderPreset('prep');
     applyView();
     render();
+    // 젖산 단위 초기화
+    if(els.lactate.chips){ setLactateUnit(state.lacUnit); }
 
     // FAB
     let fabTimer=null;
