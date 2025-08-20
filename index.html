@@ -176,7 +176,7 @@
       <p class="muted" style="margin-top:6px">추위: WU +5~10분, 더위: WU 5–8분(짧게) 권장.</p>
     </div>
 
-    <!-- 운영 가이드: 테스트 + 부하 관리 -->
+    <!-- 운영 가이드: 테스트 + 부하 관리 + 컷백 사이클 -->
     <div class="card" id="card-ops" style="margin-top:12px">
       <div class="title">
         <h2>운영 가이드</h2>
@@ -185,9 +185,9 @@
         <div class="card">
           <h3>정기 테스트(기록 최신화)</h3>
           <ul class="clean">
-            <li>5K: 프렙/베이스 말(4·8주차 권장)</li>
+            <li>5K: 프렙/베이스 말(4·8주차)</li>
             <li>10K: 베이스2·피크 초(6·10주차)</li>
-            <li>하프: 스페시픽2 말(레이스 시뮬)</li>
+            <li>하프: 스페시픽2 말</li>
             <li>풀: 드레스 리허설(롱런 내 MP 블록)</li>
           </ul>
           <div class="row" style="margin-top:6px">
@@ -219,9 +219,37 @@
           </div>
           <div class="banner">
             <span class="badge">규칙</span>
-            <span class="muted">RPE↑(≥7) 또는 RHR+≥5 bpm 2일 연속 → 품질 1개 삭제 · 통증 48h → 품질 전면 중지 · 3주 과피로 → 다음 주 거리 −30%, 품질 0–1</span>
+            <span class="muted">RPE≥7 또는 RHR+≥5 bpm 2일 연속 → 품질 1개 삭제 · 통증 48h → 전면 중지 · 과피로 3주 → 다음 주 거리 −30%, 품질 0–1</span>
           </div>
         </div>
+      </div>
+
+      <div class="card" style="margin-top:8px">
+        <h3>컷백 사이클(계획적)</h3>
+        <div class="row">
+          <label class="field" style="width:150px">
+            <span class="muted">사이클(주)</span>
+            <select id="cycle-len" class="select">
+              <option value="4">3+1 (4주)</option>
+              <option value="5">4+1 (5주)</option>
+            </select>
+          </label>
+          <label class="field" style="width:140px">
+            <span class="muted">현재 주차</span>
+            <input id="cur-week" class="input" type="number" min="1" max="52" value="4" />
+          </label>
+          <label class="field" style="width:150px">
+            <span class="muted">컷백 강도(%)</span>
+            <select id="cutback-pct" class="select">
+              <option value="20">20%</option>
+              <option value="25">25%</option>
+              <option value="30" selected>30%</option>
+              <option value="35">35%</option>
+            </select>
+          </label>
+          <label class="badge"><input id="auto-cut" type="checkbox" checked /> 자동 적용</label>
+        </div>
+        <p class="muted">계획적 컷백과 과피로 3주는 별개입니다. 컷백은 주기적으로, 과피로는 즉시 완화합니다.</p>
       </div>
     </div>
 
@@ -337,6 +365,7 @@
 
       <div id="week-simple" class="simple-only" style="margin-top:8px">
         <ul class="clean" id="week-list"></ul>
+        <div id="thisweek-banner" class="banner hidden"><span class="badge">이번 주 컷백</span><span class="muted" id="thisweek-text">거리 −30%, 품질 0–1</span></div>
         <div id="nextweek-banner" class="banner hidden"><span class="badge">다음 주 권고</span><span class="muted">거리 −30%, 품질 0–1</span></div>
       </div>
 
@@ -515,6 +544,8 @@
       wucd:{ type:$('#wucd-type'), wu:$('#wucd-wu'), cd:$('#wucd-cd'), extra:$('#wucd-extra') },
       weekList: $('#week-list'),
       weekAll: $('#week-all'),
+      thisWeekBanner: $('#thisweek-banner'),
+      thisWeekText: $('#thisweek-text'),
       nextWeekBanner: $('#nextweek-banner'),
       toggleMini: $('#toggle-mini-wucd'),
       fabOpen: $('#fab-open'),
@@ -527,7 +558,9 @@
         lrpe: $('#lrpe'), lrhr: $('#lrhr'),
         lrpe2d: $('#lrpe2d'), lrhr2d: $('#lrhr2d'),
         pain48: $('#pain48'), fat3w: $('#fat3w'),
-        auto: $('#auto-apply')
+        auto: $('#auto-apply'),
+        cycleLen: $('#cycle-len'), curWeek: $('#cur-week'),
+        cutPct: $('#cutback-pct'), autoCut: $('#auto-cut')
       }
     };
 
@@ -600,13 +633,26 @@
 
     function computeNutrition(){
       const w=weatherAdj[state.weather]||weatherAdj.normal;
-      const cho=[60,90];
+      const cho=[60,90]; // g/h
       const waterBase=[6,10]; // mL/kg/h
       const na=[300,600]; // mg/h
       const water=[Math.round(waterBase[0]*w.water), Math.round(waterBase[1]*w.water)];
       const naRec=[Math.round(na[0]*w.na), Math.round(na[1]*w.na)];
       const proPost = Math.round(state.weight*0.35);
       return { cho, water, na:naRec, proPost };
+    }
+
+    function resetRuleMarks(scope){
+      if(!scope) return;
+      scope.querySelectorAll('li[data-s]').forEach(li=>{
+        li.classList.remove('strike');
+        li.querySelectorAll('.rule-badge').forEach(n=>n.remove());
+      });
+    }
+    function addRuleBadge(li, text){
+      const b=document.createElement('span');
+      b.className='badge mini rule-badge'; b.style.marginLeft='6px'; b.textContent=text;
+      li.appendChild(b);
     }
 
     function render(){
@@ -622,11 +668,17 @@
       setText(els.kpi.water, `${N.water[0]}–${N.water[1]}`);
       setText(els.kpi.na, `${N.na[0]}–${N.na[1]}`);
       setText(els.kpi.pro, `${N.proPost}`);
+
       applyWUCD(els.wucd.type.value);
       updateWUCDExtras(els.wucd.type.value);
       annotateMiniBadges();
       updateNutritionTimeline(P, N);
-      applyLoadRules(); // 운영 규칙 반영
+
+      // 규칙 마크 초기화 후 계획적 컷백 → 반응적 과피로 순서로 적용
+      resetRuleMarks($('#week-simple'));
+      resetRuleMarks($('#week-all'));
+      applyPlannedCutback();
+      applyLoadRules();
     }
 
     const WUCD_BASE = {
@@ -694,32 +746,29 @@
 
     function annotateMiniBadges(){
       const show=state.showMiniWUCD;
-      const addBadges = (scope)=>{
-        scope.querySelectorAll('li[data-s]').forEach(li=>{
-          li.querySelectorAll('.wucd-mini,.extra-mini').forEach(n=>n.remove());
-          if(show){
-            const key = li.getAttribute('data-s');
-            const base=WUCD_BASE[key]||WUCD_BASE.easy;
-            const wu=adjustByWeather([...base.wu],'wu'), cd=[...base.cd];
-            if(!(base.wu[0]===0 && base.cd[0]===0)){
-              const span=document.createElement('span');
-              span.className='badge mini wucd-mini'; span.style.marginLeft='6px';
-              span.textContent=`WU ${wu[0]}–${wu[1]} · CD ${cd[0]}–${cd[1]}`;
-              li.appendChild(span);
-            }
+      document.querySelectorAll('li[data-s]').forEach(li=>{
+        li.querySelectorAll('.wucd-mini,.extra-mini').forEach(n=>n.remove());
+        if(show){
+          const key = li.getAttribute('data-s');
+          const base=WUCD_BASE[key]||WUCD_BASE.easy;
+          const wu=adjustByWeather([...base.wu],'wu'), cd=[...base.cd];
+          if(!(base.wu[0]===0 && base.cd[0]===0)){
+            const span=document.createElement('span');
+            span.className='badge mini wucd-mini'; span.style.marginLeft='6px';
+            span.textContent=`WU ${wu[0]}–${wu[1]} · CD ${cd[0]}–${cd[1]}`;
+            li.appendChild(span);
           }
-          if(li.hasAttribute('data-x-dyn')){
-            const b=document.createElement('span'); b.className='badge mini extra-mini'; b.style.marginLeft='6px'; b.textContent='DYN'; li.appendChild(b);
-          }
-          if(li.hasAttribute('data-x-drill')){
-            const b=document.createElement('span'); b.className='badge mini extra-mini'; b.style.marginLeft='6px'; b.textContent='DRILL'; li.appendChild(b);
-          }
-          if(li.hasAttribute('data-x-strides')){
-            const b=document.createElement('span'); b.className='badge mini extra-mini'; b.style.marginLeft='6px'; b.textContent='STR'; li.appendChild(b);
-          }
-        });
-      };
-      addBadges(document);
+        }
+        if(li.hasAttribute('data-x-dyn')){
+          const b=document.createElement('span'); b.className='badge mini extra-mini'; b.style.marginLeft='6px'; b.textContent='DYN'; li.appendChild(b);
+        }
+        if(li.hasAttribute('data-x-drill')){
+          const b=document.createElement('span'); b.className='badge mini extra-mini'; b.style.marginLeft='6px'; b.textContent='DRILL'; li.appendChild(b);
+        }
+        if(li.hasAttribute('data-x-strides')){
+          const b=document.createElement('span'); b.className='badge mini extra-mini'; b.style.marginLeft='6px'; b.textContent='STR'; li.appendChild(b);
+        }
+      });
     }
 
     function fmt1(n){ return (Math.round(n*10)/10).toFixed(1); }
@@ -841,8 +890,8 @@
         els.weekList.appendChild(li);
       });
       annotateMiniBadges();
-      clearRuleMarks($('#week-simple'));
-      clearRuleMarks($('#week-all'));
+      resetRuleMarks($('#week-simple'));
+      resetRuleMarks($('#week-all'));
     }
 
     function applyView(){
@@ -923,6 +972,7 @@
         $$('.preset-btn').forEach(x=>x.setAttribute('aria-pressed','false'));
         b.setAttribute('aria-pressed','true');
         renderPreset(b.getAttribute('data-preset'));
+        render();
       });
     });
 
@@ -935,31 +985,47 @@
       });
     });
 
-    // 부하 관리 규칙
-    ['lrpe','lrhr','lrpe2d','lrhr2d','pain48','fat3w','auto-apply'].forEach(id=>{
-      const el = document.getElementById(id);
-      if(el) el.addEventListener('change', ()=>applyLoadRules());
-      if(el && el.tagName==='INPUT' && el.type==='number') el.addEventListener('input', debounce(()=>applyLoadRules(),200));
+    // 부하 관리/컷백 사이클 이벤트
+    ['lrpe','lrhr'].forEach(id=>document.getElementById(id).addEventListener('input', debounce(()=>render(),200)));
+    ['lrpe2d','lrhr2d','pain48','fat3w','auto-apply','cycle-len','cur-week','cutback-pct','auto-cut'].forEach(id=>{
+      const el=document.getElementById(id); if(el) el.addEventListener('change',()=>render());
     });
 
-    // 규칙 적용
-    function clearRuleMarks(scope){
-      if(!scope) return;
-      scope.querySelectorAll('li[data-s]').forEach(li=>{
-        li.classList.remove('strike');
-        li.querySelectorAll('.rule-badge').forEach(n=>n.remove());
-      });
-    }
-    function addRuleBadge(li, text){
-      const b=document.createElement('span');
-      b.className='badge mini rule-badge'; b.style.marginLeft='6px'; b.textContent=text;
-      li.appendChild(b);
-    }
-    function applyLoadRules(){
-      clearRuleMarks($('#week-simple'));
-      clearRuleMarks($('#week-all'));
-      els.nextWeekBanner.classList.add('hidden');
+    // 계획적 컷백 적용
+    function applyPlannedCutback(){
+      const cycleLen = parseInt(els.ops.cycleLen.value||'4',10);
+      const curWeek = parseInt(els.ops.curWeek.value||'1',10);
+      const pct = parseInt(els.ops.cutPct.value||'30',10);
+      const auto = !!els.ops.autoCut.checked;
+      const isCutback = cycleLen>0 && curWeek>0 && (curWeek % cycleLen === 0);
 
+      els.thisWeekBanner.classList.toggle('hidden', !(isCutback && auto));
+      if(isCutback && auto){
+        setText(els.thisWeekText, `거리 −${pct}%, 품질 0–1`);
+        // 롱런에 컷백 배지
+        ['#week-simple','#week-all'].forEach(sel=>{
+          const scope = document.querySelector(sel);
+          if(!scope) return;
+          scope.querySelectorAll('li[data-s="long"]').forEach(li=>{
+            addRuleBadge(li, `컷백 −${pct}%`);
+          });
+          // 품질 0–1: 첫 품질 유지, 나머지 컷백(삭제 권고)
+          const qualityTypes = ['cv','tempo','mp','hill'];
+          let kept=false;
+          const items = Array.from(scope.querySelectorAll('li[data-s]'));
+          for(const li of items){
+            const t=li.getAttribute('data-s');
+            if(!qualityTypes.includes(t)) continue;
+            if(!kept){ addRuleBadge(li,'컷백(유지)'); kept=true; }
+            else { li.classList.add('strike'); addRuleBadge(li,'컷백(삭제)'); }
+          }
+        });
+      }
+    }
+
+    // 반응적 규칙(과피로 등)
+    function applyLoadRules(){
+      els.nextWeekBanner.classList.add('hidden');
       if(!els.ops.auto.checked) return;
 
       const rpe = parseInt(els.ops.lrpe.value||'0',10);
@@ -973,38 +1039,34 @@
 
       // 통증 48h → 품질 전면 중지
       if(pain){
-        markQuality($('#week-simple'), quality, true);
-        markQuality($('#week-all'), quality, true);
+        ['#week-simple','#week-all'].forEach(sel=>{
+          const scope=document.querySelector(sel);
+          if(!scope) return;
+          scope.querySelectorAll('li[data-s]').forEach(li=>{
+            if(quality.includes(li.getAttribute('data-s'))){
+              li.classList.add('strike'); addRuleBadge(li,'삭제');
+            }
+          });
+        });
         return;
       }
 
       // RPE↑ 또는 RHR↑ 2일 연속 → 품질 1개 삭제
       if((rpe>=7 && rpe2) || (rhr>=5 && rhr2)){
-        removeOneQuality($('#week-simple'), quality);
-        removeOneQuality($('#week-all'), quality);
+        ['#week-simple','#week-all'].forEach(sel=>{
+          const scope=document.querySelector(sel);
+          if(!scope) return;
+          const items = Array.from(scope.querySelectorAll('li[data-s]'));
+          for(const t of quality){
+            const li = items.find(x=>x.getAttribute('data-s')===t);
+            if(li){ li.classList.add('strike'); addRuleBadge(li,'삭제'); break; }
+          }
+        });
       }
 
-      // 3주 연속 과피로 → 다음 주 권고 배지
+      // 3주 연속 과피로 → 다음 주 권고
       if(fat){
         els.nextWeekBanner.classList.remove('hidden');
-      }
-    }
-    function markQuality(scope, types, all){
-      if(!scope) return;
-      const items = Array.from(scope.querySelectorAll('li[data-s]'));
-      items.forEach(li=>{
-        if(types.includes(li.getAttribute('data-s'))){
-          li.classList.add('strike');
-          addRuleBadge(li,'삭제');
-        }
-      });
-    }
-    function removeOneQuality(scope, types){
-      if(!scope) return;
-      const items = Array.from(scope.querySelectorAll('li[data-s]'));
-      for(const t of types){
-        const li = items.find(x=>x.getAttribute('data-s')===t);
-        if(li){ li.classList.add('strike'); addRuleBadge(li,'삭제'); break; }
       }
     }
 
