@@ -41,21 +41,20 @@
     .hidden{display:none !important}
     [data-view="simple"] .detail-only{display:none !important}
     [data-view="detail"] .simple-only{display:none !important}
+    /* 상세 보기에서는 프리셋 버튼 줄 전체 숨김 */
+    [data-view="detail"] #panel-weekly .title .row{display:none !important}
     .evidence-panel{display:none}
     .evidence-panel.is-open{display:block}
     .fab{position:fixed;right:16px;bottom:16px;z-index:50;padding:12px 14px;border-radius:999px;background:rgba(17,24,39,.9);border:1px solid var(--border-primary);color:var(--text-primary);box-shadow:0 6px 22px rgba(0,0,0,.35)}
-    /* 프리셋 버튼 잘림 방지 */
     .preset-btn{padding:10px 14px;border-radius:9999px;border:1px solid var(--border-primary);background:rgba(17,24,39,.6);color:var(--text-primary);cursor:pointer}
     .preset-btn[aria-pressed="true"]{border-color:var(--color-accent);box-shadow:0 0 0 2px rgba(167,139,250,.25) inset}
     /* WU/CD */
     .wucd-card{border:1px solid var(--border-primary);border-radius:12px;padding:12px;background:rgba(15,23,42,.5)}
     .wucd-title{margin:0 0 8px;font-size:16px}
     .wucd-vals{display:flex;gap:8px;flex-wrap:wrap}
-    .wucd-mini-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
-    /* 리스트 */
+    .wucd-extra{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
     ul.clean{margin:0;padding-left:18px}
     ul.clean li{margin:6px 0}
-    /* 모바일 안전영역 */
     @supports(padding:env(safe-area-inset-bottom)){
       .container{padding-bottom:calc(16px + env(safe-area-inset-bottom))}
     }
@@ -80,6 +79,8 @@
         <button class="chip" data-weather="normal" aria-pressed="true">보통</button>
         <button class="chip" data-weather="hot" aria-pressed="false">더위</button>
         <button class="chip" data-weather="cold" aria-pressed="false">추위</button>
+        <button class="chip" data-weather="wind" aria-pressed="false">강풍</button>
+        <button class="chip" data-weather="storm" aria-pressed="false">악천후</button>
       </div>
     </div>
 
@@ -162,6 +163,7 @@
           <option value="tempo">템포(LT)</option>
           <option value="cv">CV/VO2/10K 인터벌</option>
           <option value="hill">언덕 스프린트</option>
+          <option value="mp">MP 블록/연속</option>
           <option value="long">롱런</option>
         </select>
         <div class="wucd-vals" aria-live="polite">
@@ -169,10 +171,8 @@
           <span class="badge"><strong>CD</strong> <span id="wucd-cd">—</span></span>
         </div>
       </div>
-      <div class="wucd-mini-row" aria-label="스트라이드·드릴 요약">
-        <span class="badge">스트라이드: 4–8회 × 80–120 m(20–30초)</span>
-        <span class="badge">드릴: A‑skip / B‑skip / 하이니 / 버트킥(각 20–30 m)</span>
-      </div>
+      <!-- 세션별로만 노출되는 스트라이드/드릴 -->
+      <div id="wucd-extra" class="wucd-extra hidden" aria-label="세션별 스트라이드·드릴"></div>
       <p class="muted" style="margin-top:6px">추위: WU +5~10분, 더위: WU 5–8분(짧게) 권장.</p>
     </div>
 
@@ -199,7 +199,7 @@
             <option value="150">150분</option>
             <option value="180">180분</option>
           </select>
-          <span class="muted">날씨/체중을 반영해 총량을 자동 계산합니다.</span>
+          <span class="muted">날씨/체중 반영 총량 자동 계산</span>
         </div>
         <div class="grid grid--3">
           <div class="card">
@@ -207,7 +207,7 @@
             <ul class="clean">
               <li>탄수화물: <strong id="nt-tr-pre-cho">—</strong></li>
               <li>수분: <strong id="nt-tr-pre-water">—</strong></li>
-              <li class="muted">참고: 필요 시 Na 300–600 mg</li>
+              <li class="muted">필요 시 Na 300–600 mg</li>
             </ul>
           </div>
           <div class="card">
@@ -273,7 +273,7 @@
       </div>
     </div>
 
-    <!-- 상세/주간 -->
+    <!-- 주간 템플릿 -->
     <div class="card" id="panel-weekly" style="margin-top:12px">
       <div class="title">
         <h2>주간 템플릿</h2>
@@ -285,7 +285,6 @@
           <button class="preset-btn" data-preset="taperb" aria-pressed="false">테이퍼B</button>
           <button class="preset-btn" data-preset="recovery" aria-pressed="false">리커버리</button>
           <button class="preset-btn" data-preset="off" aria-pressed="false">오프·리셋</button>
-          <button class="btn detail-only" id="btn-toggle-all" aria-pressed="true" title="상세(모든 단계) 토글">상세(모든 단계)</button>
         </div>
       </div>
 
@@ -299,10 +298,10 @@
             <h3>프렙</h3>
             <ul class="clean">
               <li data-s="easy">월: Easy 6–10 km</li>
-              <li data-s="hill">화: 언덕 스프린트 6–10회 × 10–12초(전 스트라이드 2–4회)</li>
+              <li data-s="hill" data-x-strides="1" data-x-drill="1">화: 언덕 스프린트 6–10회 × 10–12초</li>
               <li data-s="aer">수: Aerobic 8–12 km</li>
-              <li data-s="tempo">목: LT 입문 3×8분(회복 2분)</li>
-              <li data-s="easy">금: Easy 6–10 km + 스트라이드</li>
+              <li data-s="tempo" data-x-strides="1">목: LT 입문 3×8분(회복 2분)</li>
+              <li data-s="easy" data-x-strides="1">금: Easy 6–10 km + 스트라이드</li>
               <li data-s="long">토: 롱런 16–22 km</li>
               <li data-s="rest">일: 휴식/걷기</li>
             </ul>
@@ -311,10 +310,10 @@
             <h3>베이스2</h3>
             <ul class="clean">
               <li data-s="easy">월: Easy 8–10 km</li>
-              <li data-s="cv">화: CV 6–8회 × 1 km(회복 60–75초)</li>
+              <li data-s="cv" data-x-drill="1" data-x-strides="1">화: CV 6–8회 × 1 km(회복 60–75초)</li>
               <li data-s="aer">수: Aerobic 10–14 km</li>
-              <li data-s="tempo">목: 템포 2×20분(회복 3분)</li>
-              <li data-s="easy">금: Easy 8–10 km + 스트라이드</li>
+              <li data-s="tempo" data-x-strides="1">목: 템포 2×20분(회복 3분)</li>
+              <li data-s="easy" data-x-strides="1">금: Easy 8–10 km + 스트라이드</li>
               <li data-s="long">토: 롱런 22–28 km</li>
               <li data-s="rest">일: 휴식/보강</li>
             </ul>
@@ -323,10 +322,10 @@
             <h3>스페시픽2</h3>
             <ul class="clean">
               <li data-s="easy">월: Easy 8–10 km</li>
-              <li data-s="mp">화: MP 블록 2세트 × (6–8 km @ MP)</li>
+              <li data-s="mp" data-x-drill="1">화: MP 블록 2세트 × (6–8 km @ MP)</li>
               <li data-s="aer">수: Aerobic 10–14 km</li>
-              <li data-s="tempo">목: 템포 30–40분</li>
-              <li data-s="easy">금: Easy 8–10 km + 스트라이드</li>
+              <li data-s="tempo" data-x-strides="1">목: 템포 30–40분</li>
+              <li data-s="easy" data-x-strides="1">금: Easy 8–10 km + 스트라이드</li>
               <li data-s="long">토: Prog 롱런 26–34 km</li>
               <li data-s="rest">일: 휴식</li>
             </ul>
@@ -335,9 +334,9 @@
             <h3>피크</h3>
             <ul class="clean">
               <li data-s="easy">월: Easy 8–10 km</li>
-              <li data-s="cv">화: CV 5–6회 × 4분(회복 2분)</li>
+              <li data-s="cv" data-x-drill="1" data-x-strides="1">화: CV 5–6회 × 4분(회복 2분)</li>
               <li data-s="aer">수: Aerobic 10–12 km</li>
-              <li data-s="mp">목: MP 연속 12–16 km</li>
+              <li data-s="mp" data-x-strides="1">목: MP 연속 12–16 km</li>
               <li data-s="easy">금: Easy 6–8 km</li>
               <li data-s="long">토: 롱런 24–30 km</li>
               <li data-s="rest">일: 휴식</li>
@@ -347,11 +346,11 @@
             <h3>테이퍼B</h3>
             <ul class="clean">
               <li data-s="easy">월: Easy 6–8 km</li>
-              <li data-s="tempo">화: 템포 2×10분</li>
+              <li data-s="tempo" data-x-strides="1">화: 템포 2×10분</li>
               <li data-s="easy">수: Easy 6–8 km</li>
-              <li data-s="cv">목: 3–4×1 km @ 10K</li>
+              <li data-s="cv" data-x-strides="1">목: 3–4×1 km @ 10K</li>
               <li data-s="easy">금: Easy 5–6 km</li>
-              <li data-s="easy">토: Easy 4–6 km + 스트라이드</li>
+              <li data-s="easy" data-x-strides="1">토: Easy 4–6 km + 스트라이드</li>
               <li data-s="rest">일: 휴식</li>
             </ul>
           </div>
@@ -372,7 +371,7 @@
             <ul class="clean">
               <li data-s="rest">월: 오프/걷기</li>
               <li data-s="rest">화: 오프/요가</li>
-              <li data-s="easy">수: Easy 5–6 km(있다면)</li>
+              <li data-s="easy" data-x-strides="1">수: Easy 5–6 km(있다면) + 스트라이드</li>
               <li data-s="rest">목: 오프</li>
               <li data-s="easy">금: Easy 5–6 km</li>
               <li data-s="rest">토: 오프</li>
@@ -411,8 +410,9 @@
       units:'metric', weather:'normal',
       sex:'male', age:30, height:175, weight:65,
       rec5k:'', rec10k:'', recHM:'', recM:'',
-      showMiniWUCD:true, detail:false, showAll:true, evidence:false,
-      nmode:'train', trainDurMin:90
+      showMiniWUCD:true, detail:false, evidence:false,
+      nmode:'train', trainDurMin:90,
+      currentPreset:'prep'
     };
 
     const $ = s=>document.querySelector(s);
@@ -432,10 +432,9 @@
         sex:$('#in-sex'), age:$('#in-age'), height:$('#in-height'), weight:$('#in-weight'),
         rec5k:$('#in-5k'), rec10k:$('#in-10k'), recHM:$('#in-hm'), recM:$('#in-m')
       },
-      wucd:{ type:$('#wucd-type'), wu:$('#wucd-wu'), cd:$('#wucd-cd') },
+      wucd:{ type:$('#wucd-type'), wu:$('#wucd-wu'), cd:$('#wucd-cd'), extra:$('#wucd-extra') },
       weekList: $('#week-list'),
       weekAll: $('#week-all'),
-      btnToggleAll: $('#btn-toggle-all'),
       toggleMini: $('#toggle-mini-wucd'),
       fabOpen: $('#fab-open'),
       nutri:{
@@ -466,17 +465,20 @@
     }
     function paceStrFromKm(secPerKm){
       if(!secPerKm || secPerKm<=0) return '—';
-      const secPerUnit = state.units==='metric' ? secPerKm : secPerKm*1.609344;
+      const secPerUnit = state.units==='metric' ? secPerKm : secPerKm*1.609344; // s/mile
       const total = Math.round(secPerUnit);
       const m = Math.floor(total/60), s = total%60;
       return `${m}:${pad2(s)}/${state.units==='metric'?'km':'mile'}`;
     }
     function riegel(T1,D1,D2,k=1.06){ return T1*Math.pow(D2/D1,k); }
 
+    // 날씨 보정(강풍/악천후 추가)
     const weatherAdj = {
       normal:{ pace:+0, water:1.0, na:1.0 },
       hot:{ pace:+8, water:1.3, na:1.3 },
-      cold:{ pace:+0, water:0.9, na:1.0 }
+      cold:{ pace:+0, water:0.9, na:1.0 },
+      wind:{ pace:+6, water:1.1, na:1.1 },
+      storm:{ pace:+12, water:1.2, na:1.2 }
     };
 
     function computePaces(){
@@ -512,7 +514,7 @@
 
     function computeNutrition(){
       const w=weatherAdj[state.weather]||weatherAdj.normal;
-      const cho=[60,90];
+      const cho=[60,90]; // g/h
       const waterBase=[6,10]; // mL/kg/h
       const na=[300,600]; // mg/h
       const water=[Math.round(waterBase[0]*w.water), Math.round(waterBase[1]*w.water)];
@@ -535,6 +537,7 @@
       setText(els.kpi.na, `${N.na[0]}–${N.na[1]}`);
       setText(els.kpi.pro, `${N.proPost}`);
       applyWUCD(els.wucd.type.value);
+      updateWUCDExtras(els.wucd.type.value);
       annotateMiniBadges();
       updateNutritionTimeline(P, N);
     }
@@ -544,9 +547,9 @@
       tempo:{wu:[10,15], cd:[10,15]},
       cv:{wu:[15,20], cd:[10,15]},
       hill:{wu:[10,15], cd:[8,12]},
+      mp:{wu:[10,15], cd:[8,12]},
       long:{wu:[8,10], cd:[5,10]},
       aer:{wu:[8,12], cd:[5,10]},
-      mp:{wu:[10,15], cd:[8,12]},
       rest:{wu:[0,0], cd:[0,0]}
     };
     function rangeStr(r){ return r[0]===0 && r[1]===0 ? '—' : `${r[0]}–${r[1]}분`; }
@@ -555,6 +558,7 @@
       if(type==='wu'){
         if(w==='cold'){ a+=5; b+=5; }
         if(w==='hot'){ a=Math.max(5,a-2); b=Math.max(8,b-2); }
+        if(w==='storm'){ a+=3; b+=3; }
       }
       return [a,b];
     }
@@ -565,25 +569,65 @@
       setText(els.wucd.wu, rangeStr(wu));
       setText(els.wucd.cd, rangeStr(cd));
     }
+    // 세션별 스트라이드/드릴 권장(세션일 때만)
+    const EXTRA_MAP = {
+      easy: {strides:true, drill:false},
+      tempo:{strides:true, drill:false},
+      cv:   {strides:true, drill:true},
+      hill: {strides:true, drill:true},
+      mp:   {strides:true, drill:true},
+      long: {strides:false, drill:false},
+      aer:  {strides:false, drill:false},
+      rest: {strides:false, drill:false}
+    };
+    function updateWUCDExtras(kind){
+      const ex=EXTRA_MAP[kind]||{strides:false,drill:false};
+      els.wucd.extra.innerHTML='';
+      if(!ex.strides && !ex.drill){ els.wucd.extra.classList.add('hidden'); return; }
+      els.wucd.extra.classList.remove('hidden');
+      if(ex.strides){
+        const b=document.createElement('span');
+        b.className='badge';
+        b.textContent='스트라이드: 4–8회 × 80–120 m(20–30초)';
+        els.wucd.extra.appendChild(b);
+      }
+      if(ex.drill){
+        const b=document.createElement('span');
+        b.className='badge';
+        b.textContent='드릴: A‑skip/B‑skip/하이니/버트킥(각 20–30 m)';
+        els.wucd.extra.appendChild(b);
+      }
+    }
+
+    // 미니 WU/CD 배지(주간 항목)
     function annotateMiniBadges(){
       const show=state.showMiniWUCD;
       const targets = Array.from(document.querySelectorAll('[data-s]'));
       targets.forEach(li=>{
-        const ex = li.querySelector('.wucd-mini'); if(ex) ex.remove();
-        if(!show) return;
-        const key = li.getAttribute('data-s');
-        const base=WUCD_BASE[key]||WUCD_BASE.easy;
-        const wu=adjustByWeather([...base.wu],'wu'), cd=[...base.cd];
-        if(base.wu[0]===0 && base.cd[0]===0) return;
-        const span=document.createElement('span');
-        span.className='badge mini wucd-mini'; span.style.marginLeft='6px';
-        span.textContent=`WU ${wu[0]}–${wu[1]} · CD ${cd[0]}–${cd[1]}`;
-        li.appendChild(span);
+        li.querySelectorAll('.wucd-mini,.extra-mini').forEach(n=>n.remove());
+        if(show){
+          const key = li.getAttribute('data-s');
+          const base=WUCD_BASE[key]||WUCD_BASE.easy;
+          const wu=adjustByWeather([...base.wu],'wu'), cd=[...base.cd];
+          if(!(base.wu[0]===0 && base.cd[0]===0)){
+            const span=document.createElement('span');
+            span.className='badge mini wucd-mini'; span.style.marginLeft='6px';
+            span.textContent=`WU ${wu[0]}–${wu[1]} · CD ${cd[0]}–${cd[1]}`;
+            li.appendChild(span);
+          }
+        }
+        if(li.hasAttribute('data-x-strides')){
+          const b=document.createElement('span'); b.className='badge mini extra-mini'; b.style.marginLeft='6px'; b.textContent='STR';
+          li.appendChild(b);
+        }
+        if(li.hasAttribute('data-x-drill')){
+          const b=document.createElement('span'); b.className='badge mini extra-mini'; b.style.marginLeft='6px'; b.textContent='DRILL';
+          li.appendChild(b);
+        }
       });
     }
 
     function fmt1(n){ return (Math.round(n*10)/10).toFixed(1); }
-
     function updateNutritionTimeline(P, N){
       const w = state.weight||0;
       // 훈련 - 전
@@ -615,10 +659,11 @@
       setById('nt-ra-dur-na-hr', `${N.na[0]}–${N.na[1]} mg/시간`);
       if(H){
         setById('nt-ra-dur-cho-total', `${Math.round(N.cho[0]*H)}–${Math.round(N.cho[1]*H)} g`);
-        setById('nt-ra-dur-water-total', w? `${fmt1(waterHrLlo*H)}–${fmt1(waterHrLhi*H)} L`:'—');
+        const wlo=(N.water[0]*w)/1000, whi=(N.water[1]*w)/1000;
+        setById('nt-ra-dur-water-total', w? `${fmt1(wlo*H)}–${fmt1(whi*H)} L`:'—');
         setById('nt-ra-dur-na-total', `${Math.round(N.na[0]*H)}–${Math.round(N.na[1]*H)} mg`);
         setById('nt-ra-dur-gels', `${Math.round(N.cho[0]*H/25)}–${Math.round(N.cho[1]*H/25)} 개(25 g)`);
-        setById('nt-ra-dur-bottles', w? `${Math.round((waterHrLlo*H)/0.5)}–${Math.round((waterHrLhi*H)/0.5)} 개(500 mL)`:'—');
+        setById('nt-ra-dur-bottles', w? `${Math.round((wlo*H)/0.5)}–${Math.round((whi*H)/0.5)} 개(500 mL)`:'—');
       }else{
         ['nt-ra-dur-cho-total','nt-ra-dur-water-total','nt-ra-dur-na-total','nt-ra-dur-gels','nt-ra-dur-bottles'].forEach(id=>setById(id,'—'));
       }
@@ -626,36 +671,90 @@
       setById('nt-ra-post-pro', w? `${Math.round(w*0.3)}–${Math.round(w*0.4)} g`:'—');
     }
 
-    // 프리셋
+    // 프리셋(간단 보기에서만 사용)
     const PRESETS={
-      prep:[{t:'월: Easy 6–10 km',s:'easy'},{t:'화: 언덕 스프린트 6–10회 × 10–12초',s:'hill'},{t:'수: Aerobic 8–12 km',s:'aer'},{t:'목: LT 입문 3×8분(회복 2분)',s:'tempo'},{t:'금: Easy 6–10 km + 스트라이드',s:'easy'},{t:'토: 롱런 16–22 km',s:'long'},{t:'일: 휴식/걷기',s:'rest'}],
-      base2:[{t:'월: Easy 8–10 km',s:'easy'},{t:'화: CV 6–8회 × 1 km(회복 60–75초)',s:'cv'},{t:'수: Aerobic 10–14 km',s:'aer'},{t:'목: 템포 2×20분(회복 3분)',s:'tempo'},{t:'금: Easy 8–10 km + 스트라이드',s:'easy'},{t:'토: 롱런 22–28 km',s:'long'},{t:'일: 휴식/보강',s:'rest'}],
-      spec2:[{t:'월: Easy 8–10 km',s:'easy'},{t:'화: MP 블록 2세트 × (6–8 km @ MP)',s:'mp'},{t:'수: Aerobic 10–14 km',s:'aer'},{t:'목: 템포 30–40분',s:'tempo'},{t:'금: Easy 8–10 km + 스트라이드',s:'easy'},{t:'토: Prog 롱런 26–34 km',s:'long'},{t:'일: 휴식',s:'rest'}],
-      peak:[{t:'월: Easy 8–10 km',s:'easy'},{t:'화: CV 5–6회 × 4분(회복 2분)',s:'cv'},{t:'수: Aerobic 10–12 km',s:'aer'},{t:'목: MP 연속 12–16 km',s:'mp'},{t:'금: Easy 6–8 km',s:'easy'},{t:'토: 롱런 24–30 km',s:'long'},{t:'일: 휴식',s:'rest'}],
-      taperb:[{t:'월: Easy 6–8 km',s:'easy'},{t:'화: 템포 2×10분',s:'tempo'},{t:'수: Easy 6–8 km',s:'easy'},{t:'목: 3–4×1 km @ 10K',s:'cv'},{t:'금: Easy 5–6 km',s:'easy'},{t:'토: Easy 4–6 km + 스트라이드',s:'easy'},{t:'일: 휴식',s:'rest'}],
-      recovery:[{t:'월: Easy 5–8 km',s:'easy'},{t:'화: 휴식/걷기',s:'rest'},{t:'수: Easy 6–8 km',s:'easy'},{t:'목: Easy 6–8 km',s:'easy'},{t:'금: Easy 5–8 km',s:'easy'},{t:'토: 롱런 14–18 km',s:'long'},{t:'일: 휴식',s:'rest'}],
-      off:[{t:'월: 오프/걷기',s:'rest'},{t:'화: 오프/요가',s:'rest'},{t:'수: Easy 5–6 km(있다면)',s:'easy'},{t:'목: 오프',s:'rest'},{t:'금: Easy 5–6 km',s:'easy'},{t:'토: 오프',s:'rest'},{t:'일: 오프',s:'rest'}]
+      prep:[
+        {t:'월: Easy 6–10 km', s:'easy'},
+        {t:'화: 언덕 스프린트 6–10회 × 10–12초', s:'hill', x:{strides:true,drill:true}},
+        {t:'수: Aerobic 8–12 km', s:'aer'},
+        {t:'목: LT 입문 3×8분(회복 2분)', s:'tempo', x:{strides:true}},
+        {t:'금: Easy 6–10 km + 스트라이드', s:'easy', x:{strides:true}},
+        {t:'토: 롱런 16–22 km', s:'long'},
+        {t:'일: 휴식/걷기', s:'rest'}
+      ],
+      base2:[
+        {t:'월: Easy 8–10 km', s:'easy'},
+        {t:'화: CV 6–8회 × 1 km(회복 60–75초)', s:'cv', x:{drill:true,strides:true}},
+        {t:'수: Aerobic 10–14 km', s:'aer'},
+        {t:'목: 템포 2×20분(회복 3분)', s:'tempo', x:{strides:true}},
+        {t:'금: Easy 8–10 km + 스트라이드', s:'easy', x:{strides:true}},
+        {t:'토: 롱런 22–28 km', s:'long'},
+        {t:'일: 휴식/보강', s:'rest'}
+      ],
+      spec2:[
+        {t:'월: Easy 8–10 km', s:'easy'},
+        {t:'화: MP 블록 2세트 × (6–8 km @ MP)', s:'mp', x:{drill:true}},
+        {t:'수: Aerobic 10–14 km', s:'aer'},
+        {t:'목: 템포 30–40분', s:'tempo', x:{strides:true}},
+        {t:'금: Easy 8–10 km + 스트라이드', s:'easy', x:{strides:true}},
+        {t:'토: Prog 롱런 26–34 km', s:'long'},
+        {t:'일: 휴식', s:'rest'}
+      ],
+      peak:[
+        {t:'월: Easy 8–10 km', s:'easy'},
+        {t:'화: CV 5–6회 × 4분(회복 2분)', s:'cv', x:{drill:true,strides:true}},
+        {t:'수: Aerobic 10–12 km', s:'aer'},
+        {t:'목: MP 연속 12–16 km', s:'mp', x:{strides:true}},
+        {t:'금: Easy 6–8 km', s:'easy'},
+        {t:'토: 롱런 24–30 km', s:'long'},
+        {t:'일: 휴식', s:'rest'}
+      ],
+      taperb:[
+        {t:'월: Easy 6–8 km', s:'easy'},
+        {t:'화: 템포 2×10분', s:'tempo', x:{strides:true}},
+        {t:'수: Easy 6–8 km', s:'easy'},
+        {t:'목: 3–4×1 km @ 10K', s:'cv', x:{strides:true}},
+        {t:'금: Easy 5–6 km', s:'easy'},
+        {t:'토: Easy 4–6 km + 스트라이드', s:'easy', x:{strides:true}},
+        {t:'일: 휴식', s:'rest'}
+      ],
+      recovery:[
+        {t:'월: Easy 5–8 km', s:'easy'},
+        {t:'화: 휴식/걷기', s:'rest'},
+        {t:'수: Easy 6–8 km', s:'easy'},
+        {t:'목: Easy 6–8 km', s:'easy'},
+        {t:'금: Easy 5–8 km', s:'easy'},
+        {t:'토: 롱런 14–18 km', s:'long'},
+        {t:'일: 휴식', s:'rest'}
+      ],
+      off:[
+        {t:'월: 오프/걷기', s:'rest'},
+        {t:'화: 오프/요가', s:'rest'},
+        {t:'수: Easy 5–6 km(있다면)', s:'easy', x:{strides:true}},
+        {t:'목: 오프', s:'rest'},
+        {t:'금: Easy 5–6 km', s:'easy'},
+        {t:'토: 오프', s:'rest'},
+        {t:'일: 오프', s:'rest'}
+      ]
     };
     function renderPreset(name){
+      state.currentPreset=name;
       const list = PRESETS[name]||PRESETS.prep;
       els.weekList.innerHTML='';
       list.forEach(item=>{
         const li=document.createElement('li');
         li.textContent=item.t;
         li.setAttribute('data-s', item.s);
+        if(item.x?.strides) li.setAttribute('data-x-strides','1');
+        if(item.x?.drill) li.setAttribute('data-x-drill','1');
         els.weekList.appendChild(li);
       });
       annotateMiniBadges();
     }
 
-    // 보기 전환
+    // 보기 전환(상세에서 프리셋 버튼 줄 숨김은 CSS로 처리)
     function applyView(){
       root.setAttribute('data-view', state.detail?'detail':'simple');
-      if(state.detail){
-        state.showAll = true;
-        els.btnToggleAll?.setAttribute('aria-pressed','true');
-        els.weekAll?.classList.remove('hidden');
-      }
     }
 
     // 이벤트
@@ -703,16 +802,12 @@
       els.panelEvidence.classList.toggle('is-open', state.evidence);
       if(state.evidence){ els.panelEvidence.setAttribute('tabindex','-1'); els.panelEvidence.focus({preventScroll:true}); }
     });
-    els.btnToggleAll?.addEventListener('click',()=>{
-      state.showAll=!state.showAll;
-      els.btnToggleAll.setAttribute('aria-pressed', String(state.showAll));
-      els.weekAll.classList.toggle('hidden', !state.showAll);
-      annotateMiniBadges();
-    });
+
     els.toggleMini.addEventListener('change',()=>{
       state.showMiniWUCD = els.toggleMini.checked;
       annotateMiniBadges();
     });
+
     Object.values(els.inputs).forEach(inp=>{
       inp.addEventListener('input', debounce(()=>{
         state.sex=els.inputs.sex.value;
@@ -726,13 +821,16 @@
         render();
       },200));
     });
-    els.wucd.type.addEventListener('change',()=>applyWUCD(els.wucd.type.value));
+    els.wucd.type.addEventListener('change',()=>{
+      applyWUCD(els.wucd.type.value);
+      updateWUCDExtras(els.wucd.type.value);
+    });
     els.nutri.selDur.addEventListener('change',()=>{
       state.trainDurMin = parseInt(els.nutri.selDur.value,10)||90;
       render();
     });
 
-    // 초기
+    // 프리셋 버튼(간단 보기에서만 시각됨)
     $$('.preset-btn').forEach(b=>{
       b.addEventListener('click',()=>{
         $$('.preset-btn').forEach(x=>x.setAttribute('aria-pressed','false'));
@@ -740,6 +838,8 @@
         renderPreset(b.getAttribute('data-preset'));
       });
     });
+
+    // 초기
     renderPreset('prep');
     applyView();
     render();
