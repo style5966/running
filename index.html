@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Sub-3 Hybrid v8.0 (Masterpiece)</title>
+  <title>Sub-3 Hybrid v8.1 (Final Korean)</title>
   <style>
     /* --- Design System: Cyberpunk Neon Glass --- */
     :root {
       --bg-deep: #050505;
-      --glass-surface: rgba(20, 20, 25, 0.65);
-      --glass-border: rgba(255, 255, 255, 0.08);
+      --glass-surface: rgba(20, 20, 25, 0.75);
+      --glass-border: rgba(255, 255, 255, 0.1);
       
       /* Neon Palette */
       --neon-cyan: #00f2ea;
@@ -24,7 +24,6 @@
       
       --radius-md: 20px;
       --font-main: "Pretendard", -apple-system, BlinkMacSystemFont, sans-serif;
-      --ease-out: cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -53,19 +52,18 @@
 
     /* --- Typography --- */
     h1 {
-      font-size: 32px; font-weight: 800; letter-spacing: -1px; margin: 0 0 8px 0;
+      font-size: 28px; font-weight: 800; letter-spacing: -0.5px; margin: 0 0 8px 0;
       background: linear-gradient(135deg, #fff 40%, #94a3b8);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
     h2 { 
-      font-size: 13px; text-transform: uppercase; letter-spacing: 1.2px; 
-      color: var(--text-sub); margin: 0 0 16px 0; font-weight: 700; 
-      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; font-weight: 700; color: var(--text-sub); margin: 0 0 16px 0; 
+      display: flex; align-items: center; gap: 6px; letter-spacing: -0.3px;
     }
     
     /* --- Glass Bento Cards --- */
     .bento-grid {
-      display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; margin-bottom: 24px;
+      display: grid; grid-template-columns: repeat(12, 1fr); gap: 12px; margin-bottom: 24px;
     }
     .col-12 { grid-column: span 12; }
     .col-8 { grid-column: span 12; }
@@ -80,58 +78,56 @@
 
     .glass-card {
       background: var(--glass-surface);
-      backdrop-filter: blur(24px) saturate(160%);
-      -webkit-backdrop-filter: blur(24px) saturate(160%);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--glass-border);
       border-radius: var(--radius-md);
-      padding: 24px;
+      padding: 20px;
       box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
-      transition: transform 0.2s var(--ease-out);
     }
 
     /* --- Interactive Controls --- */
     .glass-input {
       width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border);
-      color: #fff; padding: 14px 16px; border-radius: 16px; font-size: 15px; outline: none;
-      transition: 0.2s; font-weight: 600; appearance: none;
+      color: #fff; padding: 12px 14px; border-radius: 14px; font-size: 14px; outline: none;
+      transition: 0.2s; font-weight: 500; appearance: none;
     }
-    .glass-input:focus { border-color: var(--neon-cyan); background: rgba(0,0,0,0.5); box-shadow: 0 0 0 2px rgba(0, 242, 234, 0.1); }
+    .glass-input:focus { border-color: var(--neon-cyan); background: rgba(0,0,0,0.5); }
     
-    .label { font-size: 11px; color: var(--text-sub); font-weight: 700; margin-bottom: 6px; display: block; }
+    .label { font-size: 11px; color: var(--text-sub); font-weight: 600; margin-bottom: 6px; display: block; }
 
     /* --- KPI Display --- */
     .kpi-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; }
     .kpi-value { 
-      font-size: 26px; font-weight: 800; font-family: 'SF Mono', monospace; letter-spacing: -1px;
+      font-size: 24px; font-weight: 800; font-family: 'SF Mono', monospace; letter-spacing: -0.5px;
       background: linear-gradient(135deg, var(--neon-cyan), var(--neon-blue));
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-    .kpi-label { font-size: 11px; color: var(--text-sub); text-transform: uppercase; margin-top: 4px; font-weight: 700; }
+    .kpi-label { font-size: 11px; color: var(--text-sub); margin-top: 4px; font-weight: 600; }
 
     /* --- Nutrition Tabs --- */
-    .tabs { display: flex; gap: 4px; background: rgba(255,255,255,0.05); padding: 4px; border-radius: 14px; margin-bottom: 16px; }
+    .tabs { display: flex; gap: 4px; background: rgba(255,255,255,0.05); padding: 4px; border-radius: 12px; margin-bottom: 16px; }
     .tab-btn {
-      flex: 1; text-align: center; padding: 10px 0; font-size: 12px; font-weight: 700; color: var(--text-sub);
-      border-radius: 10px; cursor: pointer; transition: 0.2s;
+      flex: 1; text-align: center; padding: 8px 0; font-size: 12px; font-weight: 600; color: var(--text-sub);
+      border-radius: 8px; cursor: pointer; transition: 0.2s;
     }
-    .tab-btn.active { background: rgba(255,255,255,0.1); color: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+    .tab-btn.active { background: rgba(255,255,255,0.15); color: #fff; }
     
-    .nutri-content { display: none; animation: fadeIn 0.3s ease; }
-    .nutri-content.active { display: block; }
-    .n-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .nutri-content { display: none; }
+    .nutri-content.active { display: block; animation: fadeIn 0.3s ease; }
+    .n-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px; }
     .n-row:last-child { border: none; }
-    .n-key { font-size: 13px; color: var(--text-sub); }
-    .n-val { font-size: 14px; font-weight: 700; color: #fff; font-family: monospace; }
+    .n-key { color: var(--text-sub); }
+    .n-val { font-weight: 600; color: #fff; }
 
     /* --- Weather Buttons --- */
     .weather-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
     .w-btn {
-      background: rgba(255,255,255,0.03); border: 1px solid transparent; border-radius: 16px;
-      padding: 12px 0; text-align: center; cursor: pointer; transition: 0.2s;
+      background: rgba(255,255,255,0.03); border: 1px solid transparent; border-radius: 12px;
+      padding: 10px 0; text-align: center; cursor: pointer; transition: 0.2s;
     }
-    .w-btn.active { background: rgba(67, 97, 238, 0.15); border-color: var(--neon-blue); box-shadow: 0 0 15px rgba(67, 97, 238, 0.2); }
-    .w-icon { font-size: 20px; display: block; margin-bottom: 4px; }
-    .w-text { font-size: 10px; font-weight: 700; color: var(--text-sub); }
+    .w-btn.active { background: rgba(67, 97, 238, 0.15); border-color: var(--neon-blue); }
+    .w-icon { font-size: 18px; display: block; margin-bottom: 4px; }
+    .w-text { font-size: 11px; font-weight: 600; color: var(--text-sub); }
     .w-btn.active .w-text { color: #fff; }
 
     /* --- Timeline & Slider --- */
@@ -141,55 +137,44 @@
       width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 99px;
     }
     input[type=range]::-webkit-slider-thumb {
-      -webkit-appearance: none; height: 28px; width: 28px; border-radius: 50%;
-      background: #fff; border: 4px solid var(--bg-deep); margin-top: -11px;
-      box-shadow: 0 0 20px rgba(255,255,255,0.8); cursor: grab; transition: transform 0.1s;
+      -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%;
+      background: #fff; border: 4px solid var(--bg-deep); margin-top: -9px;
+      box-shadow: 0 0 15px rgba(255,255,255,0.8); cursor: grab;
     }
-    input[type=range]:active::-webkit-slider-thumb { transform: scale(1.2); }
 
     .timeline { list-style: none; padding: 0; margin: 0; }
     .t-item {
-      display: flex; align-items: center; padding: 18px; margin-bottom: 12px;
-      background: rgba(255,255,255,0.02); border-radius: 20px;
-      position: relative; overflow: hidden; opacity: 0; animation: slideUp 0.4s ease forwards;
+      display: flex; align-items: center; padding: 16px; margin-bottom: 10px;
+      background: rgba(255,255,255,0.03); border-radius: 16px;
+      position: relative; overflow: hidden;
     }
     
     .neon-bar { position: absolute; left: 0; top: 0; bottom: 0; width: 4px; }
-    .type-easy .neon-bar { background: var(--neon-lime); box-shadow: 0 0 12px var(--neon-lime); }
-    .type-long .neon-bar { background: var(--neon-cyan); box-shadow: 0 0 12px var(--neon-cyan); }
-    .type-race .neon-bar { background: var(--neon-pink); box-shadow: 0 0 12px var(--neon-pink); }
+    .type-easy .neon-bar { background: var(--neon-lime); box-shadow: 0 0 8px var(--neon-lime); }
+    .type-long .neon-bar { background: var(--neon-cyan); box-shadow: 0 0 8px var(--neon-cyan); }
+    .type-race .neon-bar { background: var(--neon-pink); box-shadow: 0 0 8px var(--neon-pink); }
     .type-rest .neon-bar { background: rgba(255,255,255,0.1); }
 
-    .t-day { width: 44px; font-weight: 800; font-size: 13px; color: var(--text-sub); text-align: center; margin-right: 12px; }
+    .t-day { width: 40px; font-weight: 700; font-size: 13px; color: var(--text-sub); text-align: center; margin-right: 12px; }
     .t-content { flex: 1; }
-    .t-title { font-weight: 700; font-size: 15px; margin-bottom: 2px; color: #fff; }
+    .t-title { font-weight: 700; font-size: 14px; margin-bottom: 2px; color: #fff; }
     .t-sub { font-size: 12px; color: var(--text-sub); }
     
-    .pill { font-size: 9px; font-weight: 900; padding: 4px 8px; border-radius: 6px; text-transform: uppercase; float: right; }
+    .pill { font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 6px; float: right; }
     .pill-easy { background: rgba(204, 255, 0, 0.1); color: var(--neon-lime); }
     .pill-long { background: rgba(0, 242, 234, 0.1); color: var(--neon-cyan); }
     .pill-race { background: rgba(247, 37, 133, 0.15); color: var(--neon-pink); }
 
-    /* --- Animations --- */
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* --- Floating UI --- */
     .top-badge {
       display: inline-flex; align-items: center; padding: 6px 12px; background: rgba(255,255,255,0.05);
-      border-radius: 99px; font-size: 11px; font-weight: 700; color: var(--neon-lime); margin-bottom: 16px;
+      border-radius: 99px; font-size: 11px; font-weight: 700; color: var(--neon-lime); margin-bottom: 12px;
       border: 1px solid rgba(204, 255, 0, 0.2);
     }
-    .fab {
-      position: fixed; bottom: 30px; right: 24px; width: 56px; height: 56px; border-radius: 50%;
-      background: #fff; color: #000; border: none; cursor: pointer; display: grid; place-items: center;
-      font-size: 20px; box-shadow: 0 0 30px rgba(255,255,255,0.25); z-index: 99; transition: transform 0.2s;
-    }
-    .fab:active { transform: scale(0.95); }
-
-    /* --- Deload Banner --- */
+    
     .deload-banner {
-      display: none; align-items: center; gap: 16px; padding: 20px; border-radius: 20px; margin-top: 24px;
+      display: none; align-items: center; gap: 12px; padding: 16px; border-radius: 16px; margin-top: 20px;
       background: linear-gradient(135deg, rgba(204, 255, 0, 0.1), rgba(0, 242, 234, 0.05));
       border: 1px solid rgba(204, 255, 0, 0.3);
     }
@@ -201,10 +186,10 @@
 
   <div class="container">
     
-    <header style="margin-bottom: 32px;">
-      <div class="top-badge">v8.0 MASTERPIECE</div>
+    <header style="margin-bottom: 28px;">
+      <div class="top-badge">v8.1 FINAL KOREAN</div>
       <h1>Sub-3 Hybrid Project</h1>
-      <p style="color:var(--text-sub); margin-top:8px;">52-Week Elite Periodization & Physiology System</p>
+      <p style="color:var(--text-sub); margin-top:6px; font-size:14px;">52주 엘리트 주기화 & 생리학적 하이브리드 솔루션</p>
     </header>
 
     <!-- Bento Grid -->
@@ -212,33 +197,33 @@
       
       <!-- 1. Profile (Large) -->
       <div class="glass-card col-8">
-        <h2><span style="color:var(--neon-purple)">⚡️</span> SETTINGS</h2>
-        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+        <h2><span style="color:var(--neon-purple)">⚡️</span> 프로필 설정</h2>
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
           <div>
-            <span class="label">GENDER</span>
+            <span class="label">성별 (Gender)</span>
             <select id="in-sex" class="glass-input">
-              <option value="male">Male (Standard)</option>
-              <option value="female">Female (Safe)</option>
+              <option value="male">남성 (표준)</option>
+              <option value="female">여성 (보수적 증량)</option>
             </select>
           </div>
           <div>
-            <span class="label">START DAY</span>
+            <span class="label">시작 요일</span>
             <select id="start-day" class="glass-input">
-              <option value="0">Monday</option>
-              <option value="1">Tuesday</option>
-              <option value="2">Wednesday</option>
-              <option value="3">Thursday</option>
-              <option value="4">Friday</option>
-              <option value="5">Saturday</option>
-              <option value="6">Sunday</option>
+              <option value="0">월요일 시작</option>
+              <option value="1">화요일 시작</option>
+              <option value="2">수요일 시작</option>
+              <option value="3">목요일 시작</option>
+              <option value="4">금요일 시작</option>
+              <option value="5">토요일 시작</option>
+              <option value="6">일요일 시작</option>
             </select>
           </div>
           <div>
-            <span class="label">WEIGHT (kg)</span>
+            <span class="label">체중 (kg)</span>
             <input id="in-weight" type="number" class="glass-input" value="70" />
           </div>
           <div>
-            <span class="label">10K PB</span>
+            <span class="label">10K 기록 (분:초)</span>
             <input id="in-10k" class="glass-input" placeholder="45:00" />
           </div>
         </div>
@@ -248,51 +233,51 @@
       <div class="glass-card col-4">
         <div class="kpi-wrapper">
           <div id="kpi-easy" class="kpi-value">—</div>
-          <div class="kpi-label" style="color:var(--neon-cyan)">TARGET ZONE 2</div>
+          <div class="kpi-label" style="color:var(--neon-cyan)">목표 Zone 2 페이스</div>
         </div>
       </div>
 
       <!-- 3. Weather (Medium) -->
       <div class="glass-card col-6">
-        <h2><span style="color:var(--neon-amber)">🌤️</span> CONDITIONS</h2>
+        <h2><span style="color:var(--neon-amber)">🌤️</span> 기후별 전략</h2>
         <div class="weather-grid">
-          <div class="w-btn active" onclick="setWeather('normal', this)"><span class="w-icon">☁️</span> <span class="w-text">NORM</span></div>
-          <div class="w-btn" onclick="setWeather('hot', this)"><span class="w-icon">🔥</span> <span class="w-text">HOT</span></div>
-          <div class="w-btn" onclick="setWeather('rain', this)"><span class="w-icon">🌧️</span> <span class="w-text">RAIN</span></div>
-          <div class="w-btn" onclick="setWeather('snow', this)"><span class="w-icon">❄️</span> <span class="w-text">SNOW</span></div>
+          <div class="w-btn active" onclick="setWeather('normal', this)"><span class="w-icon">☁️</span> <span class="w-text">보통</span></div>
+          <div class="w-btn" onclick="setWeather('hot', this)"><span class="w-icon">🔥</span> <span class="w-text">폭염</span></div>
+          <div class="w-btn" onclick="setWeather('rain', this)"><span class="w-icon">🌧️</span> <span class="w-text">우천</span></div>
+          <div class="w-btn" onclick="setWeather('snow', this)"><span class="w-icon">❄️</span> <span class="w-text">설천</span></div>
         </div>
         <div id="weather-msg" style="margin-top:16px; font-size:12px; color:var(--text-sub); line-height:1.4;">
-          Standard Protocol Active.
+          표준 훈련 프로토콜 적용 중.
         </div>
       </div>
 
       <!-- 4. Nutrition (Medium) -->
       <div class="glass-card col-6">
-        <h2><span style="color:var(--neon-green)">⛽️</span> FUELING STRATEGY</h2>
+        <h2><span style="color:var(--neon-green)">⛽️</span> 영양 전략</h2>
         <div class="tabs">
-          <div class="tab-btn active" onclick="setNutriTab('daily', this)">DAILY</div>
-          <div class="tab-btn" onclick="setNutriTab('pre', this)">PRE</div>
-          <div class="tab-btn" onclick="setNutriTab('run', this)">RUN</div>
-          <div class="tab-btn" onclick="setNutriTab('post', this)">POST</div>
+          <div class="tab-btn active" onclick="setNutriTab('daily', this)">매일</div>
+          <div class="tab-btn" onclick="setNutriTab('pre', this)">운동전</div>
+          <div class="tab-btn" onclick="setNutriTab('run', this)">운동중</div>
+          <div class="tab-btn" onclick="setNutriTab('post', this)">운동후</div>
         </div>
 
         <div id="n-daily" class="nutri-content active">
-          <div class="n-row"><span class="n-key">Protein Total</span><span class="n-val" id="val-prot-day">—</span></div>
-          <div class="n-row"><span class="n-key">Water Total</span><span class="n-val" id="val-water-day">—</span></div>
+          <div class="n-row"><span class="n-key">일일 단백질</span><span class="n-val" id="val-prot-day">—</span></div>
+          <div class="n-row"><span class="n-key">일일 수분</span><span class="n-val" id="val-water-day">—</span></div>
           <div class="n-row" id="gender-tip" style="font-size:11px; color:var(--neon-purple); margin-top:4px;"></div>
         </div>
         <div id="n-pre" class="nutri-content">
-          <div class="n-row"><span class="n-key">Meal (3h pre)</span><span class="n-val" id="val-meal">—</span></div>
-          <div class="n-row"><span class="n-key">Hydration</span><span class="n-val" id="val-water-pre">—</span></div>
+          <div class="n-row"><span class="n-key">식사 (3시간전)</span><span class="n-val" id="val-meal">—</span></div>
+          <div class="n-row"><span class="n-key">수분 (2시간전)</span><span class="n-val" id="val-water-pre">—</span></div>
         </div>
         <div id="n-run" class="nutri-content">
-          <div class="n-row"><span class="n-key">Carbs/hr</span><span class="n-val" id="val-carb-hr">—</span></div>
-          <div class="n-row"><span class="n-key">Water/hr</span><span class="n-val" id="val-water-hr">—</span></div>
-          <div class="n-row"><span class="n-key">Sodium/hr</span><span class="n-val">500mg+</span></div>
+          <div class="n-row"><span class="n-key">탄수화물/시간</span><span class="n-val" id="val-carb-hr">—</span></div>
+          <div class="n-row"><span class="n-key">수분/시간</span><span class="n-val" id="val-water-hr">—</span></div>
+          <div class="n-row"><span class="n-key">나트륨/시간</span><span class="n-val">500mg+</span></div>
         </div>
         <div id="n-post" class="nutri-content">
-          <div class="n-row"><span class="n-key">Recovery (3:1)</span><span class="n-val" id="val-rec">—</span></div>
-          <div class="n-row"><span class="n-key">Timing</span><span class="n-val">Within 30min</span></div>
+          <div class="n-row"><span class="n-key">회복 (3:1 비율)</span><span class="n-val" id="val-rec">—</span></div>
+          <div class="n-row"><span class="n-key">섭취 타이밍</span><span class="n-val">직후 30분내</span></div>
         </div>
       </div>
 
@@ -303,20 +288,20 @@
       <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px;">
         <div>
           <h2 style="margin:0; color:var(--neon-pink);">WEEK <span id="week-display" style="font-size:24px; color:#fff; margin-left:4px;">1</span></h2>
-          <span id="phase-badge" style="font-size:11px; color:var(--text-sub); font-weight:700;">BASE PHASE</span>
+          <span id="phase-badge" style="font-size:12px; color:var(--text-sub); font-weight:700;">BASE PHASE</span>
         </div>
         <div style="text-align: right;">
-          <span id="desc-text" style="font-size:11px; color:var(--text-sub);">Target: LSD 10km</span>
+          <span id="desc-text" style="font-size:12px; color:var(--text-sub);">목표: LSD 10km</span>
         </div>
       </div>
 
       <div class="slider-wrap">
         <input type="range" id="week-slider" min="1" max="52" value="1" step="1">
-        <div style="display: flex; justify-content: space-between; font-size: 10px; color: var(--text-sub); margin-top: 12px; font-weight: 700;">
-          <span>Q1 (Base)</span>
-          <span>Q2 (Build)</span>
-          <span>Q3 (Peak)</span>
-          <span>Q4 (Race)</span>
+        <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-sub); margin-top: 12px; font-weight: 600;">
+          <span>1분기 (적응)</span>
+          <span>2분기 (확장)</span>
+          <span>3분기 (강화)</span>
+          <span>4분기 (완성)</span>
         </div>
       </div>
 
@@ -329,16 +314,14 @@
       <div id="deload-banner" class="deload-banner">
         <span style="font-size:24px;">🍃</span>
         <div>
-          <strong style="color:var(--neon-lime); font-size:13px; display:block;">DELOAD WEEK (디로드)</strong>
-          <span style="font-size:11px; color:var(--text-main);">4주마다 돌아오는 회복 주간입니다. 훈련량을 줄여 몸을 재충전하세요.</span>
+          <strong style="color:var(--neon-lime); font-size:13px; display:block;">디로드 주간 (DELOAD)</strong>
+          <span style="font-size:12px; color:var(--text-main);">4주마다 돌아오는 회복 기간입니다. 훈련량을 40% 줄여 몸을 재충전하세요.</span>
         </div>
       </div>
 
     </section>
 
   </div>
-
-  <button class="fab" onclick="window.scrollTo({top:0, behavior:'smooth'})">↑</button>
 
   <script>
   (function(){
@@ -353,17 +336,17 @@
     const $ = id => document.getElementById(id);
     const pad2 = n => String(n).padStart(2,'0');
 
-    // --- Weather ---
+    // --- Weather Handler ---
     window.setWeather = function(type, btn) {
       state.weather = type;
       document.querySelectorAll('.w-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       
       let msg = "";
-      if(type==='hot') msg="<span style='color:var(--neon-orange)'>🔥 HEAT:</span> Pace -15s/km. Salt mandatory. Hydrate x1.5.";
-      else if(type==='rain') msg="<span style='color:var(--neon-blue)'>🌧️ RAIN:</span> Wear cap. Anti-chafe balm. Dry shoes carefully.";
-      else if(type==='snow') msg="<span style='color:#fff'>❄️ SNOW:</span> Short strides. Focus on time, not distance.";
-      else msg="✅ <strong>NORMAL:</strong> Standard protocol active.";
+      if(type==='hot') msg="<span style='color:var(--neon-orange)'>🔥 폭염:</span> 페이스 15초/km 늦춤. 소금약 필수. 수분 1.5배.";
+      else if(type==='rain') msg="<span style='color:var(--neon-blue)'>🌧️ 우천:</span> 캡 모자 착용. 바세린 도포. 젖은 신발 그늘 건조.";
+      else if(type==='snow') msg="<span style='color:#fff'>❄️ 설천:</span> 보폭 좁게. 거리보다는 시간주(Time-based)로 전환.";
+      else msg="✅ <strong>보통:</strong> 표준 훈련 프로토콜 적용 중.";
       
       $('weather-msg').innerHTML = msg;
       calcFuel();
@@ -405,14 +388,14 @@
       let isFemale = state.sex === 'female';
 
       // 1. Daily
-      let dProt = Math.round(w * 1.8); // 1.8g/kg for hybrid
+      let dProt = Math.round(w * 1.8); 
       let dWater = Math.round(w * 35);
       $('val-prot-day').textContent = `${dProt}g`;
       $('val-water-day').textContent = `${dWater/1000}L`;
-      $('gender-tip').textContent = isFemale ? "Tip: Menstrual phase affects hydration." : "Tip: Higher sweat rate expected.";
+      $('gender-tip').textContent = isFemale ? "Tip: 여성은 황체기에 수분 저장 증가." : "Tip: 남성은 땀 배출량이 더 많음.";
 
       // 2. Pre
-      $('val-meal').textContent = `Carb ${Math.round(w*2.5)}g`;
+      $('val-meal').textContent = `탄수화물 ${Math.round(w*2.5)}g`;
       $('val-water-pre').textContent = `${Math.round(w*6)}ml`;
 
       // 3. Run
@@ -426,10 +409,10 @@
       // 4. Post
       let rCarb = Math.round(w*1.0);
       let rProt = Math.round(w*0.3);
-      $('val-rec').textContent = `C:${rCarb}g / P:${rProt}g`;
+      $('val-rec').textContent = `탄수:${rCarb}g / 단백:${rProt}g`;
     }
 
-    // --- Logic: 52-Week Engine ---
+    // --- Logic: 52-Week Schedule ---
     function generateSchedule(w) {
       const volFactor = state.sex === 'female' ? 0.9 : 1.0;
       const isDeload = (w % 4 === 0) && (w < 48);
@@ -437,13 +420,12 @@
       
       let phase = "", lsd = 0, easy = 0;
       
-      // Phase & Distance Logic
-      if (w <= 13) { phase = "Q1: BASE"; lsd = 10 + (w * 0.5); }
-      else if (w <= 26) { phase = "Q2: BUILD"; lsd = 16 + ((w-13) * 0.8); }
-      else if (w <= 39) { phase = "Q3: STRENGTH"; lsd = 26 + ((w-26) * 0.5); }
-      else if (w <= 48) { phase = "Q4: PEAK"; lsd = (w<=45) ? 32 : 32; }
+      if (w <= 13) { phase = "1분기: 구조적 적응"; lsd = 10 + (w * 0.5); }
+      else if (w <= 26) { phase = "2분기: 유산소 확장"; lsd = 16 + ((w-13) * 0.8); }
+      else if (w <= 39) { phase = "3분기: 내구력 강화"; lsd = 26 + ((w-26) * 0.5); }
+      else if (w <= 48) { phase = "4분기: 피크 & 완성"; lsd = (w<=45) ? 32 : 32; }
       else { 
-        phase = "TAPER & RACE"; 
+        phase = "테이퍼링 & 레이스"; 
         if(w===49) lsd = 24; else if(w===50) lsd = 16; else if(w===51) lsd = 10; else lsd = 0;
       }
 
@@ -452,8 +434,8 @@
 
       if(isDeload) { lsd = Math.round(lsd * 0.6); easy = Math.round(easy * 0.7); }
 
-      // Days Logic
-      const daysSrc = ['MON','TUE','WED','THU','FRI','SAT','SUN'];
+      // Days
+      const daysSrc = ['월','화','수','목','금','토','일'];
       const d = [];
       for(let i=0; i<7; i++) d.push(daysSrc[(parseInt(state.startDayIdx)+i)%7]);
 
@@ -461,26 +443,29 @@
       let items = [];
       if(isRace) {
         items = [
-          {d:d[0], t:"Easy 5k", type:"easy", sub:"Taper"}, {d:d[1], t:"Rest", type:"rest", sub:"Mindset"},
-          {d:d[2], t:"Shakeout 3k", type:"easy", sub:"Drills"}, {d:d[3], t:"Rest", type:"rest", sub:"Carb Load"},
-          {d:d[4], t:"Rest", type:"rest", sub:"Sleep"}, {d:d[5], t:"RACE DAY", type:"race", sub:"42.195km"},
-          {d:d[6], t:"Recovery", type:"rest", sub:"Active Rest"}
+          {d:d[0], t:"Easy 5k", type:"easy", sub:"테이퍼링"}, 
+          {d:d[1], t:"휴식", type:"rest", sub:"이미지 트레이닝"},
+          {d:d[2], t:"쉐이크아웃 3k", type:"easy", sub:"가볍게"}, 
+          {d:d[3], t:"휴식", type:"rest", sub:"카보 로딩"},
+          {d:d[4], t:"휴식", type:"rest", sub:"수면 집중"}, 
+          {d:d[5], t:"D-DAY RACE", type:"race", sub:"42.195km"},
+          {d:d[6], t:"완전 회복", type:"rest", sub:"걷기/식사"}
         ];
       } else {
         items = [
-          {d:d[0], t:`Easy ${easy}km`, type:"easy", sub:"Flexible"},
-          {d:d[1], t:`Easy ${easy+1}km`, type:"easy", sub:"Aerobic"},
-          {d:d[2], t:`Easy ${easy}km`, type:"easy", sub:"Aerobic"},
-          {d:d[3], t:`Rest`, type:"rest", sub:"CrossFit Light"},
-          {d:d[4], t:`Easy ${isDeload?Math.max(3,easy-2):easy}km`, type:"easy", sub:"Strides x4"},
-          {d:d[5], t:`LSD ${lsd}km`, type:"long", sub:"Zone 2 Strict"},
-          {d:d[6], t:`Rest`, type:"rest", sub:"Full Recovery"}
+          {d:d[0], t:`Easy ${easy}km`, type:"easy", sub:"유동적 배치"},
+          {d:d[1], t:`Easy ${easy+1}km`, type:"easy", sub:"유산소"},
+          {d:d[2], t:`Easy ${easy}km`, type:"easy", sub:"유산소"},
+          {d:d[3], t:`완전 휴식`, type:"rest", sub:"크로스핏 가볍게"},
+          {d:d[4], t:`Easy ${isDeload?Math.max(3,easy-2):easy}km`, type:"easy", sub:"질주 4회"},
+          {d:d[5], t:`LSD ${lsd}km`, type:"long", sub:"Zone 2 준수"},
+          {d:d[6], t:`완전 휴식`, type:"rest", sub:"충분한 회복"}
         ];
-        // Tests
-        if(w===8) items[5] = {d:d[5], t:"TEST 5K", type:"race", sub:"Max Effort"};
-        if(w===16) items[5] = {d:d[5], t:"TEST 10K", type:"race", sub:"Threshold"};
+        // Test Weeks
+        if(w===8) items[5] = {d:d[5], t:"TEST 5K", type:"race", sub:"전력 측정"};
+        if(w===16) items[5] = {d:d[5], t:"TEST 10K", type:"race", sub:"역치 측정"};
         if(w===24) items[5] = {d:d[5], t:"TEST HALF", type:"race", sub:"21.1km"};
-        if(w===36) items[5] = {d:d[5], t:"SIM 30K", type:"race", sub:"Race Gear"};
+        if(w===36) items[5] = {d:d[5], t:"SIM 30K", type:"race", sub:"레이스 장비"};
       }
 
       return { phase, isDeload, items, lsd };
@@ -493,7 +478,7 @@
       
       $('week-display').innerText = state.curWeek;
       $('phase-badge').innerText = data.phase;
-      $('desc-text').innerText = data.isDeload ? "RECOVERY WEEK" : `TARGET: LSD ${data.lsd}km`;
+      $('desc-text').innerText = data.isDeload ? "회복 주간 (Recovery)" : `목표: LSD ${data.lsd}km`;
       
       $('deload-banner').style.display = data.isDeload ? 'flex' : 'none';
 
@@ -503,7 +488,7 @@
       data.items.forEach((item, i) => {
         const li = document.createElement('li');
         li.className = `t-item type-${item.type}`;
-        li.style.animationDelay = `${i * 0.05}s`;
+        li.style.animation = `fadeIn 0.3s ease forwards ${i * 0.05}s`;
         
         let pill = '';
         if(item.type==='easy') pill = '<span class="pill pill-easy">EASY</span>';
