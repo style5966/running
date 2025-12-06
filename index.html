@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Sub-3 Hybrid Program v5.6 (Trendy Design)</title>
+  <title>Sub-3 Hybrid v5.7 (Complete)</title>
   <style>
     :root {
       --bg-dark: #09090b;
-      --bg-card: rgba(24, 24, 27, 0.6);
+      --bg-card: rgba(24, 24, 27, 0.65);
       --border: rgba(255, 255, 255, 0.08);
       --primary: #38bdf8; /* Sky Blue */
       --accent: #a78bfa; /* Soft Purple */
@@ -18,8 +18,8 @@
       --text-muted: #a1a1aa;
       --gradient-text: linear-gradient(135deg, #38bdf8, #818cf8);
       --gradient-bg: radial-gradient(circle at 50% -20%, #1e1b4b, #09090b);
-      --glass: blur(12px) saturate(180%);
-      --radius: 20px;
+      --glass: blur(16px) saturate(180%);
+      --radius: 24px;
     }
 
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -31,25 +31,26 @@
       background-attachment: fixed;
       color: var(--text-main);
       min-height: 100vh;
-      padding-bottom: 40px;
+      padding-bottom: 80px;
     }
 
     .container {
       max-width: 800px;
       margin: 0 auto;
-      padding: 20px;
+      padding: 24px;
     }
 
     /* Typography */
     h1 {
-      font-size: 28px;
+      font-size: 32px;
       margin: 0 0 8px 0;
       background: var(--gradient-text);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      letter-spacing: -0.5px;
+      letter-spacing: -0.8px;
+      line-height: 1.2;
     }
-    h2 { font-size: 18px; margin: 0 0 12px 0; font-weight: 600; letter-spacing: -0.3px; color: var(--text-main); }
+    h2 { font-size: 18px; margin: 0 0 16px 0; font-weight: 600; letter-spacing: -0.3px; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
     h3 { font-size: 16px; margin: 0; font-weight: 600; }
     p { margin: 0; color: var(--text-muted); font-size: 14px; line-height: 1.5; }
 
@@ -61,31 +62,34 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 24px;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s;
     }
-
+    
     .row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
     .between { justify-content: space-between; }
 
     /* Chips */
-    .chip-group { display: flex; gap: 8px; background: rgba(0,0,0,0.2); padding: 4px; border-radius: 99px; display: inline-flex; }
+    .chip-group { display: inline-flex; gap: 6px; background: rgba(0,0,0,0.3); padding: 4px; border-radius: 99px; border: 1px solid var(--border); }
     .chip {
       background: transparent;
       border: none;
       color: var(--text-muted);
-      padding: 6px 14px;
+      padding: 6px 16px;
       border-radius: 99px;
       font-size: 13px;
-      font-weight: 500;
+      font-weight: 600;
       cursor: pointer;
       transition: all 0.2s ease;
     }
     .chip[aria-pressed="true"] {
       background: rgba(255,255,255,0.1);
       color: var(--text-main);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.3);
     }
+    .chip[data-weather="hot"][aria-pressed="true"] { color: var(--warning); background: rgba(251, 191, 36, 0.15); }
+    .chip[data-mode="race"][aria-pressed="true"] { color: var(--accent); background: rgba(167, 139, 250, 0.15); }
 
     /* Inputs */
     .grid-inputs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
@@ -97,87 +101,64 @@
       background: rgba(0, 0, 0, 0.3);
       border: 1px solid var(--border);
       color: var(--text-main);
-      padding: 12px 14px;
-      border-radius: 12px;
+      padding: 14px;
+      border-radius: 14px;
       font-size: 15px;
       width: 100%;
-      transition: border-color 0.2s;
+      transition: all 0.2s;
     }
-    .input:focus, .select:focus { outline: none; border-color: var(--primary); background: rgba(0,0,0,0.5); }
+    .input:focus, .select:focus { outline: none; border-color: var(--primary); background: rgba(0,0,0,0.6); }
 
     /* KPI Grid */
-    .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 10px; }
+    .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; }
     .kpi-box {
       background: rgba(255,255,255,0.03);
-      border-radius: 16px;
-      padding: 14px;
+      border-radius: 18px;
+      padding: 16px;
       text-align: center;
       border: 1px solid var(--border);
     }
-    .kpi-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
-    .kpi-value { font-size: 15px; font-weight: 700; color: var(--primary); }
-    .kpi-box.main .kpi-value { color: var(--success); font-size: 17px; }
+    .kpi-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+    .kpi-value { font-size: 16px; font-weight: 700; color: var(--primary); }
+    .kpi-box.main { background: rgba(56, 189, 248, 0.05); border-color: rgba(56, 189, 248, 0.2); }
+    .kpi-box.main .kpi-value { color: var(--primary); font-size: 18px; }
+    
+    .nutri-val { font-family: "SF Mono", "Menlo", monospace; letter-spacing: -0.5px; }
 
-    /* Slider styling */
-    input[type=range] {
-      -webkit-appearance: none; width: 100%; background: transparent; margin: 10px 0;
-    }
-    input[type=range]::-webkit-slider-runnable-track {
-      width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; cursor: pointer;
-    }
-    input[type=range]::-webkit-slider-thumb {
-      -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%;
-      background: var(--text-main); margin-top: -9px; cursor: pointer;
-      box-shadow: 0 0 15px rgba(255,255,255,0.5); border: 2px solid #000;
-    }
+    /* Slider */
+    input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; margin: 10px 0; }
+    input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; cursor: pointer; }
+    input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%; background: var(--text-main); margin-top: -9px; cursor: pointer; box-shadow: 0 0 15px rgba(255,255,255,0.3); border: 2px solid #000; }
 
-    /* Week List */
+    /* List */
     ul.timeline { margin: 0; padding: 0; list-style: none; margin-top: 16px; }
     li.day-row {
-      display: flex;
-      align-items: center;
-      padding: 14px;
-      margin-bottom: 8px;
-      background: rgba(255,255,255,0.03);
-      border-radius: 12px;
-      border-left: 3px solid transparent;
-      transition: transform 0.2s;
+      display: flex; align-items: center; padding: 16px; margin-bottom: 8px;
+      background: rgba(255,255,255,0.02); border-radius: 16px; border: 1px solid transparent;
+      transition: all 0.2s;
     }
-    li.day-row:active { transform: scale(0.98); }
+    li.day-row:hover { background: rgba(255,255,255,0.05); }
     
-    li.type-easy { border-left-color: var(--success); }
-    li.type-long { border-left-color: var(--warning); background: linear-gradient(90deg, rgba(251, 191, 36, 0.05), transparent); }
-    li.type-race { border-left-color: var(--danger); background: linear-gradient(90deg, rgba(248, 113, 113, 0.1), transparent); }
-    li.type-rest { opacity: 0.5; border-left-color: var(--text-muted); }
+    /* Type Colors */
+    li.type-easy { border-left: 4px solid var(--success); }
+    li.type-long { border-left: 4px solid var(--warning); background: linear-gradient(90deg, rgba(251, 191, 36, 0.05), transparent); }
+    li.type-race { border-left: 4px solid var(--danger); background: linear-gradient(90deg, rgba(248, 113, 113, 0.1), transparent); }
+    li.type-rest { opacity: 0.5; border-left: 4px solid var(--text-muted); }
 
-    .day-content { flex: 1; margin-left: 10px; font-size: 14px; }
-    .badge {
-      font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 6px;
-      text-transform: uppercase; letter-spacing: 0.5px;
-    }
+    .badge { font-size: 10px; font-weight: 800; padding: 4px 8px; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
     .badge.success { background: rgba(52, 211, 153, 0.15); color: var(--success); }
     .badge.warning { background: rgba(251, 191, 36, 0.15); color: var(--warning); }
     .badge.danger { background: rgba(248, 113, 113, 0.15); color: var(--danger); }
     .badge.accent { background: rgba(167, 139, 250, 0.15); color: var(--accent); }
 
-    /* Floating Action Button */
-    .fab {
-      position: fixed; bottom: 24px; right: 24px;
-      background: var(--text-main); color: #000;
-      padding: 12px 20px; border-radius: 99px;
-      font-weight: 600; box-shadow: 0 4px 20px rgba(255,255,255,0.2);
-      font-size: 14px; cursor: pointer; border: none;
-      z-index: 100;
-    }
+    .fab { position: fixed; bottom: 24px; right: 24px; background: var(--text-main); color: #000; padding: 12px 20px; border-radius: 99px; font-weight: 700; box-shadow: 0 4px 20px rgba(0,0,0,0.4); border: none; cursor: pointer; z-index: 100; }
 
-    /* Utilities */
-    .text-accent { color: var(--accent); }
-    .text-warn { color: var(--warning); }
-    .hidden { display: none; }
-    
-    /* Animation */
-    @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    .animate-in { animation: slideIn 0.3s ease-out forwards; }
+    /* Switch */
+    .switch-label { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13px; color: var(--text-muted); }
+    .toggle-checkbox { appearance: none; width: 36px; height: 20px; background: rgba(255,255,255,0.1); border-radius: 99px; position: relative; transition: 0.3s; cursor: pointer; }
+    .toggle-checkbox:checked { background: var(--accent); }
+    .toggle-checkbox::after { content: ''; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; background: #fff; border-radius: 50%; transition: 0.3s; }
+    .toggle-checkbox:checked::after { transform: translateX(16px); }
 
   </style>
 </head>
@@ -185,24 +166,21 @@
 
   <div class="container">
     <!-- Header -->
-    <header style="margin-bottom: 24px; display: flex; justify-content: space-between; align-items: flex-end;">
-      <div>
-        <div class="chip-group" style="margin-bottom: 8px;">
-          <span class="chip" style="color:var(--accent); font-weight:700; cursor:default;">Hybrid v5.6</span>
-          <span class="chip" style="cursor:default;">Elite Km</span>
-        </div>
-        <h1>Sub-3 Hybrid</h1>
-        <p>크로스핏 + 러닝: 엘리트 거리 기반 훈련</p>
+    <header style="margin-bottom: 24px;">
+      <div class="chip-group" style="margin-bottom: 12px;">
+        <span class="chip" style="color:var(--accent); font-weight:800; cursor:default;">v5.7 Final</span>
+        <span class="chip" style="cursor:default;">Hybrid Elite</span>
       </div>
+      <h1>Sub-3 Hybrid Program</h1>
+      <p>크로스핏 파워 × 러닝 거리주 × 영양 전략의 통합 솔루션</p>
     </header>
 
-    <!-- Profile Card -->
+    <!-- Profile & Pace -->
     <section class="card">
       <div class="row between" style="margin-bottom: 16px;">
-        <h2>My Profile</h2>
+        <h2>🏃‍♂️ Profile & Pace</h2>
         <div class="chip-group">
           <button class="chip" data-units="metric" aria-pressed="true">km</button>
-          <button class="chip" data-units="imperial" aria-pressed="false">mi</button>
         </div>
       </div>
       
@@ -221,17 +199,13 @@
         </div>
         <div class="field">
           <label>성별</label>
-          <select id="in-sex" class="select">
-            <option value="male">남성</option>
-            <option value="female">여성</option>
-          </select>
+          <select id="in-sex" class="select"><option value="male">남성</option><option value="female">여성</option></select>
         </div>
       </div>
 
-      <!-- Pace KPI -->
       <div class="kpi-grid">
         <div class="kpi-box main">
-          <div class="kpi-label">Zone 2 (Easy)</div>
+          <div class="kpi-label">Zone 2 (LSD)</div>
           <div id="kpi-easy" class="kpi-value">—</div>
         </div>
         <div class="kpi-box">
@@ -243,24 +217,68 @@
           <div id="kpi-10k" class="kpi-value">—</div>
         </div>
       </div>
-      <p style="margin-top: 12px; font-size: 12px; text-align: center; color: var(--warning); opacity: 0.8;">
-        ⚠️ 모든 Easy/LSD 훈련은 위 <strong>Zone 2</strong> 페이스보다 빨라지면 안 됩니다.
+    </section>
+
+    <!-- Fueling Strategy (NEW) -->
+    <section class="card" style="border-color: rgba(167, 139, 250, 0.3);">
+      <div class="row between" style="margin-bottom: 16px;">
+        <h2 style="color: var(--accent);">⚡️ Fueling Strategy</h2>
+        <div class="chip-group">
+          <button class="chip" data-mode="train" aria-pressed="true">LSD 훈련</button>
+          <button class="chip" data-mode="race" aria-pressed="false">RACE</button>
+        </div>
+      </div>
+
+      <div class="row between" style="margin-bottom: 16px; background: rgba(0,0,0,0.2); padding: 12px; border-radius: 12px;">
+        <div class="row">
+          <span class="chip-group" style="border:none; padding:2px;">
+            <button class="chip" data-weather="normal" aria-pressed="true">보통</button>
+            <button class="chip" data-weather="hot" aria-pressed="false">더위🔥</button>
+          </span>
+        </div>
+        <label class="switch-label">
+          <input type="checkbox" id="gut-train" class="toggle-checkbox">
+          <span>장(Gut) 훈련 모드</span>
+        </label>
+      </div>
+
+      <div class="kpi-grid" style="grid-template-columns: repeat(2, 1fr);">
+        <div class="kpi-box">
+          <div class="kpi-label">💧 수분 (Water)</div>
+          <div id="fuel-water" class="kpi-value nutri-val">—</div>
+          <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">매 15분마다 약 150-200ml</div>
+        </div>
+        <div class="kpi-box">
+          <div class="kpi-label">🥯 탄수화물 (Carbs)</div>
+          <div id="fuel-cho" class="kpi-value nutri-val">—</div>
+          <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">에너지젤 약 2-3개/시간</div>
+        </div>
+        <div class="kpi-box">
+          <div class="kpi-label">🧂 나트륨 (Sodium)</div>
+          <div id="fuel-na" class="kpi-value nutri-val">—</div>
+        </div>
+        <div class="kpi-box">
+          <div class="kpi-label">⏱️ 총 예상 소요량</div>
+          <div id="fuel-total" class="kpi-value nutri-val" style="color:var(--text-main); font-size:14px;">—</div>
+        </div>
+      </div>
+      <p style="margin-top: 12px; font-size: 12px; color: var(--accent); opacity: 0.9;">
+        * 하이브리드 선수는 근육량이 많아 수분 손실과 글리코겐 고갈이 더 빠릅니다. 위 권장량을 철저히 지키세요.
       </p>
     </section>
 
     <!-- Weekly Schedule -->
     <section class="card" id="panel-weekly">
       <div class="row between">
-        <h2 id="week-title" class="text-accent">Week 1</h2>
+        <h2 id="week-title">Week 1</h2>
         <span id="week-badge" class="badge accent">BASE</span>
       </div>
       
-      <p id="week-desc" style="margin-bottom: 16px;">훈련 설명 로딩중...</p>
+      <p id="week-desc" style="margin-bottom: 20px; color: var(--text-muted);">훈련 설명 로딩중...</p>
 
-      <!-- Slider Component -->
-      <div style="padding: 0 8px; margin-bottom: 20px;">
+      <div style="padding: 0 8px; margin-bottom: 24px;">
         <input type="range" id="week-slider" min="1" max="16" value="1" step="1">
-        <div class="row between" style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">
+        <div class="row between" style="font-size: 11px; color: var(--text-muted); margin-top: 6px; padding: 0 4px;">
           <span>Start</span>
           <span>4w(5K)</span>
           <span>8w(10K)</span>
@@ -269,25 +287,9 @@
         </div>
       </div>
 
-      <!-- Schedule List -->
       <ul class="timeline" id="week-list">
-        <!-- JS Generated Items -->
+        <!-- JS Generated -->
       </ul>
-    </section>
-
-    <!-- Info Card -->
-    <section class="card" style="border-color: rgba(56, 189, 248, 0.2);">
-      <h3>💡 Hybrid Guide</h3>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 12px;">
-        <div>
-          <p style="color: var(--success); font-weight: 600; font-size: 13px; margin-bottom: 4px;">Pure Easy Run</p>
-          <p style="font-size: 12px; opacity: 0.8;">Brick(근전환) 강박 없이, 본인이 가장 편안한 시간에 러닝을 배치하세요. 핵심은 '낮은 심박수' 유지입니다.</p>
-        </div>
-        <div>
-          <p style="color: var(--warning); font-weight: 600; font-size: 13px; margin-bottom: 4px;">Distance Trap</p>
-          <p style="font-size: 12px; opacity: 0.8;">"30km 채우기"에 급급해 빨라지면 안 됩니다. <strong>"30km를 Zone 2로 느긋하게"</strong>가 정답입니다.</p>
-        </div>
-      </div>
     </section>
 
   </div>
@@ -298,10 +300,18 @@
   (function(){
     'use strict';
     
-    const state = { rec10k:'', recM:'', curWeek: 1 };
+    // Global State
+    const state = { 
+      rec10k:'', recM:'', curWeek: 1, weight: 70,
+      fuelMode: 'train', // train or race
+      weather: 'normal', // normal or hot
+      gutTrain: false
+    };
+
     const setById=(id,txt)=>{ const el=document.getElementById(id); if(el) el.textContent=txt; };
     const pad2=n=>String(n).padStart(2,'0');
 
+    // --- Logic: Pacing ---
     function parseTimeToSec(v){
       if(!v) return 0;
       const s=String(v).trim();
@@ -316,7 +326,6 @@
       const s = Math.round(secPerKm%60);
       return `${m}'${pad2(s)}"`;
     }
-    
     function calculatePaces(){
       const t10 = parseTimeToSec(state.rec10k);
       const tM = parseTimeToSec(state.recM);
@@ -333,126 +342,144 @@
       setById('kpi-10k', paceStr(k10));
     }
 
+    // --- Logic: Nutrition ---
+    function calculateNutrition(lsdMin){
+        const w = state.weight;
+        const isHot = state.weather === 'hot';
+        const isRace = state.fuelMode === 'race';
+        const isGut = state.gutTrain;
+
+        // Base Rates per Hour
+        let waterRate = 10 * w; // ml/hr (approx 10ml per kg)
+        if(isHot) waterRate *= 1.3;
+        
+        let choRate = isGut ? 90 : 60; // g/hr
+        if(isRace) choRate = 60; // Safer for race unless elite
+        if(isRace && isGut) choRate = 90;
+
+        let naRate = 500; // mg/hr
+        if(isHot) naRate = 800;
+
+        // If duration < 60min, requirements are low
+        if(lsdMin < 60 && !isHot) {
+            setById('fuel-water', '목마름 해소');
+            setById('fuel-cho', '불필요');
+            setById('fuel-na', '-');
+            setById('fuel-total', '가글 권장');
+            return;
+        }
+
+        // Display Rates
+        setById('fuel-water', `${Math.round(waterRate)} ml/h`);
+        setById('fuel-cho', `${choRate}-${choRate+30} g/h`);
+        setById('fuel-na', `${naRate} mg/h`);
+
+        // Total
+        const hrs = lsdMin / 60;
+        const totalWater = Math.round(waterRate * hrs);
+        const totalCho = Math.round(choRate * hrs);
+        const totalGel = Math.ceil(totalCho / 25); // Assume 25g per gel
+
+        setById('fuel-total', `물 ${totalWater}ml + 젤 ${totalGel}개`);
+    }
+
+    // --- Logic: Schedule ---
     function getWeekData(w) {
-        let title, badge, desc, schedule;
+        let title, badge, desc, schedule, lsdMin=60;
         
         if (w === 4) { 
-            title = `Week ${w}: 5K Check`;
-            badge = "TEST WEEK";
+            title = `Week ${w}: 5K Check`; badge = "TEST"; lsdMin=40;
             desc = "현재 스피드 감각을 점검합니다. 5km를 전력으로 달려 기록을 측정하세요.";
             schedule = [
-                {t:"월: Easy Run 5 km (가볍게)", type:"easy"},
-                {t:"화: 휴식 (크로스핏)", type:"rest"},
-                {t:"수: Easy Run 6 km + 질주 4회", type:"easy"},
-                {t:"목: 완전 휴식", type:"rest"},
-                {t:"금: [TEST] 웜업 2km + 5K TT + 쿨다운 2km", type:"race"},
-                {t:"토: 회복 조깅 7 km (아주 천천히)", type:"easy"},
-                {t:"일: 휴식", type:"rest"}
+                {t:"월: Easy 5 km", type:"easy"}, {t:"화: 휴식", type:"rest"},
+                {t:"수: Easy 6 km + 질주 4회", type:"easy"}, {t:"목: 완전 휴식", type:"rest"},
+                {t:"금: [TEST] 5K TT", type:"race"}, {t:"토: 회복 7 km", type:"easy"}, {t:"일: 휴식", type:"rest"}
             ];
         } else if (w === 8) { 
-            title = `Week ${w}: 10K Check`;
-            badge = "TEST WEEK";
+            title = `Week ${w}: 10K Check`; badge = "TEST"; lsdMin=50;
             desc = "유산소 역치 능력을 점검합니다. 10km를 일정한 페이스로 강하게 밉니다.";
             schedule = [
-                {t:"월: Easy Run 6 km", type:"easy"},
-                {t:"화: 휴식", type:"rest"},
-                {t:"수: Easy Run 5 km + 질주 4회", type:"easy"},
-                {t:"목: 완전 휴식", type:"rest"},
-                {t:"금: [TEST] 웜업 2km + 10K TT + 쿨다운 2km", type:"race"},
-                {t:"토: 회복 조깅 8 km", type:"easy"},
-                {t:"일: 휴식", type:"rest"}
+                {t:"월: Easy 6 km", type:"easy"}, {t:"화: 휴식", type:"rest"},
+                {t:"수: Easy 5 km + 질주", type:"easy"}, {t:"목: 완전 휴식", type:"rest"},
+                {t:"금: [TEST] 10K TT", type:"race"}, {t:"토: 회복 8 km", type:"easy"}, {t:"일: 휴식", type:"rest"}
             ];
         } else if (w === 12) {
-            title = `Week ${w}: HM Check`;
-            badge = "TEST WEEK";
-            desc = "장거리 지구력과 레이스 운영 능력(급수, 젤)을 리허설합니다.";
+            title = `Week ${w}: HM Check`; badge = "TEST"; lsdMin=100;
+            desc = "대회 리허설. 신발, 양말, 영양 섭취를 테스트하며 하프 거리를 달립니다.";
             schedule = [
-                {t:"월: Easy Run 6 km", type:"easy"},
-                {t:"화: 휴식", type:"rest"},
-                {t:"수: Easy 8 km (가볍게)", type:"easy"},
-                {t:"목: 완전 휴식", type:"rest"},
-                {t:"금: 휴식 or 3km 쉐이크아웃", type:"easy"},
-                {t:"토: [TEST] 하프마라톤 TT (대회 페이스 +5~10초)", type:"race"},
-                {t:"일: 휴식", type:"rest"}
+                {t:"월: Easy 6 km", type:"easy"}, {t:"화: 휴식", type:"rest"},
+                {t:"수: Easy 8 km", type:"easy"}, {t:"목: 완전 휴식", type:"rest"},
+                {t:"금: 쉐이크아웃 3 km", type:"easy"}, {t:"토: [TEST] 하프 TT", type:"race"}, {t:"일: 휴식", type:"rest"}
             ];
         } else if (w >= 16) { 
-            title = `Week ${w}: D-DAY`;
-            badge = "RACE WEEK";
-            desc = "테이퍼링 완료. 최상의 컨디션으로 출발선에 서세요.";
+            title = `Week ${w}: D-DAY`; badge = "RACE"; lsdMin=200; // approx for race
+            desc = "최상의 컨디션으로 출발선에 서세요. 준비는 끝났습니다.";
             schedule = [
-                {t:"월: Easy Run 5 km", type:"easy"},
-                {t:"화: 휴식", type:"rest"},
-                {t:"수: Easy 4 km + 질주 2회", type:"easy"},
-                {t:"목: 완전 휴식", type:"rest"},
-                {t:"금: 완전 휴식", type:"rest"},
-                {t:"토: [D-DAY] 42.195km RACE", type:"race"},
-                {t:"일: 회복", type:"rest"}
+                {t:"월: Easy 5 km", type:"easy"}, {t:"화: 휴식", type:"rest"},
+                {t:"수: Easy 4 km + 질주", type:"easy"}, {t:"목: 휴식", type:"rest"},
+                {t:"금: 휴식", type:"rest"}, {t:"토: [D-DAY] FULL RACE", type:"race"}, {t:"일: 회복", type:"rest"}
             ];
         } else {
             let easyDist, lsdDist;
             let phaseName = "";
             
             if(w < 4) { 
-                phaseName = "적응기"; 
-                easyDist = 5 + (w-1); 
-                lsdDist = 10 + (w-1)*2; 
+                phaseName = "적응기"; easyDist = 5 + (w-1); lsdDist = 10 + (w-1)*2; 
             } else if (w < 8) {
-                phaseName = "빌드업 I";
-                easyDist = 7 + (w-5)*0.5; 
-                lsdDist = 16 + (w-5)*2; 
+                phaseName = "빌드업 I"; easyDist = 7 + (w-5)*0.5; lsdDist = 16 + (w-5)*2; 
             } else if (w < 12) {
-                phaseName = "빌드업 II";
-                easyDist = 8 + (w-9)*0.5; 
-                lsdDist = 24 + (w-9)*2; 
+                phaseName = "빌드업 II"; easyDist = 8 + (w-9)*0.5; lsdDist = 24 + (w-9)*2; 
             } else {
-                phaseName = "완성기";
-                easyDist = 8;
-                if(w===13) lsdDist = 32; 
-                else if(w===14) lsdDist = 24; 
-                else if(w===15) lsdDist = 16; 
+                phaseName = "완성기"; easyDist = 8;
+                if(w===13) lsdDist = 32; else if(w===14) lsdDist = 24; else if(w===15) lsdDist = 16; 
             }
             
             easyDist = Math.floor(easyDist);
-            title = `Week ${w}: ${phaseName}`;
-            badge = "TRAINING";
-            desc = `LSD 목표: ${lsdDist}km (Zone 2). 주간 마일리지와 크로스핏 강도를 조절하세요.`;
+            lsdMin = lsdDist * 6; // approx 6min/km for calc
+            title = `Week ${w}: ${phaseName}`; badge = "TRAINING";
+            desc = `LSD 목표: ${lsdDist}km. 속도보다는 거리를 채우는 것에 집중하세요.`;
             
             schedule = [
-                {t:`월: Easy Run ${easyDist} km (유동적)`, type:"easy"},
-                {t:`화: Easy Run ${easyDist+1} km`, type:"easy"},
-                {t:`수: Easy Run ${easyDist} km`, type:"easy"},
+                {t:`월: Easy ${easyDist} km`, type:"easy"},
+                {t:`화: Easy ${easyDist+1} km`, type:"easy"},
+                {t:`수: Easy ${easyDist} km`, type:"easy"},
                 {t:`목: 완전 휴식`, type:"rest"},
-                {t:`금: Easy ${easyDist-1} km + 질주 4회`, type:"easy"},
-                {t:`토: LSD ${lsdDist} km (절대 Zone 2 준수)`, type:"long"},
+                {t:`금: Easy ${easyDist-1} km`, type:"easy"},
+                {t:`토: LSD ${lsdDist} km`, type:"long"},
                 {t:`일: 완전 휴식`, type:"rest"}
             ];
         }
-        return { title, badge, desc, schedule };
+        return { title, badge, desc, schedule, lsdMin };
     }
 
-    function renderSchedule(){
+    function renderAll(){
+        // 1. Paces
+        calculatePaces();
+
+        // 2. Schedule
         const data = getWeekData(state.curWeek);
         setById('week-title', data.title);
-        setById('week-badge', data.badge);
-        setById('week-desc', data.desc);
         
+        // Badge color
         const badgeEl = document.getElementById('week-badge');
+        badgeEl.textContent = data.badge;
         badgeEl.className = 'badge';
-        if(data.badge.includes("TEST") || data.badge.includes("RACE")) badgeEl.classList.add('danger');
+        if(data.badge === 'TEST') badgeEl.classList.add('danger');
+        else if(data.badge === 'RACE') badgeEl.classList.add('danger');
         else badgeEl.classList.add('accent');
 
+        setById('week-desc', data.desc);
+
+        // List
         const ul = document.getElementById('week-list');
         ul.innerHTML = '';
-        
         data.schedule.forEach((item, idx) => {
             const li = document.createElement('li');
             li.className = `day-row type-${item.type} animate-in`;
             li.style.animationDelay = `${idx * 0.05}s`;
-            
             let badgeHtml = '';
             if(item.type === 'race') badgeHtml = '<span class="badge danger">TARGET</span>';
             else if(item.type === 'long') badgeHtml = '<span class="badge warning">LSD</span>';
-            else if(item.type === 'easy') badgeHtml = '<span class="badge success">EASY</span>';
             
             li.innerHTML = `
               <div class="day-content">
@@ -465,26 +492,51 @@
             `;
             ul.appendChild(li);
         });
+
+        // 3. Nutrition (based on this week's LSD duration approx)
+        calculateNutrition(data.lsdMin);
     }
 
-    const inputs = ['in-10k','in-m'];
-    inputs.forEach(id => {
-        const el = document.getElementById(id);
-        el.addEventListener('input', () => {
-            state.rec10k = document.getElementById('in-10k').value;
-            state.recM = document.getElementById('in-m').value;
-            calculatePaces();
+    // --- Events ---
+    ['in-10k','in-m','in-weight'].forEach(id => {
+        document.getElementById(id).addEventListener('input', (e) => {
+            if(id==='in-weight') state.weight = parseInt(e.target.value) || 70;
+            else if(id==='in-10k') state.rec10k = e.target.value;
+            else if(id==='in-m') state.recM = e.target.value;
+            renderAll();
         });
     });
 
-    const slider = document.getElementById('week-slider');
-    slider.addEventListener('input', (e) => {
+    document.getElementById('week-slider').addEventListener('input', (e) => {
         state.curWeek = parseInt(e.target.value);
-        renderSchedule();
+        renderAll();
     });
 
-    calculatePaces();
-    renderSchedule();
+    // Fueling Toggles
+    const fuelModes = document.querySelectorAll('[data-mode]');
+    fuelModes.forEach(btn => btn.addEventListener('click', ()=>{
+        fuelModes.forEach(b=>b.setAttribute('aria-pressed','false'));
+        btn.setAttribute('aria-pressed','true');
+        state.fuelMode = btn.dataset.mode;
+        renderAll();
+    }));
+
+    const weatherModes = document.querySelectorAll('[data-weather]');
+    weatherModes.forEach(btn => btn.addEventListener('click', ()=>{
+        weatherModes.forEach(b=>b.setAttribute('aria-pressed','false'));
+        btn.setAttribute('aria-pressed','true');
+        state.weather = btn.dataset.weather;
+        renderAll();
+    }));
+
+    document.getElementById('gut-train').addEventListener('change', (e)=>{
+        state.gutTrain = e.target.checked;
+        renderAll();
+    });
+
+    // Init
+    renderAll();
+
   })();
   </script>
 </body>
