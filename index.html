@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Sub-3 Hybrid v8.1 (Final Korean)</title>
+  <title>Sub-3 Hybrid v8.2 (Final)</title>
   <style>
     /* --- Design System: Cyberpunk Neon Glass --- */
     :root {
@@ -130,9 +130,12 @@
     .w-text { font-size: 11px; font-weight: 600; color: var(--text-sub); }
     .w-btn.active .w-text { color: #fff; }
 
-    /* --- Timeline & Slider --- */
-    .slider-wrap { padding: 10px 0 30px; position: relative; }
-    input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; z-index: 2; position: relative; }
+    /* --- Timeline & Slider (Fixed Z-Index) --- */
+    .slider-wrap { padding: 10px 0 30px; position: relative; z-index: 10; }
+    input[type=range] { 
+        -webkit-appearance: none; width: 100%; background: transparent; 
+        z-index: 20; position: relative; cursor: pointer; 
+    }
     input[type=range]::-webkit-slider-runnable-track {
       width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 99px;
     }
@@ -187,7 +190,7 @@
   <div class="container">
     
     <header style="margin-bottom: 28px;">
-      <div class="top-badge">v8.1 FINAL KOREAN</div>
+      <div class="top-badge">v8.2 FINAL</div>
       <h1>Sub-3 Hybrid Project</h1>
       <p style="color:var(--text-sub); margin-top:6px; font-size:14px;">52주 엘리트 주기화 & 생리학적 하이브리드 솔루션</p>
     </header>
@@ -241,10 +244,10 @@
       <div class="glass-card col-6">
         <h2><span style="color:var(--neon-amber)">🌤️</span> 기후별 전략</h2>
         <div class="weather-grid">
-          <div class="w-btn active" onclick="setWeather('normal', this)"><span class="w-icon">☁️</span> <span class="w-text">보통</span></div>
-          <div class="w-btn" onclick="setWeather('hot', this)"><span class="w-icon">🔥</span> <span class="w-text">폭염</span></div>
-          <div class="w-btn" onclick="setWeather('rain', this)"><span class="w-icon">🌧️</span> <span class="w-text">우천</span></div>
-          <div class="w-btn" onclick="setWeather('snow', this)"><span class="w-icon">❄️</span> <span class="w-text">설천</span></div>
+          <div class="w-btn active" onclick="app.setWeather('normal', this)"><span class="w-icon">☁️</span> <span class="w-text">보통</span></div>
+          <div class="w-btn" onclick="app.setWeather('hot', this)"><span class="w-icon">🔥</span> <span class="w-text">폭염</span></div>
+          <div class="w-btn" onclick="app.setWeather('rain', this)"><span class="w-icon">🌧️</span> <span class="w-text">우천</span></div>
+          <div class="w-btn" onclick="app.setWeather('snow', this)"><span class="w-icon">❄️</span> <span class="w-text">설천</span></div>
         </div>
         <div id="weather-msg" style="margin-top:16px; font-size:12px; color:var(--text-sub); line-height:1.4;">
           표준 훈련 프로토콜 적용 중.
@@ -255,10 +258,10 @@
       <div class="glass-card col-6">
         <h2><span style="color:var(--neon-green)">⛽️</span> 영양 전략</h2>
         <div class="tabs">
-          <div class="tab-btn active" onclick="setNutriTab('daily', this)">매일</div>
-          <div class="tab-btn" onclick="setNutriTab('pre', this)">운동전</div>
-          <div class="tab-btn" onclick="setNutriTab('run', this)">운동중</div>
-          <div class="tab-btn" onclick="setNutriTab('post', this)">운동후</div>
+          <div class="tab-btn active" onclick="app.setNutriTab('daily', this)">매일</div>
+          <div class="tab-btn" onclick="app.setNutriTab('pre', this)">운동전</div>
+          <div class="tab-btn" onclick="app.setNutriTab('run', this)">운동중</div>
+          <div class="tab-btn" onclick="app.setNutriTab('post', this)">운동후</div>
         </div>
 
         <div id="n-daily" class="nutri-content active">
@@ -324,7 +327,10 @@
   </div>
 
   <script>
-  (function(){
+  // Namespace for global access
+  const app = {};
+
+  window.addEventListener('DOMContentLoaded', () => {
     'use strict';
     
     // Global State
@@ -337,7 +343,7 @@
     const pad2 = n => String(n).padStart(2,'0');
 
     // --- Weather Handler ---
-    window.setWeather = function(type, btn) {
+    app.setWeather = function(type, btn) {
       state.weather = type;
       document.querySelectorAll('.w-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
@@ -353,7 +359,7 @@
     };
 
     // --- Nutrition Tabs ---
-    window.setNutriTab = function(type, btn) {
+    app.setNutriTab = function(type, btn) {
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       document.querySelectorAll('.nutri-content').forEach(c => c.classList.remove('active'));
@@ -489,6 +495,7 @@
         const li = document.createElement('li');
         li.className = `t-item type-${item.type}`;
         li.style.animation = `fadeIn 0.3s ease forwards ${i * 0.05}s`;
+        li.style.opacity = 0; // Init for animation
         
         let pill = '';
         if(item.type==='easy') pill = '<span class="pill pill-easy">EASY</span>';
@@ -517,11 +524,15 @@
     }));
     $('in-sex').addEventListener('change', (e) => { state.sex = e.target.value; render(); });
     $('start-day').addEventListener('change', (e) => { state.startDayIdx = parseInt(e.target.value); render(); });
-    $('week-slider').addEventListener('input', (e) => { state.curWeek = parseInt(e.target.value); render(); });
+    
+    const slider = $('week-slider');
+    slider.addEventListener('input', (e) => {
+      state.curWeek = parseInt(e.target.value);
+      render();
+    });
 
     render(); // Init
-
-  })();
+  });
   </script>
 </body>
 </html>
