@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Sub-3 Hybrid v7.1 (Masterpiece)</title>
+  <title>Sub-3 Hybrid v7.2 (Director's Cut)</title>
   <style>
     /* --- Design System: Neon Glass Bento --- */
     :root {
       --bg-dark: #000000;
-      --glass-base: rgba(20, 20, 25, 0.6);
+      --glass-base: rgba(20, 20, 25, 0.7);
       --glass-border: rgba(255, 255, 255, 0.08);
       --glass-highlight: rgba(255, 255, 255, 0.1);
       
@@ -17,11 +17,12 @@
       --neon-pink: #ff0050;
       --neon-purple: #7000ff;
       --neon-lime: #ccff00;
+      --neon-amber: #ffaa00;
       
       --text-main: #ffffff;
       --text-sub: #8b8b95;
       
-      --radius: 28px;
+      --radius: 24px;
       --ease-elastic: cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
@@ -41,22 +42,22 @@
     .aurora {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
       background: 
-        radial-gradient(circle at 0% 0%, rgba(112, 0, 255, 0.15), transparent 40%),
-        radial-gradient(circle at 100% 0%, rgba(0, 242, 234, 0.1), transparent 40%),
-        radial-gradient(circle at 100% 100%, rgba(255, 0, 80, 0.1), transparent 40%);
-      filter: blur(40px);
+        radial-gradient(circle at 0% 0%, rgba(112, 0, 255, 0.1), transparent 50%),
+        radial-gradient(circle at 100% 0%, rgba(0, 242, 234, 0.08), transparent 50%),
+        radial-gradient(circle at 50% 100%, rgba(255, 0, 80, 0.08), transparent 50%);
+      filter: blur(60px);
     }
 
-    .container { max-width: 900px; margin: 0 auto; padding: 24px 20px; }
+    .container { max-width: 900px; margin: 0 auto; padding: 20px; }
 
     /* --- Typography --- */
     h1 {
-      font-size: 32px; font-weight: 800; letter-spacing: -1px; margin: 0;
+      font-size: 28px; font-weight: 800; letter-spacing: -0.5px; margin: 0;
       background: linear-gradient(135deg, #fff 40%, #8b8b95);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
     h2 { 
-      font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; 
+      font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; 
       color: var(--text-sub); margin: 0 0 16px 0; font-weight: 700; 
       display: flex; align-items: center; gap: 8px;
     }
@@ -71,12 +72,12 @@
       padding: 24px;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
+      box-shadow: 0 20px 40px -10px rgba(0,0,0,0.6);
       transition: transform 0.2s var(--ease-elastic);
     }
     
     .bento-grid {
-      display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; margin-bottom: 24px;
+      display: grid; grid-template-columns: repeat(12, 1fr); gap: 12px; margin-bottom: 24px;
     }
     .col-12 { grid-column: span 12; }
     .col-8 { grid-column: span 12; } 
@@ -91,30 +92,44 @@
     /* --- Interactive Controls --- */
     .glass-input {
       width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border);
-      color: #fff; padding: 14px 16px; border-radius: 16px; font-size: 15px; outline: none;
+      color: #fff; padding: 12px 16px; border-radius: 16px; font-size: 14px; outline: none;
       transition: 0.2s; font-weight: 500; appearance: none;
     }
     .glass-input:focus { border-color: var(--neon-cyan); background: rgba(0,0,0,0.5); }
-    
-    .input-label { font-size: 11px; color: var(--text-sub); margin-bottom: 6px; display: block; font-weight: 600; }
+    .input-label { font-size: 10px; color: var(--text-sub); margin-bottom: 6px; display: block; font-weight: 700; }
 
     /* --- KPI Display --- */
     .kpi-wrap { text-align: center; display: flex; flex-direction: column; justify-content: center; height: 100%; }
     .kpi-val { 
-      font-size: 28px; font-weight: 800; font-family: 'SF Mono', monospace; letter-spacing: -1px;
+      font-size: 24px; font-weight: 800; font-family: 'SF Mono', monospace; letter-spacing: -1px;
       background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-    .kpi-sub { font-size: 11px; color: var(--text-sub); text-transform: uppercase; margin-top: 4px; font-weight: 700; }
+    .kpi-sub { font-size: 10px; color: var(--text-sub); text-transform: uppercase; margin-top: 4px; font-weight: 700; }
+
+    /* --- Nutrition Tabs (New) --- */
+    .nutri-tabs { display: flex; gap: 4px; margin-bottom: 16px; background: rgba(255,255,255,0.05); padding: 4px; border-radius: 12px; }
+    .n-tab {
+      flex: 1; text-align: center; padding: 8px 0; font-size: 11px; font-weight: 700; color: var(--text-sub);
+      border-radius: 8px; cursor: pointer; transition: 0.2s;
+    }
+    .n-tab.active { background: rgba(255,255,255,0.1); color: #fff; }
+    
+    .nutri-detail { display: none; animation: fadeIn 0.3s ease; }
+    .nutri-detail.active { display: block; }
+    .nutri-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px; }
+    .nutri-row:last-child { border: none; }
+    .nutri-label { color: var(--text-sub); }
+    .nutri-data { font-weight: 600; color: #fff; }
 
     /* --- Weather Buttons --- */
     .weather-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
     .w-btn {
-      background: rgba(255,255,255,0.05); border-radius: 16px; padding: 12px 0;
+      background: rgba(255,255,255,0.05); border-radius: 14px; padding: 10px 0;
       text-align: center; cursor: pointer; transition: 0.2s; border: 1px solid transparent;
     }
     .w-btn.active { background: rgba(0, 242, 234, 0.15); border-color: var(--neon-cyan); }
-    .w-icon { font-size: 22px; display: block; margin-bottom: 4px; }
+    .w-icon { font-size: 18px; display: block; margin-bottom: 4px; }
     .w-label { font-size: 10px; font-weight: 700; color: var(--text-sub); }
     .w-btn.active .w-label { color: #fff; }
 
@@ -122,52 +137,51 @@
     .slider-wrap { position: relative; padding: 20px 0; }
     input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
     input[type=range]::-webkit-slider-runnable-track {
-      width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 99px;
+      width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 99px;
     }
     input[type=range]::-webkit-slider-thumb {
-      -webkit-appearance: none; height: 28px; width: 28px; border-radius: 50%;
-      background: #fff; border: 4px solid var(--bg-dark); margin-top: -11px;
-      box-shadow: 0 0 20px rgba(255,255,255,0.8); cursor: grab;
+      -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%;
+      background: #fff; border: 2px solid var(--bg-dark); margin-top: -10px;
+      box-shadow: 0 0 15px rgba(255,255,255,0.8); cursor: grab;
     }
 
     /* --- Timeline --- */
     .timeline { list-style: none; padding: 0; margin: 0; }
     .timeline-item {
-      display: flex; align-items: center; padding: 18px; margin-bottom: 12px;
-      background: rgba(255,255,255,0.03); border-radius: 20px;
+      display: flex; align-items: center; padding: 16px; margin-bottom: 10px;
+      background: rgba(255,255,255,0.03); border-radius: 18px;
       position: relative; overflow: hidden;
       animation: slideUp 0.4s ease forwards; opacity: 0;
     }
+    .bar { position: absolute; left: 0; top: 0; bottom: 0; width: 3px; }
     
-    /* Neon Indicators */
-    .bar { position: absolute; left: 0; top: 0; bottom: 0; width: 4px; }
-    .type-easy .bar { background: var(--neon-lime); box-shadow: 0 0 12px var(--neon-lime); }
-    .type-long .bar { background: var(--neon-cyan); box-shadow: 0 0 12px var(--neon-cyan); }
-    .type-race .bar { background: var(--neon-pink); box-shadow: 0 0 12px var(--neon-pink); }
+    .type-easy .bar { background: var(--neon-lime); box-shadow: 0 0 10px var(--neon-lime); }
+    .type-long .bar { background: var(--neon-cyan); box-shadow: 0 0 10px var(--neon-cyan); }
+    .type-race .bar { background: var(--neon-pink); box-shadow: 0 0 10px var(--neon-pink); }
     .type-rest .bar { background: rgba(255,255,255,0.1); }
 
-    .day { width: 44px; font-weight: 800; font-size: 13px; color: var(--text-sub); text-align: center; margin-right: 12px; }
+    .day { width: 40px; font-weight: 800; font-size: 12px; color: var(--text-sub); text-align: center; margin-right: 12px; }
     .content { flex: 1; }
-    .title { font-weight: 700; font-size: 15px; margin-bottom: 2px; color: #fff; }
-    .sub { font-size: 12px; color: var(--text-sub); }
+    .title { font-weight: 700; font-size: 14px; margin-bottom: 2px; color: #fff; }
+    .sub { font-size: 11px; color: var(--text-sub); }
     
-    .pill { font-size: 9px; font-weight: 900; padding: 4px 8px; border-radius: 6px; text-transform: uppercase; float: right; }
-    .pill-easy { background: rgba(204, 255, 0, 0.15); color: var(--neon-lime); }
-    .pill-long { background: rgba(0, 242, 234, 0.15); color: var(--neon-cyan); }
-    .pill-race { background: rgba(255, 0, 80, 0.15); color: var(--neon-pink); }
+    .pill { font-size: 9px; font-weight: 900; padding: 3px 6px; border-radius: 4px; text-transform: uppercase; float: right; }
+    .pill-easy { background: rgba(204, 255, 0, 0.1); color: var(--neon-lime); }
+    .pill-long { background: rgba(0, 242, 234, 0.1); color: var(--neon-cyan); }
+    .pill-race { background: rgba(255, 0, 80, 0.1); color: var(--neon-pink); }
 
     /* --- Animations --- */
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* --- Floating Badge --- */
     .top-badge {
       display: inline-flex; align-items: center; padding: 6px 12px; background: rgba(255,255,255,0.08);
-      border-radius: 99px; font-size: 11px; font-weight: 700; color: var(--neon-cyan); margin-bottom: 16px;
-      border: 1px solid rgba(0, 242, 234, 0.2);
+      border-radius: 99px; font-size: 11px; font-weight: 700; color: var(--neon-lime); margin-bottom: 16px;
+      border: 1px solid rgba(204, 255, 0, 0.2);
     }
 
     .fab {
-      position: fixed; bottom: 32px; right: 24px; width: 56px; height: 56px; border-radius: 50%;
+      position: fixed; bottom: 30px; right: 24px; width: 50px; height: 50px; border-radius: 50%;
       background: #fff; color: #000; border: none; cursor: pointer; display: grid; place-items: center;
       font-size: 20px; box-shadow: 0 0 30px rgba(255,255,255,0.25); z-index: 99;
     }
@@ -179,37 +193,28 @@
 
   <div class="container">
     
-    <header style="margin-bottom: 32px;">
-      <div class="top-badge">v7.1 NEON BENTO</div>
+    <header style="margin-bottom: 28px;">
+      <div class="top-badge">v7.2 DIRECTOR'S CUT</div>
       <h1>Sub-3 Hybrid</h1>
-      <p style="color:var(--text-sub); margin-top:8px;">1-Year Elite Periodization System</p>
+      <p style="color:var(--text-sub); margin-top:6px; font-size:13px;">1-Year Elite Periodization & Fueling System</p>
     </header>
 
-    <!-- Bento Grid -->
     <div class="bento-grid">
       
       <!-- 1. Profile (Large) -->
-      <div class="bento-card col-8">
-        <h2>⚡️ CONFIGURATION</h2>
-        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+      <div class="bento-card col-12">
+        <h2><span style="color:var(--neon-purple)">⚡️</span> PROFILE SETTINGS</h2>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
           <div>
             <span class="input-label">GENDER</span>
             <select id="in-sex" class="glass-input">
-              <option value="male">Male (Standard)</option>
-              <option value="female">Female (Safe)</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
             </select>
           </div>
           <div>
-            <span class="input-label">START DAY</span>
-            <select id="start-day" class="glass-input">
-              <option value="0">Monday</option>
-              <option value="1">Tuesday</option>
-              <option value="2">Wednesday</option>
-              <option value="3">Thursday</option>
-              <option value="4">Friday</option>
-              <option value="5">Saturday</option>
-              <option value="6">Sunday</option>
-            </select>
+            <span class="input-label">WEIGHT (kg)</span>
+            <input id="in-weight" type="number" class="glass-input" value="70" />
           </div>
           <div>
             <span class="input-label">10K PB</span>
@@ -220,51 +225,66 @@
             <input id="in-m" class="glass-input" placeholder="3:30:00" />
           </div>
         </div>
-      </div>
-
-      <!-- 2. Zone 2 KPI (Small) -->
-      <div class="bento-card col-4">
-        <div class="kpi-wrap">
-          <div id="kpi-easy" class="kpi-val" style="font-size:24px;">—</div>
-          <div class="kpi-sub" style="color:var(--neon-cyan)">Zone 2 Pace</div>
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top:12px;">
+             <div>
+                <span class="input-label">START DAY</span>
+                <select id="start-day" class="glass-input">
+                  <option value="0">월요일 시작</option>
+                  <option value="1">화요일 시작</option>
+                  <option value="2">수요일 시작</option>
+                  <option value="3">목요일 시작</option>
+                  <option value="4">금요일 시작</option>
+                  <option value="5">토요일 시작</option>
+                  <option value="6">일요일 시작</option>
+                </select>
+             </div>
+             <div class="kpi-wrap" style="align-items:flex-start; text-align:left; padding-left:12px;">
+                <div class="kpi-sub" style="color:var(--neon-cyan)">TARGET ZONE 2</div>
+                <div id="kpi-easy" class="kpi-val" style="font-size:18px;">—</div>
+             </div>
         </div>
       </div>
 
-      <!-- 3. Weather (Medium) -->
+      <!-- 2. Weather (Medium) -->
       <div class="bento-card col-6">
-        <h2>🌤️ CLIMATE CONTROL</h2>
+        <h2><span style="color:var(--neon-amber)">🌤️</span> CONDITIONS</h2>
         <div class="weather-grid">
-          <div class="w-btn active" onclick="setWeather('normal', this)">
-            <span class="w-icon">☁️</span> <span class="w-label">NORM</span>
-          </div>
-          <div class="w-btn" onclick="setWeather('hot', this)">
-            <span class="w-icon">🔥</span> <span class="w-label">HOT</span>
-          </div>
-          <div class="w-btn" onclick="setWeather('rain', this)">
-            <span class="w-icon">🌧️</span> <span class="w-label">RAIN</span>
-          </div>
-          <div class="w-btn" onclick="setWeather('snow', this)">
-            <span class="w-icon">❄️</span> <span class="w-label">SNOW</span>
-          </div>
+          <div class="w-btn active" onclick="setWeather('normal', this)"><span class="w-icon">☁️</span> <span class="w-label">NORM</span></div>
+          <div class="w-btn" onclick="setWeather('hot', this)"><span class="w-icon">🔥</span> <span class="w-label">HOT</span></div>
+          <div class="w-btn" onclick="setWeather('rain', this)"><span class="w-icon">🌧️</span> <span class="w-label">RAIN</span></div>
+          <div class="w-btn" onclick="setWeather('snow', this)"><span class="w-icon">❄️</span> <span class="w-label">SNOW</span></div>
         </div>
-        <div id="weather-msg" style="margin-top:16px; font-size:12px; color:var(--text-sub); line-height:1.4;">
-          Standard Protocol applied.
+        <div id="weather-msg" style="margin-top:12px; font-size:11px; color:var(--text-sub); line-height:1.4;">
+          표준 훈련 프로토콜 적용 중.
         </div>
       </div>
 
-      <!-- 4. Fueling (Medium) -->
+      <!-- 3. Advanced Nutrition (Medium) -->
       <div class="bento-card col-6">
-        <h2>⛽️ HOURLY FUEL</h2>
-        <div style="display: flex; justify-content: space-around; height: 100%; align-items: center;">
-          <div class="kpi-wrap">
-            <div id="fuel-water" class="kpi-val" style="font-size:22px; color:#fff;">—</div>
-            <div class="kpi-sub">WATER (ml)</div>
-          </div>
-          <div style="width:1px; height:40px; background:var(--glass-border);"></div>
-          <div class="kpi-wrap">
-            <div id="fuel-cho" class="kpi-val" style="font-size:22px; color:#fff;">—</div>
-            <div class="kpi-sub">CARBS (g)</div>
-          </div>
+        <h2><span style="color:var(--neon-green)">⛽️</span> FUELING STRATEGY</h2>
+        
+        <div class="nutri-tabs">
+          <div class="n-tab active" onclick="setNutriTab('pre', this)">PRE (전)</div>
+          <div class="n-tab" onclick="setNutriTab('during', this)">DURING (중)</div>
+          <div class="n-tab" onclick="setNutriTab('post', this)">POST (후)</div>
+        </div>
+
+        <div id="nutri-pre" class="nutri-detail active">
+          <div class="nutri-row"><span class="nutri-label">로딩 (3일전)</span> <span class="nutri-data" id="n-load">—</span></div>
+          <div class="nutri-row"><span class="nutri-label">식사 (3시간전)</span> <span class="nutri-data" id="n-meal">—</span></div>
+          <div class="nutri-row"><span class="nutri-label">수분 (2시간전)</span> <span class="nutri-data" id="n-water-pre">—</span></div>
+        </div>
+
+        <div id="nutri-during" class="nutri-detail">
+          <div class="nutri-row"><span class="nutri-label">탄수화물/h</span> <span class="nutri-data" id="n-carb-hr">—</span></div>
+          <div class="nutri-row"><span class="nutri-label">수분/h</span> <span class="nutri-data" id="n-water-hr">—</span></div>
+          <div class="nutri-row"><span class="nutri-label">카페인/h</span> <span class="nutri-data">50~100mg</span></div>
+        </div>
+
+        <div id="nutri-post" class="nutri-detail">
+          <div class="nutri-row"><span class="nutri-label">즉시 섭취 (3:1)</span> <span class="nutri-data" id="n-rec-ratio">—</span></div>
+          <div class="nutri-row"><span class="nutri-label">단백질</span> <span class="nutri-data" id="n-prot">—</span></div>
+          <div class="nutri-row"><span class="nutri-label">타이밍</span> <span class="nutri-data">운동 직후 30분</span></div>
         </div>
       </div>
 
@@ -272,7 +292,7 @@
 
     <!-- Timeline Section -->
     <section class="bento-card" id="schedule-card" style="min-height: 500px;">
-      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px;">
         <div>
           <h2 style="margin:0; color:var(--neon-pink);">WEEK <span id="week-display" style="font-size:24px; color:#fff; margin-left:4px;">1</span></h2>
           <span id="phase-badge" style="font-size:11px; color:var(--text-sub); font-weight:700;">BASE PHASE</span>
@@ -285,11 +305,11 @@
       <div class="slider-wrap">
         <input type="range" id="week-slider" min="1" max="52" value="1" step="1">
         <div style="display: flex; justify-content: space-between; font-size: 10px; color: var(--text-sub); margin-top: 8px; font-weight: 700;">
-          <span>START</span>
+          <span>Start</span>
           <span>Q1</span>
           <span>Q2</span>
           <span>Q3</span>
-          <span>RACE</span>
+          <span>Race</span>
         </div>
       </div>
 
@@ -299,12 +319,12 @@
         <!-- JS Injection -->
       </ul>
 
-      <!-- Deload Notification -->
+      <!-- Deload Banner -->
       <div id="deload-box" style="display:none; margin-top:24px; padding:16px; background:rgba(204, 255, 0, 0.1); border-radius:16px; border:1px solid rgba(204, 255, 0, 0.2); align-items:center; gap:12px;">
         <span style="font-size:20px;">🍃</span>
         <div>
-          <strong style="color:var(--neon-lime); font-size:13px;">DELOAD WEEK</strong>
-          <div style="font-size:11px; color:var(--text-sub);">Volume reduced by 40% for recovery.</div>
+          <strong style="color:var(--neon-lime); font-size:13px;">DELOAD WEEK (디로드)</strong>
+          <div style="font-size:11px; color:var(--text-sub);">회복 주간입니다. 훈련량을 40% 줄이고 크로스핏 강도를 낮춰, 다음 블록을 위한 에너지를 비축하세요.</div>
         </div>
       </div>
 
@@ -318,7 +338,7 @@
   (function(){
     'use strict';
     
-    // --- State Management ---
+    // --- State ---
     const state = { 
       rec10k:'45:00', recM:'3:30:00', curWeek: 1, 
       sex: 'male', startDayIdx: 0, weather: 'normal', weight: 70
@@ -327,20 +347,29 @@
     const $ = id => document.getElementById(id);
     const pad2 = n => String(n).padStart(2,'0');
 
-    // --- Weather Handler ---
+    // --- Weather Logic ---
     window.setWeather = function(type, btn) {
       state.weather = type;
       document.querySelectorAll('.w-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       
       let msg = "";
-      if(type === 'hot') msg = "<strong style='color:var(--neon-pink)'>🔥 HEAT:</strong> Pace -15s/km. Salt mandatory.";
-      else if(type === 'rain') msg = "<strong style='color:var(--neon-cyan)'>🌧️ RAIN:</strong> Cap required. Anti-chafe balm.";
-      else if(type === 'snow') msg = "❄️ <strong>SNOW:</strong> Short strides. Time-based run.";
-      else msg = "✅ <strong>NORMAL:</strong> Standard protocol.";
+      if(type === 'hot') msg = "<strong style='color:var(--neon-pink)'>🔥 폭염 (Heat):</strong> 심박수 상승 주의. 페이스를 15~20초 늦추고, 소금약(Salt Stick)을 1시간마다 섭취하세요.";
+      else if(type === 'rain') msg = "<strong style='color:var(--neon-cyan)'>🌧️ 우천 (Rain):</strong> 시야 확보용 캡 모자와 쓸림 방지 바세린 필수. 젖은 신발은 그늘에서 건조.";
+      else if(type === 'snow') msg = "❄️ <strong>설천 (Snow):</strong> 미끄럼 방지를 위해 보폭을 좁히고(Short Strides), 거리보다는 시간주(Time-based)로 전환하세요.";
+      else msg = "✅ <strong>Standard:</strong> 표준 훈련 프로토콜 적용 중. 특이사항 없습니다.";
       
       $('weather-msg').innerHTML = msg;
-      calcFuel();
+      calcFuel(); // Recalculate nutrition
+    };
+
+    // --- Nutrition Tab Logic ---
+    window.setNutriTab = function(type, btn) {
+      document.querySelectorAll('.n-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      
+      document.querySelectorAll('.nutri-detail').forEach(d => d.classList.remove('active'));
+      document.getElementById(`nutri-${type}`).classList.add('active');
     };
 
     // --- Pacing Calculator ---
@@ -365,14 +394,34 @@
       $('kpi-easy').textContent = z2 ? fmtPace(z2) : '—';
     }
 
-    // --- Nutrition Calculator ---
+    // --- Advanced Fueling Calculator ---
     function calcFuel(){
-      let w = state.weight;
-      let water = Math.round(w * 10);
-      if(state.weather === 'hot') water = Math.round(water * 1.5);
+      let w = state.weight || 70;
+      let isHot = state.weather === 'hot';
       
-      $('fuel-water').textContent = `${water}`;
-      $('fuel-cho').textContent = `60`;
+      // 1. Pre (Loading)
+      let loadCarb = Math.round(w * 10); // 10g/kg
+      let mealCarb = Math.round(w * 3);  // 3g/kg (3-4hr before)
+      let preWater = Math.round(w * 7);  // 5-7ml/kg
+      
+      $('n-load').textContent = `Carb ${loadCarb}g/일`;
+      $('n-meal').textContent = `Carb ${mealCarb}g`;
+      $('n-water-pre').textContent = `${preWater}ml`;
+
+      // 2. During
+      let carbHr = 60; // Base
+      if(state.curWeek > 24) carbHr = 75; // Increase for higher intensity phases
+      let waterHr = Math.round(w * 10); // 10ml/kg/h
+      if(isHot) { waterHr = Math.round(waterHr * 1.4); carbHr = 60; } // In heat, focus hydration, reduce carb slightly to prevent GI issues
+
+      $('n-carb-hr').textContent = `${carbHr}g`;
+      $('n-water-hr').textContent = `${waterHr}ml`;
+
+      // 3. Post (Recovery)
+      let recCarb = Math.round(w * 1.2); // 1.2g/kg
+      let recProt = Math.round(w * 0.3); // 0.3g/kg
+      $('n-rec-ratio').textContent = `C:${recCarb}g + P:${recProt}g`;
+      $('n-prot').textContent = `${recProt}g`;
     }
 
     // --- Core Logic: 52-Week Schedule ---
@@ -383,30 +432,44 @@
       
       let phase = "", lsd = 0, easy = 0;
       
-      if(w <= 12) { phase = "PHASE 1: ADAPTATION"; lsd = 10 + (w * 0.5); }
-      else if(w <= 24) { phase = "PHASE 2: BUILD"; lsd = 16 + ((w-12) * 0.8); }
-      else if(w <= 36) { phase = "PHASE 3: STRENGTH"; lsd = 25 + ((w-24) * 0.5); }
-      else if(w <= 48) { phase = "PHASE 4: PEAK"; lsd = (w<=45) ? 32 : 32-((w-45)*4); }
-      else { phase = "TAPER & RACE"; lsd = 10; }
+      // Phase & LSD Progression (Exponential Decay Taper)
+      if (w <= 12) { phase = "PHASE 1: 구조적 적응"; lsd = 10 + (w * 0.5); }
+      else if (w <= 24) { phase = "PHASE 2: 유산소 확장"; lsd = 16 + ((w-12) * 0.8); }
+      else if (w <= 36) { phase = "PHASE 3: 근지구력 강화"; lsd = 25 + ((w-24) * 0.5); }
+      else if (w <= 48) { phase = "PHASE 4: 피크 & 쉐이핑"; lsd = (w<=45) ? 32 : 32; } // Hold peak
+      else { 
+          phase = "TAPER & RACE"; 
+          // Smooth Taper: 49(24k), 50(16k), 51(10k)
+          if(w===49) lsd = 24;
+          else if(w===50) lsd = 16;
+          else if(w===51) lsd = 10;
+          else lsd = 0; 
+      }
 
       lsd = Math.round(lsd * volFactor);
-      easy = Math.round(lsd * 0.4);
+      easy = Math.round(lsd * 0.35); // Weekday runs shorter
 
-      if(isDeload) { lsd = Math.round(lsd * 0.6); easy = Math.round(easy * 0.7); }
+      if(isDeload) { 
+          lsd = Math.round(lsd * 0.6); 
+          easy = Math.round(easy * 0.7); 
+      }
 
-      // Days
+      // Days Logic
       const dayNames = ['MON','TUE','WED','THU','FRI','SAT','SUN'];
       const days = [];
-      for(let i=0; i<7; i++) days.push(dayNames[(state.startDayIdx + i)%7]);
+      for(let i=0; i<7; i++) days.push(dayNames[(parseInt(state.startDayIdx) + i)%7]);
 
-      // Items
+      // Items Generator
       let items = [];
       if(isRace) {
         items = [
-          {d:days[0], t:"Easy 5k", type:"easy"}, {d:days[1], t:"Rest", type:"rest"},
-          {d:days[2], t:"Shakeout 3k", type:"easy"}, {d:days[3], t:"Rest", type:"rest"},
-          {d:days[4], t:"Rest", type:"rest"}, {d:days[5], t:"RACE DAY", type:"race", sub:"42.195km"},
-          {d:days[6], t:"Recovery", type:"rest"}
+          {d:days[0], t:"Easy 5k", type:"easy", sub:"Taper"}, 
+          {d:days[1], t:"Rest", type:"rest", sub:"Mindset"},
+          {d:days[2], t:"Shakeout 3k", type:"easy", sub:"Drills"}, 
+          {d:days[3], t:"Rest", type:"rest", sub:"Carb Load"},
+          {d:days[4], t:"Rest", type:"rest", sub:"Sleep"}, 
+          {d:days[5], t:"RACE DAY", type:"race", sub:"42.195km"},
+          {d:days[6], t:"Recovery", type:"rest", sub:"Walk/Eat"}
         ];
       } else {
         items = [
@@ -414,16 +477,17 @@
           {d:days[1], t:`Easy ${easy+1}km`, type:"easy", sub:"Aerobic"},
           {d:days[2], t:`Easy ${easy}km`, type:"easy", sub:"Aerobic"},
           {d:days[3], t:`Rest`, type:"rest", sub:"CrossFit Light"},
-          {d:days[4], t:`Easy ${isDeload?easy-2:easy}km`, type:"easy", sub:"Strides x4"},
+          {d:days[4], t:`Easy ${isDeload?Math.max(3, easy-2):easy}km`, type:"easy", sub:"Strides x4"},
           {d:days[5], t:`LSD ${lsd}km`, type:"long", sub:"Zone 2 Strict"},
           {d:days[6], t:`Rest`, type:"rest", sub:"Full Recovery"}
         ];
       }
 
-      // Test Weeks override
-      if(w===8) items[4] = {d:days[4], t:"TEST 5K", type:"race", sub:"Max Effort"};
-      if(w===16) items[4] = {d:days[4], t:"TEST 10K", type:"race", sub:"Threshold"};
-      if(w===24) items[4] = {d:days[4], t:"TEST HALF", type:"race", sub:"21.1km"};
+      // Test Weeks (Override Sat)
+      if(w===8) items[5] = {d:days[5], t:"TEST 5K", type:"race", sub:"Max Effort"};
+      if(w===16) items[5] = {d:days[5], t:"TEST 10K", type:"race", sub:"Threshold"};
+      if(w===24) items[5] = {d:days[5], t:"TEST HALF", type:"race", sub:"21.1km"};
+      if(w===36) items[5] = {d:days[5], t:"SIM 30K", type:"race", sub:"Race Gear"};
 
       return { phase, isDeload, items, lsd };
     }
@@ -467,18 +531,15 @@
     }
 
     // --- Listeners ---
-    ['in-10k','in-m'].forEach(id => $(id).addEventListener('input', (e) => {
-      if(id==='in-10k') state.rec10k = e.target.value; else state.recM = e.target.value;
+    ['in-10k','in-m','in-weight'].forEach(id => $(id).addEventListener('input', (e) => {
+      if(id==='in-weight') state.weight = parseInt(e.target.value) || 70;
+      else if(id==='in-10k') state.rec10k = e.target.value;
+      else state.recM = e.target.value;
       render();
     }));
     $('in-sex').addEventListener('change', (e) => { state.sex = e.target.value; render(); });
     $('start-day').addEventListener('change', (e) => { state.startDayIdx = parseInt(e.target.value); render(); });
-    
-    // Fix: Slider Event
-    $('week-slider').addEventListener('input', (e) => {
-      state.curWeek = parseInt(e.target.value);
-      render();
-    });
+    $('week-slider').addEventListener('input', (e) => { state.curWeek = parseInt(e.target.value); render(); });
 
     // Init
     render();
