@@ -3,343 +3,288 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Sub-3 Hybrid v7.0 (Neon Glass)</title>
+  <title>Sub-3 Hybrid v7.1 (Masterpiece)</title>
   <style>
-    /* --- Design System: Cyberpunk Glass --- */
+    /* --- Design System: Neon Glass Bento --- */
     :root {
-      --bg-deep: #050505;
-      --glass-surface: rgba(255, 255, 255, 0.03);
+      --bg-dark: #000000;
+      --glass-base: rgba(20, 20, 25, 0.6);
       --glass-border: rgba(255, 255, 255, 0.08);
-      --glass-highlight: rgba(255, 255, 255, 0.15);
+      --glass-highlight: rgba(255, 255, 255, 0.1);
       
-      --neon-blue: #3b82f6;
-      --neon-cyan: #06b6d4;
-      --neon-purple: #8b5cf6;
-      --neon-pink: #ec4899;
-      --neon-green: #10b981;
-      --neon-amber: #f59e0b;
+      /* Neon Palette */
+      --neon-cyan: #00f2ea;
+      --neon-pink: #ff0050;
+      --neon-purple: #7000ff;
+      --neon-lime: #ccff00;
       
       --text-main: #ffffff;
-      --text-muted: #94a3b8;
+      --text-sub: #8b8b95;
       
-      --radius-sm: 12px;
-      --radius-md: 20px;
-      --radius-lg: 32px;
-      
-      --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
-      --font-stack: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+      --radius: 28px;
+      --ease-elastic: cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
     body {
       margin: 0;
-      font-family: var(--font-stack);
-      background-color: var(--bg-deep);
-      background-image: 
-        radial-gradient(circle at 10% 0%, rgba(59, 130, 246, 0.15) 0%, transparent 40%),
-        radial-gradient(circle at 90% 10%, rgba(139, 92, 246, 0.1) 0%, transparent 40%),
-        radial-gradient(circle at 50% 100%, rgba(6, 182, 212, 0.1) 0%, transparent 50%);
-      background-attachment: fixed;
+      font-family: -apple-system, BlinkMacSystemFont, "Pretendard", sans-serif;
+      background-color: var(--bg-dark);
       color: var(--text-main);
       min-height: 100vh;
       padding-bottom: 120px;
       overflow-x: hidden;
     }
 
+    /* --- Background Aurora --- */
+    .aurora {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+      background: 
+        radial-gradient(circle at 0% 0%, rgba(112, 0, 255, 0.15), transparent 40%),
+        radial-gradient(circle at 100% 0%, rgba(0, 242, 234, 0.1), transparent 40%),
+        radial-gradient(circle at 100% 100%, rgba(255, 0, 80, 0.1), transparent 40%);
+      filter: blur(40px);
+    }
+
     .container { max-width: 900px; margin: 0 auto; padding: 24px 20px; }
 
     /* --- Typography --- */
     h1 {
-      font-size: 36px; font-weight: 800; letter-spacing: -1.5px; margin: 0;
-      background: linear-gradient(135deg, #fff 30%, var(--text-muted));
+      font-size: 32px; font-weight: 800; letter-spacing: -1px; margin: 0;
+      background: linear-gradient(135deg, #fff 40%, #8b8b95);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 30px rgba(255,255,255,0.1);
     }
-    h2 { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin: 0 0 12px 0; font-weight: 600; display:flex; align-items:center; gap:6px; }
-    p { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin: 0; }
-
-    /* --- Components: Glass Card --- */
-    .glass-card {
-      background: var(--glass-surface);
-      backdrop-filter: blur(24px) saturate(180%);
-      -webkit-backdrop-filter: blur(24px) saturate(180%);
+    h2 { 
+      font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; 
+      color: var(--text-sub); margin: 0 0 16px 0; font-weight: 700; 
+      display: flex; align-items: center; gap: 8px;
+    }
+    
+    /* --- Glass Components --- */
+    .bento-card {
+      background: var(--glass-base);
+      backdrop-filter: blur(20px) saturate(140%);
+      -webkit-backdrop-filter: blur(20px) saturate(140%);
       border: 1px solid var(--glass-border);
-      border-radius: var(--radius-md);
-      box-shadow: var(--shadow-glass);
+      border-radius: var(--radius);
       padding: 24px;
       position: relative;
       overflow: hidden;
-      transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
+      transition: transform 0.2s var(--ease-elastic);
     }
-    /* Shine Effect */
-    .glass-card::before {
-      content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
-      transition: 0.5s; pointer-events: none;
-    }
-    .glass-card:hover::before { left: 100%; }
-
-    /* --- Bento Grid Layout --- */
+    
     .bento-grid {
       display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; margin-bottom: 24px;
     }
     .col-12 { grid-column: span 12; }
-    .col-8 { grid-column: span 12; } /* Mobile first */
+    .col-8 { grid-column: span 12; } 
     .col-6 { grid-column: span 12; }
     .col-4 { grid-column: span 12; }
-    
     @media (min-width: 768px) {
       .col-8 { grid-column: span 8; }
       .col-6 { grid-column: span 6; }
       .col-4 { grid-column: span 4; }
     }
 
-    /* --- Interactive Inputs --- */
-    .input-group { position: relative; margin-bottom: 12px; }
-    .input-label { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; display: block; font-weight: 500; }
+    /* --- Interactive Controls --- */
     .glass-input {
-      width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border);
-      color: #fff; padding: 14px 16px; border-radius: 14px; font-size: 15px; outline: none;
-      transition: all 0.2s; font-family: monospace;
+      width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border);
+      color: #fff; padding: 14px 16px; border-radius: 16px; font-size: 15px; outline: none;
+      transition: 0.2s; font-weight: 500; appearance: none;
     }
-    .glass-input:focus { border-color: var(--neon-blue); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15); background: rgba(0,0,0,0.4); }
-    .select-wrap { position: relative; }
-    .select-wrap::after {
-      content: '▼'; font-size: 10px; color: var(--text-muted); position: absolute; right: 16px; top: 50%; transform: translateY(-50%); pointer-events: none;
-    }
+    .glass-input:focus { border-color: var(--neon-cyan); background: rgba(0,0,0,0.5); }
+    
+    .input-label { font-size: 11px; color: var(--text-sub); margin-bottom: 6px; display: block; font-weight: 600; }
 
     /* --- KPI Display --- */
-    .kpi-display { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; }
-    .kpi-title { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-    .kpi-value { 
-      font-size: 28px; font-weight: 800; 
-      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-blue)); 
+    .kpi-wrap { text-align: center; display: flex; flex-direction: column; justify-content: center; height: 100%; }
+    .kpi-val { 
+      font-size: 28px; font-weight: 800; font-family: 'SF Mono', monospace; letter-spacing: -1px;
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      font-family: 'SF Mono', monospace;
     }
-    .kpi-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+    .kpi-sub { font-size: 11px; color: var(--text-sub); text-transform: uppercase; margin-top: 4px; font-weight: 700; }
 
     /* --- Weather Buttons --- */
-    .weather-selector { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 12px; }
+    .weather-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
     .w-btn {
-      background: rgba(255,255,255,0.03); border: 1px solid transparent; border-radius: 16px;
-      padding: 12px 4px; text-align: center; cursor: pointer; transition: 0.2s;
+      background: rgba(255,255,255,0.05); border-radius: 16px; padding: 12px 0;
+      text-align: center; cursor: pointer; transition: 0.2s; border: 1px solid transparent;
     }
-    .w-btn:hover { background: rgba(255,255,255,0.07); }
-    .w-btn.active { background: rgba(59, 130, 246, 0.15); border-color: var(--neon-blue); box-shadow: 0 0 15px rgba(59, 130, 246, 0.2); }
-    .w-icon { font-size: 20px; margin-bottom: 4px; display: block; filter: drop-shadow(0 0 5px rgba(255,255,255,0.3)); }
-    .w-label { font-size: 10px; font-weight: 600; color: var(--text-muted); }
+    .w-btn.active { background: rgba(0, 242, 234, 0.15); border-color: var(--neon-cyan); }
+    .w-icon { font-size: 22px; display: block; margin-bottom: 4px; }
+    .w-label { font-size: 10px; font-weight: 700; color: var(--text-sub); }
     .w-btn.active .w-label { color: #fff; }
 
-    /* --- Dynamic Advice Box --- */
-    .advice-box {
-      margin-top: 16px; padding: 16px; border-radius: 16px; font-size: 13px; line-height: 1.5;
-      background: rgba(0,0,0,0.4); border-left: 3px solid var(--neon-blue);
-      animation: fadeIn 0.4s ease;
-    }
-
     /* --- Slider --- */
-    .slider-container { padding: 10px 0; }
-    input[type=range] {
-      -webkit-appearance: none; width: 100%; background: transparent;
-    }
+    .slider-wrap { position: relative; padding: 20px 0; }
+    input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
     input[type=range]::-webkit-slider-runnable-track {
-      width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 99px; cursor: pointer;
+      width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 99px;
     }
     input[type=range]::-webkit-slider-thumb {
-      -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%;
-      background: #fff; border: 2px solid var(--bg-deep); margin-top: -9px;
-      box-shadow: 0 0 20px rgba(255,255,255,0.8); cursor: pointer; transition: transform 0.1s;
+      -webkit-appearance: none; height: 28px; width: 28px; border-radius: 50%;
+      background: #fff; border: 4px solid var(--bg-dark); margin-top: -11px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.8); cursor: grab;
     }
-    input[type=range]:active::-webkit-slider-thumb { transform: scale(1.2); }
 
-    /* --- Timeline List --- */
+    /* --- Timeline --- */
     .timeline { list-style: none; padding: 0; margin: 0; }
     .timeline-item {
-      display: flex; align-items: center; padding: 18px; margin-bottom: 10px;
-      background: rgba(255,255,255,0.02); border-radius: 18px; border: 1px solid transparent;
-      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: flex; align-items: center; padding: 18px; margin-bottom: 12px;
+      background: rgba(255,255,255,0.03); border-radius: 20px;
       position: relative; overflow: hidden;
+      animation: slideUp 0.4s ease forwards; opacity: 0;
     }
-    .timeline-item:hover { transform: translateX(4px); background: rgba(255,255,255,0.04); }
     
-    /* Neon Status Indicators */
-    .status-line { position: absolute; left: 0; top: 0; bottom: 0; width: 4px; }
-    .type-easy .status-line { background: var(--neon-green); box-shadow: 0 0 10px var(--neon-green); }
-    .type-long .status-line { background: var(--neon-amber); box-shadow: 0 0 10px var(--neon-amber); }
-    .type-race .status-line { background: var(--neon-pink); box-shadow: 0 0 10px var(--neon-pink); }
-    .type-rest .status-line { background: rgba(255,255,255,0.1); }
+    /* Neon Indicators */
+    .bar { position: absolute; left: 0; top: 0; bottom: 0; width: 4px; }
+    .type-easy .bar { background: var(--neon-lime); box-shadow: 0 0 12px var(--neon-lime); }
+    .type-long .bar { background: var(--neon-cyan); box-shadow: 0 0 12px var(--neon-cyan); }
+    .type-race .bar { background: var(--neon-pink); box-shadow: 0 0 12px var(--neon-pink); }
+    .type-rest .bar { background: rgba(255,255,255,0.1); }
 
-    .day-badge { 
-      width: 40px; font-weight: 700; color: var(--text-muted); font-size: 13px; text-align: center; margin-right: 12px;
-    }
-    .workout-content { flex: 1; display: flex; justify-content: space-between; align-items: center; }
-    .workout-name { font-weight: 600; color: #fff; font-size: 15px; margin-bottom: 2px; }
-    .workout-detail { font-size: 12px; color: var(--text-muted); }
+    .day { width: 44px; font-weight: 800; font-size: 13px; color: var(--text-sub); text-align: center; margin-right: 12px; }
+    .content { flex: 1; }
+    .title { font-weight: 700; font-size: 15px; margin-bottom: 2px; color: #fff; }
+    .sub { font-size: 12px; color: var(--text-sub); }
     
-    .tag { font-size: 10px; font-weight: 800; padding: 4px 8px; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
-    .tag-easy { background: rgba(16, 185, 129, 0.15); color: var(--neon-green); }
-    .tag-long { background: rgba(245, 158, 11, 0.15); color: var(--neon-amber); }
-    .tag-race { background: rgba(236, 72, 153, 0.15); color: var(--neon-pink); }
-
-    /* --- Floating Badge --- */
-    .header-badge {
-      display: inline-flex; align-items: center; padding: 6px 12px; background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1); border-radius: 99px; margin-bottom: 16px;
-      font-size: 12px; font-weight: 600; color: var(--neon-cyan);
-    }
-    .dot { width: 6px; height: 6px; background: var(--neon-cyan); border-radius: 50%; margin-right: 8px; box-shadow: 0 0 8px var(--neon-cyan); }
+    .pill { font-size: 9px; font-weight: 900; padding: 4px 8px; border-radius: 6px; text-transform: uppercase; float: right; }
+    .pill-easy { background: rgba(204, 255, 0, 0.15); color: var(--neon-lime); }
+    .pill-long { background: rgba(0, 242, 234, 0.15); color: var(--neon-cyan); }
+    .pill-race { background: rgba(255, 0, 80, 0.15); color: var(--neon-pink); }
 
     /* --- Animations --- */
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    .animate-in { animation: fadeIn 0.4s ease forwards; opacity: 0; }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* --- Deload Banner --- */
-    .deload-banner {
-      margin-top: 20px; padding: 20px; border-radius: 20px;
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(6, 182, 212, 0.05));
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      display: flex; align-items: center; gap: 16px;
-      display: none; /* JS Toggle */
+    /* --- Floating Badge --- */
+    .top-badge {
+      display: inline-flex; align-items: center; padding: 6px 12px; background: rgba(255,255,255,0.08);
+      border-radius: 99px; font-size: 11px; font-weight: 700; color: var(--neon-cyan); margin-bottom: 16px;
+      border: 1px solid rgba(0, 242, 234, 0.2);
     }
-    .deload-icon { font-size: 24px; filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.5)); }
 
-    /* --- FAB --- */
     .fab {
-      position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; border-radius: 50%;
+      position: fixed; bottom: 32px; right: 24px; width: 56px; height: 56px; border-radius: 50%;
       background: #fff; color: #000; border: none; cursor: pointer; display: grid; place-items: center;
-      font-weight: 900; box-shadow: 0 0 20px rgba(255,255,255,0.3); z-index: 100; transition: transform 0.2s;
+      font-size: 20px; box-shadow: 0 0 30px rgba(255,255,255,0.25); z-index: 99;
     }
-    .fab:active { transform: scale(0.9); }
-
   </style>
 </head>
 <body>
 
+  <div class="aurora"></div>
+
   <div class="container">
     
-    <!-- Hero Header -->
     <header style="margin-bottom: 32px;">
-      <div class="header-badge"><span class="dot"></span> v7.0 Neon Edition</div>
-      <h1>Sub-3 Hybrid Project</h1>
-      <p style="margin-top: 8px; max-width: 600px;">
-        크로스핏터의 파워와 러너의 지구력을 하나로.<br>
-        52주 장기 프로젝트를 위한 엘리트 솔루션.
-      </p>
+      <div class="top-badge">v7.1 NEON BENTO</div>
+      <h1>Sub-3 Hybrid</h1>
+      <p style="color:var(--text-sub); margin-top:8px;">1-Year Elite Periodization System</p>
     </header>
 
     <!-- Bento Grid -->
     <div class="bento-grid">
       
-      <!-- 1. Profile Settings (Large) -->
-      <div class="col-8 glass-card">
-        <h2><span style="color:var(--neon-purple)">⚡️</span> Profile Settings</h2>
+      <!-- 1. Profile (Large) -->
+      <div class="bento-card col-8">
+        <h2>⚡️ CONFIGURATION</h2>
         <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
-          <div class="input-group">
-            <span class="input-label">Gender (Physiology)</span>
-            <div class="select-wrap">
-              <select id="in-sex" class="glass-input">
-                <option value="male">Male (Standard)</option>
-                <option value="female">Female (Bone-Safe)</option>
-              </select>
-            </div>
+          <div>
+            <span class="input-label">GENDER</span>
+            <select id="in-sex" class="glass-input">
+              <option value="male">Male (Standard)</option>
+              <option value="female">Female (Safe)</option>
+            </select>
           </div>
-          <div class="input-group">
-            <span class="input-label">Start Day</span>
-            <div class="select-wrap">
-              <select id="start-day" class="glass-input">
-                <option value="0">Monday</option>
-                <option value="1">Tuesday</option>
-                <option value="2">Wednesday</option>
-                <option value="3">Thursday</option>
-                <option value="4">Friday</option>
-                <option value="5">Saturday</option>
-                <option value="6">Sunday</option>
-              </select>
-            </div>
+          <div>
+            <span class="input-label">START DAY</span>
+            <select id="start-day" class="glass-input">
+              <option value="0">Monday</option>
+              <option value="1">Tuesday</option>
+              <option value="2">Wednesday</option>
+              <option value="3">Thursday</option>
+              <option value="4">Friday</option>
+              <option value="5">Saturday</option>
+              <option value="6">Sunday</option>
+            </select>
           </div>
-          <div class="input-group">
-            <span class="input-label">10K Record</span>
+          <div>
+            <span class="input-label">10K PB</span>
             <input id="in-10k" class="glass-input" placeholder="45:00" />
           </div>
-          <div class="input-group">
-            <span class="input-label">Goal (Full)</span>
+          <div>
+            <span class="input-label">GOAL</span>
             <input id="in-m" class="glass-input" placeholder="3:30:00" />
           </div>
         </div>
       </div>
 
       <!-- 2. Zone 2 KPI (Small) -->
-      <div class="col-4 glass-card kpi-display" style="background: rgba(59, 130, 246, 0.05); border-color: rgba(59, 130, 246, 0.2);">
-        <div class="kpi-title">Zone 2 (LSD)</div>
-        <div id="kpi-easy" class="kpi-value">—</div>
-        <div class="kpi-sub">Recovery Pace</div>
-      </div>
-
-      <!-- 3. Weather Control (Medium) -->
-      <div class="col-6 glass-card">
-        <h2><span style="color:var(--neon-amber)">🌤️</span> Climate Strategy</h2>
-        <div class="weather-selector">
-          <div class="w-btn active" onclick="updateWeather('normal', this)">
-            <span class="w-icon">☁️</span> <span class="w-label">Normal</span>
-          </div>
-          <div class="w-btn" onclick="updateWeather('hot', this)">
-            <span class="w-icon">🔥</span> <span class="w-label">Hot</span>
-          </div>
-          <div class="w-btn" onclick="updateWeather('rain', this)">
-            <span class="w-icon">🌧️</span> <span class="w-label">Rain</span>
-          </div>
-          <div class="w-btn" onclick="updateWeather('snow', this)">
-            <span class="w-icon">❄️</span> <span class="w-label">Snow</span>
-          </div>
-        </div>
-        <div id="weather-advice" class="advice-box">
-          Standard Protocol: 급수 500ml/h, 탄수화물 60g/h 유지. 특이사항 없음.
+      <div class="bento-card col-4">
+        <div class="kpi-wrap">
+          <div id="kpi-easy" class="kpi-val" style="font-size:24px;">—</div>
+          <div class="kpi-sub" style="color:var(--neon-cyan)">Zone 2 Pace</div>
         </div>
       </div>
 
-      <!-- 4. Nutrition Fueling (Medium) -->
-      <div class="col-6 glass-card">
-        <h2><span style="color:var(--neon-green)">⛽️</span> Fueling (Per Hour)</h2>
-        <div style="display: flex; justify-content: space-around; margin-top: 10px;">
-          <div class="kpi-display">
-            <div class="kpi-title">Water</div>
-            <div id="fuel-water" class="kpi-value" style="font-size: 20px; color: #fff;">—</div>
-            <div class="kpi-sub">ml/h</div>
+      <!-- 3. Weather (Medium) -->
+      <div class="bento-card col-6">
+        <h2>🌤️ CLIMATE CONTROL</h2>
+        <div class="weather-grid">
+          <div class="w-btn active" onclick="setWeather('normal', this)">
+            <span class="w-icon">☁️</span> <span class="w-label">NORM</span>
           </div>
-          <div style="width: 1px; background: var(--glass-border);"></div>
-          <div class="kpi-display">
-            <div class="kpi-title">Carbs</div>
-            <div id="fuel-cho" class="kpi-value" style="font-size: 20px; color: #fff;">—</div>
-            <div class="kpi-sub">g/h</div>
+          <div class="w-btn" onclick="setWeather('hot', this)">
+            <span class="w-icon">🔥</span> <span class="w-label">HOT</span>
           </div>
-          <div style="width: 1px; background: var(--glass-border);"></div>
-          <div class="kpi-display">
-            <div class="kpi-title">Sodium</div>
-            <div id="fuel-na" class="kpi-value" style="font-size: 20px; color: #fff;">500</div>
-            <div class="kpi-sub">mg/h</div>
+          <div class="w-btn" onclick="setWeather('rain', this)">
+            <span class="w-icon">🌧️</span> <span class="w-label">RAIN</span>
+          </div>
+          <div class="w-btn" onclick="setWeather('snow', this)">
+            <span class="w-icon">❄️</span> <span class="w-label">SNOW</span>
+          </div>
+        </div>
+        <div id="weather-msg" style="margin-top:16px; font-size:12px; color:var(--text-sub); line-height:1.4;">
+          Standard Protocol applied.
+        </div>
+      </div>
+
+      <!-- 4. Fueling (Medium) -->
+      <div class="bento-card col-6">
+        <h2>⛽️ HOURLY FUEL</h2>
+        <div style="display: flex; justify-content: space-around; height: 100%; align-items: center;">
+          <div class="kpi-wrap">
+            <div id="fuel-water" class="kpi-val" style="font-size:22px; color:#fff;">—</div>
+            <div class="kpi-sub">WATER (ml)</div>
+          </div>
+          <div style="width:1px; height:40px; background:var(--glass-border);"></div>
+          <div class="kpi-wrap">
+            <div id="fuel-cho" class="kpi-val" style="font-size:22px; color:#fff;">—</div>
+            <div class="kpi-sub">CARBS (g)</div>
           </div>
         </div>
       </div>
 
-    </div> <!-- End Bento Grid -->
+    </div>
 
-    <!-- Weekly Schedule Timeline -->
-    <section class="glass-card" id="panel-weekly" style="min-height: 400px;">
-      <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom: 20px;">
+    <!-- Timeline Section -->
+    <section class="bento-card" id="schedule-card" style="min-height: 500px;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px;">
         <div>
-          <h2 style="color:var(--neon-pink); margin-bottom: 4px;">WEEK <span id="week-num" style="font-size:24px; color:#fff;">1</span></h2>
-          <div id="week-badge" class="tag tag-easy" style="display:inline-block; font-size: 11px;">BASE PHASE</div>
+          <h2 style="margin:0; color:var(--neon-pink);">WEEK <span id="week-display" style="font-size:24px; color:#fff; margin-left:4px;">1</span></h2>
+          <span id="phase-badge" style="font-size:11px; color:var(--text-sub); font-weight:700;">BASE PHASE</span>
         </div>
         <div style="text-align: right;">
-          <p id="week-desc" style="font-size: 12px; max-width: 250px; text-align: right;">구조적 적응기</p>
+          <span id="desc-text" style="font-size:11px; color:var(--text-sub);">Loading...</span>
         </div>
       </div>
 
-      <div class="slider-container">
+      <div class="slider-wrap">
         <input type="range" id="week-slider" min="1" max="52" value="1" step="1">
-        <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--text-muted); margin-top:8px; padding:0 4px; font-weight:600; letter-spacing:0.5px;">
+        <div style="display: flex; justify-content: space-between; font-size: 10px; color: var(--text-sub); margin-top: 8px; font-weight: 700;">
           <span>START</span>
           <span>Q1</span>
           <span>Q2</span>
@@ -350,18 +295,16 @@
 
       <div style="height: 1px; background: var(--glass-border); margin: 24px 0;"></div>
 
-      <ul class="timeline" id="week-list">
-        <!-- JS Generated Items -->
+      <ul class="timeline" id="timeline-list">
+        <!-- JS Injection -->
       </ul>
 
-      <!-- Deload Banner -->
-      <div id="deload-banner" class="deload-banner animate-in">
-        <div class="deload-icon">🍃</div>
+      <!-- Deload Notification -->
+      <div id="deload-box" style="display:none; margin-top:24px; padding:16px; background:rgba(204, 255, 0, 0.1); border-radius:16px; border:1px solid rgba(204, 255, 0, 0.2); align-items:center; gap:12px;">
+        <span style="font-size:20px;">🍃</span>
         <div>
-          <strong style="color:var(--neon-green); font-size: 14px; letter-spacing:0.5px;">DELOAD WEEK (디로드)</strong>
-          <p style="font-size: 12px; color: var(--text-main); margin-top: 4px;">
-            4주마다 찾아오는 회복 주간입니다. 훈련량을 40% 줄이고 크로스핏 강도를 낮추세요.
-          </p>
+          <strong style="color:var(--neon-lime); font-size:13px;">DELOAD WEEK</strong>
+          <div style="font-size:11px; color:var(--text-sub);">Volume reduced by 40% for recovery.</div>
         </div>
       </div>
 
@@ -375,245 +318,170 @@
   (function(){
     'use strict';
     
-    // --- State ---
+    // --- State Management ---
     const state = { 
       rec10k:'45:00', recM:'3:30:00', curWeek: 1, 
       sex: 'male', startDayIdx: 0, weather: 'normal', weight: 70
     };
 
-    const setById=(id,txt)=>{ const el=document.getElementById(id); if(el) el.textContent=txt; };
-    const pad2=n=>String(n).padStart(2,'0');
+    const $ = id => document.getElementById(id);
+    const pad2 = n => String(n).padStart(2,'0');
 
-    // --- Weather Logic ---
-    window.updateWeather = function(type, btn) {
-        state.weather = type;
-        document.querySelectorAll('.w-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        
-        let msg = "";
-        let color = "";
-        switch(type){
-            case 'hot': 
-                color = "var(--neon-amber)";
-                msg = "🔥 <strong>폭염 전략:</strong> 심박수가 급격히 오릅니다. 페이스를 15-20초 낮추세요. 소금약(Salt Stick) 필수."; break;
-            case 'rain': 
-                color = "var(--neon-blue)";
-                msg = "🌧️ <strong>우천 전략:</strong> 시야 확보용 캡 모자 필수. 쓸림 방지(바세린) 도포. 젖은 신발은 그늘 건조."; break;
-            case 'snow': 
-                color = "#fff";
-                msg = "❄️ <strong>설천 전략:</strong> 3-Layer(흡습-보온-방풍). 미끄럼 방지를 위해 보폭을 좁게 하고 시간주로 전환."; break;
-            default: 
-                color = "var(--neon-green)";
-                msg = "✅ <strong>Standard:</strong> 표준 급수 및 영양 전략 유지. 특이사항 없음.";
-        }
-        const adviceBox = document.getElementById('weather-advice');
-        adviceBox.innerHTML = msg;
-        adviceBox.style.borderLeftColor = color;
-        calculateNutrition(); // Recalc nutrition based on weather
+    // --- Weather Handler ---
+    window.setWeather = function(type, btn) {
+      state.weather = type;
+      document.querySelectorAll('.w-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      
+      let msg = "";
+      if(type === 'hot') msg = "<strong style='color:var(--neon-pink)'>🔥 HEAT:</strong> Pace -15s/km. Salt mandatory.";
+      else if(type === 'rain') msg = "<strong style='color:var(--neon-cyan)'>🌧️ RAIN:</strong> Cap required. Anti-chafe balm.";
+      else if(type === 'snow') msg = "❄️ <strong>SNOW:</strong> Short strides. Time-based run.";
+      else msg = "✅ <strong>NORMAL:</strong> Standard protocol.";
+      
+      $('weather-msg').innerHTML = msg;
+      calcFuel();
     };
 
-    // --- Pacing Logic ---
-    function parseTimeToSec(v){
+    // --- Pacing Calculator ---
+    function parseTime(v){
       if(!v) return 0;
-      const s=String(v).trim();
-      const p=s.split(':').map(x=>parseInt(x,10));
-      if(p.length===2) return p[0]*60 + p[1];
-      if(p.length===3) return p[0]*3600 + p[1]*60 + p[2];
-      return 0;
+      const p = v.trim().split(':').map(Number);
+      return p.length===2 ? p[0]*60+p[1] : p[0]*3600+p[1]*60+p[2];
     }
-    function paceStr(secPerKm){
-      if(!secPerKm) return '—';
-      const m = Math.floor(secPerKm/60);
-      const s = Math.round(secPerKm%60);
+    function fmtPace(sec){
+      if(!sec) return '—';
+      const m = Math.floor(sec/60);
+      const s = Math.round(sec%60);
       return `${m}'${pad2(s)}"`;
     }
-    function calculatePaces(){
-      const t10 = parseTimeToSec(state.rec10k);
-      const tM = parseTimeToSec(state.recM);
+    function calcPace(){
+      const t10 = parseTime(state.rec10k);
+      const tM = parseTime(state.recM);
       let mp = 0;
-      if(tM) mp = tM/42.195; else if(t10) mp = (t10 * 4.65) / 42.195; 
+      if(tM) mp = tM/42.195; else if(t10) mp = (t10 * 4.65)/42.195;
       
-      const z2_fast = mp ? mp + 45 : 0;
-      const z2_slow = mp ? mp + 90 : 0;
-      const k10 = t10 ? t10/10 : (mp ? mp - 15 : 0);
-
-      setById('kpi-easy', z2_fast ? `${paceStr(z2_fast)} ~ ${paceStr(z2_slow)}` : '—');
+      const z2 = mp ? mp + 45 : 0;
+      $('kpi-easy').textContent = z2 ? fmtPace(z2) : '—';
     }
 
-    // --- Nutrition Logic ---
-    function calculateNutrition(){
-        let w = state.weight || 70;
-        let water = Math.round(w * 10); // Base 10ml/kg
-        let na = 500;
-        
-        if(state.weather === 'hot') {
-            water = Math.round(water * 1.5);
-            na = 800;
-        }
-        
-        setById('fuel-water', `${water}-${water+200}`);
-        setById('fuel-cho', `60-90`);
-        setById('fuel-na', `${na}`);
+    // --- Nutrition Calculator ---
+    function calcFuel(){
+      let w = state.weight;
+      let water = Math.round(w * 10);
+      if(state.weather === 'hot') water = Math.round(water * 1.5);
+      
+      $('fuel-water').textContent = `${water}`;
+      $('fuel-cho').textContent = `60`;
     }
 
-    // --- 52-Week Logic ---
-    function getWeekData(w) {
-        let badge, desc, schedule, lsdDist, easyDist;
-        const volumeFactor = state.sex === 'female' ? 0.9 : 1.0;
-        const isDeload = (w % 4 === 0) && (w < 48); 
-        const isRace = (w === 52);
-        
-        // Phase
-        let phase = "";
-        if (w <= 12) phase = "PHASE 1: 구조적 적응";
-        else if (w <= 24) phase = "PHASE 2: 유산소 확장";
-        else if (w <= 36) phase = "PHASE 3: 근지구력 강화";
-        else if (w <= 48) phase = "PHASE 4: 피크 & 쉐이핑";
-        else phase = "TAPER & RACE";
+    // --- Core Logic: 52-Week Schedule ---
+    function generateSchedule(w) {
+      const volFactor = state.sex === 'female' ? 0.9 : 1.0;
+      const isDeload = (w % 4 === 0) && (w < 48);
+      const isRace = (w === 52);
+      
+      let phase = "", lsd = 0, easy = 0;
+      
+      if(w <= 12) { phase = "PHASE 1: ADAPTATION"; lsd = 10 + (w * 0.5); }
+      else if(w <= 24) { phase = "PHASE 2: BUILD"; lsd = 16 + ((w-12) * 0.8); }
+      else if(w <= 36) { phase = "PHASE 3: STRENGTH"; lsd = 25 + ((w-24) * 0.5); }
+      else if(w <= 48) { phase = "PHASE 4: PEAK"; lsd = (w<=45) ? 32 : 32-((w-45)*4); }
+      else { phase = "TAPER & RACE"; lsd = 10; }
 
-        // Distance Progression
-        if (w <= 12) lsdDist = 10 + (w * 0.5); 
-        else if (w <= 24) lsdDist = 16 + ((w-12) * 0.8); 
-        else if (w <= 36) lsdDist = 25 + ((w-24) * 0.5); 
-        else if (w <= 45) lsdDist = 32; 
-        else lsdDist = 32 - ((w-45) * 4); 
+      lsd = Math.round(lsd * volFactor);
+      easy = Math.round(lsd * 0.4);
 
-        lsdDist = Math.round(lsdDist * volumeFactor);
-        easyDist = Math.round((lsdDist * 0.4)); 
+      if(isDeload) { lsd = Math.round(lsd * 0.6); easy = Math.round(easy * 0.7); }
 
-        if (isDeload) {
-            lsdDist = Math.round(lsdDist * 0.6);
-            easyDist = Math.round(easyDist * 0.7);
-            badge = "DELOAD";
-            desc = "4주차 디로드. 훈련량 40% 감소.";
-        } else {
-            badge = "BUILD";
-            desc = `${phase}. LSD 목표: ${lsdDist}km`;
-        }
+      // Days
+      const dayNames = ['MON','TUE','WED','THU','FRI','SAT','SUN'];
+      const days = [];
+      for(let i=0; i<7; i++) days.push(dayNames[(state.startDayIdx + i)%7]);
 
-        // Days Rotation
-        const days = ['MON','TUE','WED','THU','FRI','SAT','SUN'];
-        const d = [];
-        for(let i=0; i<7; i++) d.push(days[(state.startDayIdx + i)%7]);
+      // Items
+      let items = [];
+      if(isRace) {
+        items = [
+          {d:days[0], t:"Easy 5k", type:"easy"}, {d:days[1], t:"Rest", type:"rest"},
+          {d:days[2], t:"Shakeout 3k", type:"easy"}, {d:days[3], t:"Rest", type:"rest"},
+          {d:days[4], t:"Rest", type:"rest"}, {d:days[5], t:"RACE DAY", type:"race", sub:"42.195km"},
+          {d:days[6], t:"Recovery", type:"rest"}
+        ];
+      } else {
+        items = [
+          {d:days[0], t:`Easy ${easy}km`, type:"easy", sub:"Flexible"},
+          {d:days[1], t:`Easy ${easy+1}km`, type:"easy", sub:"Aerobic"},
+          {d:days[2], t:`Easy ${easy}km`, type:"easy", sub:"Aerobic"},
+          {d:days[3], t:`Rest`, type:"rest", sub:"CrossFit Light"},
+          {d:days[4], t:`Easy ${isDeload?easy-2:easy}km`, type:"easy", sub:"Strides x4"},
+          {d:days[5], t:`LSD ${lsd}km`, type:"long", sub:"Zone 2 Strict"},
+          {d:days[6], t:`Rest`, type:"rest", sub:"Full Recovery"}
+        ];
+      }
 
-        // Schedule Generation
-        if (isRace) {
-            badge = "RACE"; desc = "D-DAY. 1년의 결실.";
-            schedule = [
-                {d:d[0], t:"Easy 5 km", type:"easy"}, {d:d[1], t:"휴식", type:"rest"},
-                {d:d[2], t:"Easy 3 km + 질주", type:"easy"}, {d:d[3], t:"휴식", type:"rest"},
-                {d:d[4], t:"휴식", type:"rest"}, {d:d[5], t:"RACE 42.195km", type:"race"},
-                {d:d[6], t:"회복", type:"rest"}
-            ];
-        } else if (w === 8) { // 5K Test
-            badge = "TEST"; desc = "5K 스피드 체크";
-            schedule = [
-                {d:d[0], t:`Easy ${easyDist} km`, type:"easy"}, {d:d[1], t:"휴식", type:"rest"},
-                {d:d[2], t:"Easy 5 km", type:"easy"}, {d:d[3], t:"휴식", type:"rest"},
-                {d:d[4], t:"TEST: 5K TT", type:"race"}, {d:d[5], t:"회복 5 km", type:"easy"},
-                {d:d[6], t:"휴식", type:"rest"}
-            ];
-        } else if (w === 16) { // 10K Test
-            badge = "TEST"; desc = "10K 역치 체크";
-            schedule = [
-                {d:d[0], t:`Easy ${easyDist} km`, type:"easy"}, {d:d[1], t:"휴식", type:"rest"},
-                {d:d[2], t:"Easy 5 km", type:"easy"}, {d:d[3], t:"휴식", type:"rest"},
-                {d:d[4], t:"TEST: 10K TT", type:"race"}, {d:d[5], t:"회복 8 km", type:"easy"},
-                {d:d[6], t:"휴식", type:"rest"}
-            ];
-        } else if (w === 24) { // Half Test
-            badge = "TEST"; desc = "하프 거리주 점검";
-            schedule = [
-                {d:d[0], t:`Easy ${easyDist} km`, type:"easy"}, {d:d[1], t:"휴식", type:"rest"},
-                {d:d[2], t:"Easy 5 km", type:"easy"}, {d:d[3], t:"휴식", type:"rest"},
-                {d:d[4], t:"TEST: 21.1km TT", type:"race"}, {d:d[5], t:"휴식", type:"rest"},
-                {d:d[6], t:"휴식", type:"rest"}
-            ];
-        } else if (w === 36) { // 30K Sim
-            badge = "SIM"; desc = "30K 레이스 시뮬레이션";
-            schedule = [
-                {d:d[0], t:`Easy ${easyDist} km`, type:"easy"}, {d:d[1], t:"휴식", type:"rest"},
-                {d:d[2], t:"Easy 8 km", type:"easy"}, {d:d[3], t:"휴식", type:"rest"},
-                {d:d[4], t:"휴식", type:"rest"}, {d:d[5], t:"SIM: 30km LSD", type:"race"},
-                {d:d[6], t:"휴식", type:"rest"}
-            ];
-        } else {
-            // Normal
-            schedule = [
-                {d:d[0], t:`Easy ${easyDist} km`, sub:"유동적 배치", type:"easy"},
-                {d:d[1], t:`Easy ${easyDist+1} km`, sub:"유산소", type:"easy"},
-                {d:d[2], t:`Easy ${easyDist} km`, sub:"유산소", type:"easy"},
-                {d:d[3], t:`완전 휴식`, sub:"CrossFit Light", type:"rest"},
-                {d:d[4], t:`Easy ${isDeload?easyDist-2:easyDist} km`, sub:"+ 질주 4회", type:"easy"},
-                {d:d[5], t:`LSD ${lsdDist} km`, sub:"Zone 2 준수", type:"long"},
-                {d:d[6], t:`완전 휴식`, sub:"Recovery", type:"rest"}
-            ];
-        }
+      // Test Weeks override
+      if(w===8) items[4] = {d:days[4], t:"TEST 5K", type:"race", sub:"Max Effort"};
+      if(w===16) items[4] = {d:days[4], t:"TEST 10K", type:"race", sub:"Threshold"};
+      if(w===24) items[4] = {d:days[4], t:"TEST HALF", type:"race", sub:"21.1km"};
 
-        return { badge, desc, schedule, isDeload };
+      return { phase, isDeload, items, lsd };
     }
 
-    function renderAll(){
-        calculatePaces();
-        calculateNutrition();
-        
-        const data = getWeekData(state.curWeek);
-        
-        setById('week-num', state.curWeek);
-        setById('week-desc', data.desc);
-        
-        // Badge Style
-        const badgeEl = document.getElementById('week-badge');
-        badgeEl.textContent = data.badge;
-        badgeEl.className = 'tag';
-        if(data.badge === 'DELOAD') badgeEl.classList.add('tag-easy');
-        else if(data.badge === 'TEST' || data.badge === 'RACE') badgeEl.classList.add('tag-race');
-        else badgeEl.classList.add('tag-long');
+    function render(){
+      calcPace();
+      calcFuel();
+      
+      const data = generateSchedule(state.curWeek);
+      
+      $('week-display').innerText = state.curWeek;
+      $('phase-badge').innerText = data.phase;
+      $('desc-text').innerText = data.isDeload ? "RECOVERY WEEK" : `TARGET: LSD ${data.lsd}km`;
+      
+      $('deload-box').style.display = data.isDeload ? 'flex' : 'none';
 
-        // Render List
-        const ul = document.getElementById('week-list');
-        ul.innerHTML = '';
+      const ul = $('timeline-list');
+      ul.innerHTML = '';
+      
+      data.items.forEach((item, i) => {
+        const li = document.createElement('li');
+        li.className = `timeline-item type-${item.type}`;
+        li.style.animationDelay = `${i * 0.05}s`;
         
-        data.schedule.forEach((item, idx) => {
-            const li = document.createElement('li');
-            li.className = `timeline-item type-${item.type} animate-in`;
-            li.style.animationDelay = `${idx * 0.05}s`;
-            
-            li.innerHTML = `
-              <div class="status-line"></div>
-              <div class="day-badge">${item.d}</div>
-              <div class="workout-content">
-                <div>
-                  <div class="workout-name">${item.t}</div>
-                  <div class="workout-detail">${item.sub || ''}</div>
-                </div>
-                ${item.type === 'race' ? '<span class="tag tag-race">TARGET</span>' : 
-                  item.type === 'long' ? '<span class="tag tag-long">LSD</span>' : 
-                  item.type === 'easy' ? '<span class="tag tag-easy">EASY</span>' : ''}
-              </div>
-            `;
-            ul.appendChild(li);
-        });
+        let pill = '';
+        if(item.type==='easy') pill = '<span class="pill pill-easy">EASY</span>';
+        if(item.type==='long') pill = '<span class="pill pill-long">LSD</span>';
+        if(item.type==='race') pill = '<span class="pill pill-race">TARGET</span>';
 
-        // Toggle Deload Banner
-        const banner = document.getElementById('deload-banner');
-        banner.style.display = data.isDeload ? 'flex' : 'none';
+        li.innerHTML = `
+          <div class="bar"></div>
+          <div class="day">${item.d}</div>
+          <div class="content">
+            <div class="title">${item.t}</div>
+            <div class="sub">${item.sub || ''}</div>
+          </div>
+          ${pill}
+        `;
+        ul.appendChild(li);
+      });
     }
 
     // --- Listeners ---
-    ['in-10k','in-m','in-weight'].forEach(id => {
-        document.getElementById(id).addEventListener('input', (e) => {
-            if(id==='in-weight') state.weight = parseInt(e.target.value) || 70;
-            else if(id==='in-10k') state.rec10k = e.target.value;
-            else state.recM = e.target.value;
-            renderAll();
-        });
+    ['in-10k','in-m'].forEach(id => $(id).addEventListener('input', (e) => {
+      if(id==='in-10k') state.rec10k = e.target.value; else state.recM = e.target.value;
+      render();
+    }));
+    $('in-sex').addEventListener('change', (e) => { state.sex = e.target.value; render(); });
+    $('start-day').addEventListener('change', (e) => { state.startDayIdx = parseInt(e.target.value); render(); });
+    
+    // Fix: Slider Event
+    $('week-slider').addEventListener('input', (e) => {
+      state.curWeek = parseInt(e.target.value);
+      render();
     });
-    document.getElementById('in-sex').addEventListener('change', (e) => { state.sex = e.target.value; renderAll(); });
-    document.getElementById('start-day').addEventListener('change', (e) => { state.startDayIdx = parseInt(e.target.value); renderAll(); });
-    document.getElementById('week-slider').addEventListener('input', (e) => { state.curWeek = parseInt(e.target.value); renderAll(); });
 
-    renderAll(); // Init
+    // Init
+    render();
 
   })();
   </script>
