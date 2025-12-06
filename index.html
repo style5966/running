@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Sub-3 Hybrid v8.2 (Final)</title>
+  <title>Sub-3 Hybrid v9.0 (Elite)</title>
   <style>
     /* --- Design System: Cyberpunk Neon Glass --- */
     :root {
@@ -12,12 +12,13 @@
       --glass-border: rgba(255, 255, 255, 0.1);
       
       /* Neon Palette */
-      --neon-cyan: #00f2ea;
-      --neon-blue: #4361ee;
-      --neon-purple: #7209b7;
-      --neon-pink: #f72585;
-      --neon-lime: #ccff00;
-      --neon-orange: #ff9e00;
+      --neon-cyan: #00f2ea;   /* Easy/Recovery */
+      --neon-blue: #4361ee;   /* Aerobic Base */
+      --neon-purple: #7209b7; /* Strength */
+      --neon-pink: #f72585;   /* VO2 Max / Race */
+      --neon-lime: #ccff00;   /* Technique */
+      --neon-orange: #ff9e00; /* Threshold (Tempo) */
+      --neon-red: #ff2a2a;    /* Interval */
       
       --text-main: #ffffff;
       --text-sub: #94a3b8;
@@ -42,7 +43,7 @@
     .aurora-bg {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
       background: 
-        radial-gradient(circle at 10% 10%, rgba(67, 97, 238, 0.15), transparent 40%),
+        radial-gradient(circle at 10% 10%, rgba(255, 158, 0, 0.08), transparent 40%), /* Orange hint for intensity */
         radial-gradient(circle at 90% 20%, rgba(114, 9, 183, 0.1), transparent 40%),
         radial-gradient(circle at 50% 90%, rgba(0, 242, 234, 0.08), transparent 50%);
       filter: blur(60px);
@@ -52,7 +53,7 @@
 
     /* --- Typography --- */
     h1 {
-      font-size: 28px; font-weight: 800; letter-spacing: -0.5px; margin: 0 0 8px 0;
+      font-size: 26px; font-weight: 800; letter-spacing: -0.5px; margin: 0 0 8px 0;
       background: linear-gradient(135deg, #fff 40%, #94a3b8);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
@@ -83,6 +84,7 @@
       border-radius: var(--radius-md);
       padding: 20px;
       box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
+      transition: transform 0.2s;
     }
 
     /* --- Interactive Controls --- */
@@ -95,14 +97,16 @@
     
     .label { font-size: 11px; color: var(--text-sub); font-weight: 600; margin-bottom: 6px; display: block; }
 
-    /* --- KPI Display --- */
-    .kpi-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; }
-    .kpi-value { 
-      font-size: 24px; font-weight: 800; font-family: 'SF Mono', monospace; letter-spacing: -0.5px;
-      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-blue));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    .kpi-label { font-size: 11px; color: var(--text-sub); margin-top: 4px; font-weight: 600; }
+    /* --- KPI Display (Enhanced) --- */
+    .kpi-wrapper { display: flex; flex-direction: column; height: 100%; justify-content: space-between; }
+    .kpi-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+    .kpi-row:last-child { margin-bottom: 0; }
+    
+    .kpi-val-sm { font-family: 'SF Mono', monospace; font-weight: 700; font-size: 16px; color: #fff; }
+    .kpi-lbl-sm { font-size: 11px; color: var(--text-sub); }
+    
+    .highlight-mp { color: var(--neon-cyan); }
+    .highlight-lt { color: var(--neon-orange); text-shadow: 0 0 10px rgba(255, 158, 0, 0.3); }
 
     /* --- Nutrition Tabs --- */
     .tabs { display: flex; gap: 4px; background: rgba(255,255,255,0.05); padding: 4px; border-radius: 12px; margin-bottom: 16px; }
@@ -115,7 +119,6 @@
     .nutri-content { display: none; }
     .nutri-content.active { display: block; animation: fadeIn 0.3s ease; }
     .n-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px; }
-    .n-row:last-child { border: none; }
     .n-key { color: var(--text-sub); }
     .n-val { font-weight: 600; color: #fff; }
 
@@ -130,7 +133,7 @@
     .w-text { font-size: 11px; font-weight: 600; color: var(--text-sub); }
     .w-btn.active .w-text { color: #fff; }
 
-    /* --- Timeline & Slider (Fixed Z-Index) --- */
+    /* --- Timeline & Slider --- */
     .slider-wrap { padding: 10px 0 30px; position: relative; z-index: 10; }
     input[type=range] { 
         -webkit-appearance: none; width: 100%; background: transparent; 
@@ -150,13 +153,22 @@
       display: flex; align-items: center; padding: 16px; margin-bottom: 10px;
       background: rgba(255,255,255,0.03); border-radius: 16px;
       position: relative; overflow: hidden;
+      border: 1px solid transparent;
+      transition: 0.3s;
     }
     
     .neon-bar { position: absolute; left: 0; top: 0; bottom: 0; width: 4px; }
-    .type-easy .neon-bar { background: var(--neon-lime); box-shadow: 0 0 8px var(--neon-lime); }
-    .type-long .neon-bar { background: var(--neon-cyan); box-shadow: 0 0 8px var(--neon-cyan); }
-    .type-race .neon-bar { background: var(--neon-pink); box-shadow: 0 0 8px var(--neon-pink); }
+    
+    /* Updated Training Types for Specificity */
+    .type-easy .neon-bar { background: var(--neon-lime); } /* Zone 2 */
+    .type-long .neon-bar { background: var(--neon-cyan); } /* LSD */
+    .type-tempo .neon-bar { background: var(--neon-orange); box-shadow: 0 0 10px var(--neon-orange); } /* Zone 3-4 */
+    .type-interval .neon-bar { background: var(--neon-red); box-shadow: 0 0 10px var(--neon-red); } /* Zone 5 */
+    .type-race .neon-bar { background: var(--neon-pink); box-shadow: 0 0 12px var(--neon-pink); }
     .type-rest .neon-bar { background: rgba(255,255,255,0.1); }
+    
+    .t-item.type-tempo { background: rgba(255, 158, 0, 0.05); border-color: rgba(255, 158, 0, 0.2); }
+    .t-item.type-interval { background: rgba(255, 42, 42, 0.05); border-color: rgba(255, 42, 42, 0.2); }
 
     .t-day { width: 40px; font-weight: 700; font-size: 13px; color: var(--text-sub); text-align: center; margin-right: 12px; }
     .t-content { flex: 1; }
@@ -166,20 +178,29 @@
     .pill { font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 6px; float: right; }
     .pill-easy { background: rgba(204, 255, 0, 0.1); color: var(--neon-lime); }
     .pill-long { background: rgba(0, 242, 234, 0.1); color: var(--neon-cyan); }
+    .pill-tempo { background: rgba(255, 158, 0, 0.15); color: var(--neon-orange); }
+    .pill-int { background: rgba(255, 42, 42, 0.15); color: var(--neon-red); }
     .pill-race { background: rgba(247, 37, 133, 0.15); color: var(--neon-pink); }
 
     @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
     .top-badge {
       display: inline-flex; align-items: center; padding: 6px 12px; background: rgba(255,255,255,0.05);
-      border-radius: 99px; font-size: 11px; font-weight: 700; color: var(--neon-lime); margin-bottom: 12px;
-      border: 1px solid rgba(204, 255, 0, 0.2);
+      border-radius: 99px; font-size: 11px; font-weight: 700; color: var(--neon-orange); margin-bottom: 12px;
+      border: 1px solid rgba(255, 158, 0, 0.3);
     }
     
     .deload-banner {
       display: none; align-items: center; gap: 12px; padding: 16px; border-radius: 16px; margin-top: 20px;
       background: linear-gradient(135deg, rgba(204, 255, 0, 0.1), rgba(0, 242, 234, 0.05));
       border: 1px solid rgba(204, 255, 0, 0.3);
+    }
+    
+    /* Strategy Tip Box */
+    .strategy-box {
+      margin-top: 20px; padding: 12px; background: rgba(255, 158, 0, 0.05); 
+      border-left: 3px solid var(--neon-orange); border-radius: 4px; font-size: 12px; color: #ddd;
+      line-height: 1.5; display: none;
     }
   </style>
 </head>
@@ -190,9 +211,9 @@
   <div class="container">
     
     <header style="margin-bottom: 28px;">
-      <div class="top-badge">v8.2 FINAL</div>
+      <div class="top-badge">v9.0 ELITE (Feedback Applied)</div>
       <h1>Sub-3 Hybrid Project</h1>
-      <p style="color:var(--text-sub); margin-top:6px; font-size:14px;">52주 엘리트 주기화 & 생리학적 하이브리드 솔루션</p>
+      <p style="color:var(--text-sub); margin-top:6px; font-size:14px;">"생존을 넘어 기록으로" - 역치(LT) & 특이성 강화 버전</p>
     </header>
 
     <!-- Bento Grid -->
@@ -200,7 +221,7 @@
       
       <!-- 1. Profile (Large) -->
       <div class="glass-card col-8">
-        <h2><span style="color:var(--neon-purple)">⚡️</span> 프로필 설정</h2>
+        <h2><span style="color:var(--neon-purple)">⚡️</span> 프로필 & 목표 설정</h2>
         <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
           <div>
             <span class="label">성별 (Gender)</span>
@@ -226,23 +247,36 @@
             <input id="in-weight" type="number" class="glass-input" value="70" />
           </div>
           <div>
-            <span class="label">10K 기록 (분:초)</span>
-            <input id="in-10k" class="glass-input" placeholder="45:00" />
+            <span class="label">10K 기록 (현재 수행능력)</span>
+            <input id="in-10k" class="glass-input" placeholder="40:00" value="45:00" />
           </div>
         </div>
       </div>
 
-      <!-- 2. Zone 2 KPI (Small) -->
+      <!-- 2. Target Paces (Split KPI) -->
       <div class="glass-card col-4">
         <div class="kpi-wrapper">
-          <div id="kpi-easy" class="kpi-value">—</div>
-          <div class="kpi-label" style="color:var(--neon-cyan)">목표 Zone 2 페이스</div>
+          <div class="kpi-row">
+            <span class="kpi-lbl-sm">목표 MP (Marathon Pace)</span>
+            <span id="pace-mp" class="kpi-val-sm highlight-mp">—</span>
+          </div>
+          <div class="kpi-row">
+            <span class="kpi-lbl-sm">역치 LT (Threshold)</span>
+            <span id="pace-lt" class="kpi-val-sm highlight-lt">—</span>
+          </div>
+          <div class="kpi-row">
+            <span class="kpi-lbl-sm">조깅 Easy (Zone 2)</span>
+            <span id="pace-easy" class="kpi-val-sm">—</span>
+          </div>
+          <div style="font-size:10px; color:var(--text-sub); margin-top:8px; text-align:right;">
+            *LT 훈련이 Sub-3의 핵심
+          </div>
         </div>
       </div>
 
       <!-- 3. Weather (Medium) -->
       <div class="glass-card col-6">
-        <h2><span style="color:var(--neon-amber)">🌤️</span> 기후별 전략</h2>
+        <h2><span style="color:var(--neon-amber)">🌤️</span> 기후 적응 전략</h2>
         <div class="weather-grid">
           <div class="w-btn active" onclick="app.setWeather('normal', this)"><span class="w-icon">☁️</span> <span class="w-text">보통</span></div>
           <div class="w-btn" onclick="app.setWeather('hot', this)"><span class="w-icon">🔥</span> <span class="w-text">폭염</span></div>
@@ -256,7 +290,7 @@
 
       <!-- 4. Nutrition (Medium) -->
       <div class="glass-card col-6">
-        <h2><span style="color:var(--neon-green)">⛽️</span> 영양 전략</h2>
+        <h2><span style="color:var(--neon-green)">⛽️</span> 영양 & 로딩</h2>
         <div class="tabs">
           <div class="tab-btn active" onclick="app.setNutriTab('daily', this)">매일</div>
           <div class="tab-btn" onclick="app.setNutriTab('pre', this)">운동전</div>
@@ -270,42 +304,46 @@
           <div class="n-row" id="gender-tip" style="font-size:11px; color:var(--neon-purple); margin-top:4px;"></div>
         </div>
         <div id="n-pre" class="nutri-content">
-          <div class="n-row"><span class="n-key">식사 (3시간전)</span><span class="n-val" id="val-meal">—</span></div>
-          <div class="n-row"><span class="n-key">수분 (2시간전)</span><span class="n-val" id="val-water-pre">—</span></div>
+          <div class="n-row"><span class="n-key">탄수화물(3hr전)</span><span class="n-val" id="val-meal">—</span></div>
+          <div class="n-row"><span class="n-key">수분(2hr전)</span><span class="n-val" id="val-water-pre">—</span></div>
         </div>
         <div id="n-run" class="nutri-content">
           <div class="n-row"><span class="n-key">탄수화물/시간</span><span class="n-val" id="val-carb-hr">—</span></div>
           <div class="n-row"><span class="n-key">수분/시간</span><span class="n-val" id="val-water-hr">—</span></div>
-          <div class="n-row"><span class="n-key">나트륨/시간</span><span class="n-val">500mg+</span></div>
+          <div class="n-row"><span class="n-key">Gut Training</span><span class="n-val" style="color:var(--neon-orange)">Q3 필수</span></div>
         </div>
         <div id="n-post" class="nutri-content">
           <div class="n-row"><span class="n-key">회복 (3:1 비율)</span><span class="n-val" id="val-rec">—</span></div>
-          <div class="n-row"><span class="n-key">섭취 타이밍</span><span class="n-val">직후 30분내</span></div>
+          <div class="n-row"><span class="n-key">타이밍</span><span class="n-val">30분 내 섭취</span></div>
         </div>
       </div>
 
     </div>
 
     <!-- Timeline Section -->
-    <section class="glass-card" style="min-height: 500px;">
+    <section class="glass-card" style="min-height: 600px;">
       <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px;">
         <div>
           <h2 style="margin:0; color:var(--neon-pink);">WEEK <span id="week-display" style="font-size:24px; color:#fff; margin-left:4px;">1</span></h2>
           <span id="phase-badge" style="font-size:12px; color:var(--text-sub); font-weight:700;">BASE PHASE</span>
         </div>
         <div style="text-align: right;">
-          <span id="desc-text" style="font-size:12px; color:var(--text-sub);">목표: LSD 10km</span>
+          <span id="desc-text" style="font-size:12px; color:var(--text-sub);">목표: 유산소 기반 구축</span>
         </div>
       </div>
 
       <div class="slider-wrap">
         <input type="range" id="week-slider" min="1" max="52" value="1" step="1">
         <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-sub); margin-top: 12px; font-weight: 600;">
-          <span>1분기 (적응)</span>
-          <span>2분기 (확장)</span>
-          <span>3분기 (강화)</span>
-          <span>4분기 (완성)</span>
+          <span>Q1.적응/기반</span>
+          <span>Q2.확장/템포</span>
+          <span style="color:var(--neon-orange)">Q3.특화/역치</span>
+          <span>Q4.피크/완성</span>
         </div>
+      </div>
+
+      <div class="strategy-box" id="strategy-tip">
+        <!-- JS Injection for critique-based tips -->
       </div>
 
       <div style="height: 1px; background: var(--glass-border); margin: 24px 0;"></div>
@@ -317,8 +355,8 @@
       <div id="deload-banner" class="deload-banner">
         <span style="font-size:24px;">🍃</span>
         <div>
-          <strong style="color:var(--neon-lime); font-size:13px; display:block;">디로드 주간 (DELOAD)</strong>
-          <span style="font-size:12px; color:var(--text-main);">4주마다 돌아오는 회복 기간입니다. 훈련량을 40% 줄여 몸을 재충전하세요.</span>
+          <strong style="color:var(--neon-lime); font-size:13px; display:block;">디로드 주간 (Deload)</strong>
+          <span style="font-size:12px; color:var(--text-main);">강도 유지, 볼륨 40% 축소. 호르몬 회복 및 과훈련 방지 필수 기간.</span>
         </div>
       </div>
 
@@ -327,7 +365,6 @@
   </div>
 
   <script>
-  // Namespace for global access
   const app = {};
 
   window.addEventListener('DOMContentLoaded', () => {
@@ -335,12 +372,30 @@
     
     // Global State
     const state = { 
-      rec10k:'45:00', recM:'3:30:00', curWeek: 1, 
-      sex: 'male', startDayIdx: 0, weather: 'normal', weight: 70
+      rec10k:'45:00', 
+      curWeek: 1, 
+      sex: 'male', 
+      startDayIdx: 0, 
+      weather: 'normal', 
+      weight: 70,
+      paces: { mp: 0, lt: 0, easy: 0 } // In seconds per km
     };
 
     const $ = id => document.getElementById(id);
     const pad2 = n => String(n).padStart(2,'0');
+
+    // --- Time Helpers ---
+    function parseTime(v){
+      if(!v) return 0;
+      const p = v.trim().split(':').map(Number);
+      return p.length===2 ? p[0]*60+p[1] : p[0]*3600+p[1]*60+p[2];
+    }
+    function fmtPace(sec){
+      if(!sec || sec <= 0) return '—';
+      const m = Math.floor(sec/60);
+      const s = Math.round(sec%60);
+      return `${m}'${pad2(s)}"`;
+    }
 
     // --- Weather Handler ---
     app.setWeather = function(type, btn) {
@@ -349,10 +404,10 @@
       btn.classList.add('active');
       
       let msg = "";
-      if(type==='hot') msg="<span style='color:var(--neon-orange)'>🔥 폭염:</span> 페이스 15초/km 늦춤. 소금약 필수. 수분 1.5배.";
-      else if(type==='rain') msg="<span style='color:var(--neon-blue)'>🌧️ 우천:</span> 캡 모자 착용. 바세린 도포. 젖은 신발 그늘 건조.";
-      else if(type==='snow') msg="<span style='color:#fff'>❄️ 설천:</span> 보폭 좁게. 거리보다는 시간주(Time-based)로 전환.";
-      else msg="✅ <strong>보통:</strong> 표준 훈련 프로토콜 적용 중.";
+      if(type==='hot') msg="<span style='color:var(--neon-orange)'>🔥 폭염:</span> 심박수 기준 훈련 권장. 페이스 10~15초/km 하향 조정.";
+      else if(type==='rain') msg="<span style='color:var(--neon-blue)'>🌧️ 우천:</span> 체온 유지 주의. 신발 무게 증가로 인한 부하 고려.";
+      else if(type==='snow') msg="<span style='color:#fff'>❄️ 설천:</span> 미끄러짐 주의. 트레드밀 대체 훈련 권장.";
+      else msg="✅ <strong>보통:</strong> 설정된 페이스(MP, LT)를 준수하십시오.";
       
       $('weather-msg').innerHTML = msg;
       calcFuel();
@@ -366,25 +421,32 @@
       $('n-'+type).classList.add('active');
     };
 
-    // --- Logic: Pacing ---
-    function parseTime(v){
-      if(!v) return 0;
-      const p = v.trim().split(':').map(Number);
-      return p.length===2 ? p[0]*60+p[1] : p[0]*3600+p[1]*60+p[2];
-    }
-    function fmtPace(sec){
-      if(!sec) return '—';
-      const m = Math.floor(sec/60);
-      const s = Math.round(sec%60);
-      return `${m}'${pad2(s)}"`;
-    }
+    // --- Logic: Pacing Calculation (Crucial for Sub-3) ---
     function calcPace(){
       const t10 = parseTime(state.rec10k);
-      const tM = parseTime(state.recM);
-      let mp = 0;
-      if(tM) mp = tM/42.195; else if(t10) mp = (t10 * 4.65)/42.195;
-      const z2 = mp ? mp + 45 : 0;
-      $('kpi-easy').textContent = z2 ? fmtPace(z2) : '—';
+      
+      if(t10 > 0) {
+        // Jack Daniels VDOT approximation logic simplified
+        // 10k pace per km
+        const pace10k = t10 / 10; 
+        
+        // Elite/Sub-3 Goal Estimation
+        // MP is usually 10k pace + 15~25s for elites, but +30~40s for amateurs.
+        // LT (Threshold) is roughly 10k pace + 10~15s (or 1-hour race pace).
+        
+        state.paces.lt = pace10k + 5;  // Threshold is slightly slower than 10k race pace
+        state.paces.mp = pace10k + 25; // Marathon Pace prediction
+        state.paces.easy = state.paces.mp + 50; // Easy is MP + 45~60s
+        
+        // UI Updates
+        $('pace-mp').textContent = fmtPace(state.paces.mp);
+        $('pace-lt').textContent = fmtPace(state.paces.lt);
+        $('pace-easy').textContent = fmtPace(state.paces.easy);
+      } else {
+        $('pace-mp').textContent = '—';
+        $('pace-lt').textContent = '—';
+        $('pace-easy').textContent = '—';
+      }
     }
 
     // --- Logic: Fueling ---
@@ -393,88 +455,137 @@
       let isHot = state.weather === 'hot';
       let isFemale = state.sex === 'female';
 
-      // 1. Daily
       let dProt = Math.round(w * 1.8); 
       let dWater = Math.round(w * 35);
       $('val-prot-day').textContent = `${dProt}g`;
       $('val-water-day').textContent = `${dWater/1000}L`;
-      $('gender-tip').textContent = isFemale ? "Tip: 여성은 황체기에 수분 저장 증가." : "Tip: 남성은 땀 배출량이 더 많음.";
+      $('gender-tip').textContent = isFemale ? "여성: 황체기 체온 상승 주의" : "남성: 발한량 높음 주의";
 
-      // 2. Pre
-      $('val-meal').textContent = `탄수화물 ${Math.round(w*2.5)}g`;
+      $('val-meal').textContent = `탄수 ${Math.round(w*2.5)}g`;
       $('val-water-pre').textContent = `${Math.round(w*6)}ml`;
 
-      // 3. Run
-      let cHr = isFemale ? 50 : 60;
-      if(state.curWeek > 26) cHr += 10;
-      let wHr = Math.round(w * (isFemale ? 9 : 11));
-      if(isHot) { wHr = Math.round(wHr * 1.4); }
+      // Sub-3 requires higher carb intake (Gut Training)
+      let cHr = 60; 
+      if(state.curWeek > 26) cHr = 75; // Increase for Q3 Gut Training
+      if(state.curWeek > 40) cHr = 90; // Elite Level
+      
+      let wHr = Math.round(w * 10);
+      if(isHot) wHr = Math.round(wHr * 1.4);
+      
       $('val-carb-hr').textContent = `${cHr}g`;
       $('val-water-hr').textContent = `${wHr}ml`;
 
-      // 4. Post
       let rCarb = Math.round(w*1.0);
       let rProt = Math.round(w*0.3);
-      $('val-rec').textContent = `탄수:${rCarb}g / 단백:${rProt}g`;
+      $('val-rec').textContent = `C:${rCarb}g / P:${rProt}g`;
     }
 
-    // --- Logic: 52-Week Schedule ---
+    // --- Logic: 52-Week Schedule (Elite Structure) ---
     function generateSchedule(w) {
       const volFactor = state.sex === 'female' ? 0.9 : 1.0;
       const isDeload = (w % 4 === 0) && (w < 48);
       const isRace = (w === 52);
       
       let phase = "", lsd = 0, easy = 0;
+      let focusText = "";
       
-      if (w <= 13) { phase = "1분기: 구조적 적응"; lsd = 10 + (w * 0.5); }
-      else if (w <= 26) { phase = "2분기: 유산소 확장"; lsd = 16 + ((w-13) * 0.8); }
-      else if (w <= 39) { phase = "3분기: 내구력 강화"; lsd = 26 + ((w-26) * 0.5); }
-      else if (w <= 48) { phase = "4분기: 피크 & 완성"; lsd = (w<=45) ? 32 : 32; }
+      // Phase Definition
+      if (w <= 13) { 
+        phase = "Q1. 구조적 적응기"; 
+        focusText = "부상 방지, 건/인대 강화, 유산소 볼륨 점진적 증가.";
+        lsd = 12 + (w * 0.8);
+      }
+      else if (w <= 26) { 
+        phase = "Q2. 유산소 확장기"; 
+        focusText = "LSD 거리 증가. 주중 가벼운 템포런(Tempo) 도입 시작.";
+        lsd = 20 + ((w-13) * 0.8);
+      }
+      else if (w <= 39) { 
+        phase = "Q3. 특화기 (Specificity)"; 
+        focusText = "<b>[핵심]</b> 역치(LT) 훈련 본격화. 크로스핏 강도 조절(유지). LSD 내 MP 구간 삽입.";
+        lsd = 28 + ((w-26) * 0.3);
+      }
+      else if (w <= 48) { 
+        phase = "Q4. 피크 & 완성"; 
+        focusText = "실전 모의 훈련. VO2max 자극 및 레이스 페이스 각인.";
+        lsd = (w<=45) ? 32 : 30;
+      }
       else { 
         phase = "테이퍼링 & 레이스"; 
-        if(w===49) lsd = 24; else if(w===50) lsd = 16; else if(w===51) lsd = 10; else lsd = 0;
+        focusText = "피로 제거, 글리코겐 로딩, 이미지 트레이닝.";
+        lsd = 15;
       }
 
       lsd = Math.round(lsd * volFactor);
       easy = Math.round(lsd * 0.35);
 
-      if(isDeload) { lsd = Math.round(lsd * 0.6); easy = Math.round(easy * 0.7); }
+      if(isDeload) { 
+        lsd = Math.round(lsd * 0.6); 
+        easy = Math.round(easy * 0.7); 
+        focusText = "<b>[Deload]</b> 훈련량 40% 감소. 호르몬 회복에 집중하세요.";
+      }
 
-      // Days
+      // Day mapping
       const daysSrc = ['월','화','수','목','금','토','일'];
       const d = [];
       for(let i=0; i<7; i++) d.push(daysSrc[(parseInt(state.startDayIdx)+i)%7]);
 
-      // Schedule Items
+      // Schedule Construction
       let items = [];
+      
+      // Formatting Paces for display
+      const pEasy = fmtPace(state.paces.easy);
+      const pMP = fmtPace(state.paces.mp);
+      const pLT = fmtPace(state.paces.lt);
+
       if(isRace) {
         items = [
-          {d:d[0], t:"Easy 5k", type:"easy", sub:"테이퍼링"}, 
-          {d:d[1], t:"휴식", type:"rest", sub:"이미지 트레이닝"},
-          {d:d[2], t:"쉐이크아웃 3k", type:"easy", sub:"가볍게"}, 
+          {d:d[0], t:"Easy 5k", type:"easy", sub:`@${pEasy}`}, 
+          {d:d[1], t:"휴식", type:"rest", sub:"가벼운 스트레칭"},
+          {d:d[2], t:"Shakeout 3k", type:"easy", sub:"질주 100m x 2"}, 
           {d:d[3], t:"휴식", type:"rest", sub:"카보 로딩"},
-          {d:d[4], t:"휴식", type:"rest", sub:"수면 집중"}, 
-          {d:d[5], t:"D-DAY RACE", type:"race", sub:"42.195km"},
-          {d:d[6], t:"완전 회복", type:"rest", sub:"걷기/식사"}
+          {d:d[4], t:"휴식", type:"rest", sub:"수면/멘탈"}, 
+          {d:d[5], t:"RACE DAY", type:"race", sub:"Sub-3 도전"},
+          {d:d[6], t:"Recovery", type:"rest", sub:"걷기 및 식사"}
         ];
       } else {
+        // Standard Week Logic
+        let wedRun = { t: `Easy ${easy}km`, type: 'easy', sub: `@${pEasy}` };
+        let satRun = { t: `LSD ${lsd}km`, type: 'long', sub: 'Zone 2 대화가능 속도' };
+        let thuCrossfit = { t: 'CrossFit (MetCon)', sub: '심폐지구력' };
+
+        // [CRITICAL UPDATE] Specificity & Intensity Logic
+        if (!isDeload) {
+          // Q2: Intro Tempo
+          if (w > 13 && w <= 26) {
+            wedRun = { t: `Tempo Run 6k`, type: 'tempo', sub: `2k업 + 4k@${pMP} + 쿨다운` };
+          }
+          // Q3: Threshold & Fast Finish LSD
+          if (w > 26 && w <= 39) {
+            wedRun = { t: `LT Interval`, type: 'interval', sub: `2km x 3 @${pLT} (휴식 2분)` };
+            satRun = { t: `LSD ${lsd}km (Fast Finish)`, type: 'long', sub: `마지막 5km @${pMP} 필수` };
+            thuCrossfit = { t: 'Strength / Core', sub: '고중량 저반복 (러닝 간섭 최소화)' };
+          }
+          // Q4: Peak MP
+          if (w > 39 && w <= 48) {
+            wedRun = { t: `Tempo Run 12k`, type: 'tempo', sub: `10k @${pMP} 지속주` };
+            satRun = { t: `LSD ${lsd}km (Sim)`, type: 'race', sub: `전반 Easy / 후반 10k @${pMP}` };
+            thuCrossfit = { t: 'Plyometrics', sub: '폭발력 유지, 피로 관리' };
+          }
+        }
+
         items = [
-          {d:d[0], t:`Easy ${easy}km`, type:"easy", sub:"유동적 배치"},
-          {d:d[1], t:`Easy ${easy+1}km`, type:"easy", sub:"유산소"},
-          {d:d[2], t:`Easy ${easy}km`, type:"easy", sub:"유산소"},
-          {d:d[3], t:`완전 휴식`, type:"rest", sub:"크로스핏 가볍게"},
-          {d:d[4], t:`Easy ${isDeload?Math.max(3,easy-2):easy}km`, type:"easy", sub:"질주 4회"},
-          {d:d[5], t:`LSD ${lsd}km`, type:"long", sub:"Zone 2 준수"},
-          {d:d[6], t:`완전 휴식`, type:"rest", sub:"충분한 회복"}
+          {d:d[0], t:`Easy ${easy}km + 질주`, type:"easy", sub:`@${pEasy}, 100m 질주 x 4`},
+          {d:d[1], t:`Easy ${easy+1}km`, type:"easy", sub:`@${pEasy}`},
+          {d:d[2], t:wedRun.t, type:wedRun.type, sub:wedRun.sub}, // Key Workout
+          {d:d[3], t:`${thuCrossfit.t}`, type:"rest", sub:thuCrossfit.sub},
+          {d:d[4], t:`Easy ${isDeload?Math.max(3,easy-2):easy}km`, type:"easy", sub:"가볍게 (Active Recovery)"},
+          {d:d[5], t:satRun.t, type:satRun.type, sub:satRun.sub}, // Long Run
+          {d:d[6], t:`완전 휴식`, type:"rest", sub:"수면/영양 보충"}
         ];
-        // Test Weeks
-        if(w===8) items[5] = {d:d[5], t:"TEST 5K", type:"race", sub:"전력 측정"};
-        if(w===16) items[5] = {d:d[5], t:"TEST 10K", type:"race", sub:"역치 측정"};
-        if(w===24) items[5] = {d:d[5], t:"TEST HALF", type:"race", sub:"21.1km"};
-        if(w===36) items[5] = {d:d[5], t:"SIM 30K", type:"race", sub:"레이스 장비"};
       }
 
-      return { phase, isDeload, items, lsd };
+      return { phase, isDeload, items, lsd, focusText };
     }
 
     function render(){
@@ -484,7 +595,11 @@
       
       $('week-display').innerText = state.curWeek;
       $('phase-badge').innerText = data.phase;
-      $('desc-text').innerText = data.isDeload ? "회복 주간 (Recovery)" : `목표: LSD ${data.lsd}km`;
+      $('desc-text').innerText = data.isDeload ? "회복 주간 (Deload)" : `주간 마일리지 집중`;
+      
+      const sBox = $('strategy-tip');
+      sBox.style.display = 'block';
+      sBox.innerHTML = `💡 <strong>Coach's Tip:</strong> ${data.focusText}`;
       
       $('deload-banner').style.display = data.isDeload ? 'flex' : 'none';
 
@@ -495,11 +610,13 @@
         const li = document.createElement('li');
         li.className = `t-item type-${item.type}`;
         li.style.animation = `fadeIn 0.3s ease forwards ${i * 0.05}s`;
-        li.style.opacity = 0; // Init for animation
+        li.style.opacity = 0;
         
         let pill = '';
         if(item.type==='easy') pill = '<span class="pill pill-easy">EASY</span>';
         if(item.type==='long') pill = '<span class="pill pill-long">LSD</span>';
+        if(item.type==='tempo') pill = '<span class="pill pill-tempo">TEMPO</span>';
+        if(item.type==='interval') pill = '<span class="pill pill-int">LT/VO2</span>';
         if(item.type==='race') pill = '<span class="pill pill-race">TARGET</span>';
 
         li.innerHTML = `
@@ -516,7 +633,6 @@
     }
 
     // --- Listeners ---
-    // BUG FIX: Removed 'in-m' which was causing a JS Error because the element didn't exist in HTML
     ['in-10k','in-weight'].forEach(id => {
       const el = $(id);
       if(el) {
@@ -529,7 +645,10 @@
     });
 
     $('in-sex').addEventListener('change', (e) => { state.sex = e.target.value; render(); });
-    $('start-day').addEventListener('change', (e) => { state.startDayIdx = parseInt(e.target.value); render(); });
+    $('start-day').addEventListener('change', (e) => { 
+      state.startDayIdx = Number(e.target.value); 
+      render(); 
+    });
     
     const slider = $('week-slider');
     slider.addEventListener('input', (e) => {
@@ -537,7 +656,8 @@
       render();
     });
 
-    render(); // Init
+    // Initial Render
+    render();
   });
   </script>
 </body>
