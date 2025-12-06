@@ -3,173 +3,156 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Sub-3 Hybrid v6.1 (Full Feature)</title>
+  <title>Sub-3 Hybrid v6.2 (Masterpiece)</title>
   <style>
     :root {
       --bg-dark: #09090b;
       --bg-card: rgba(24, 24, 27, 0.7);
       --border: rgba(255, 255, 255, 0.08);
-      --primary: #38bdf8; /* Sky Blue */
-      --accent: #818cf8; /* Indigo */
-      --success: #34d399; /* Mint */
-      --warning: #fbbf24; /* Amber */
-      --danger: #f87171; /* Red */
+      --primary: #38bdf8;
+      --accent: #818cf8;
+      --success: #34d399;
+      --warning: #fbbf24;
+      --danger: #f87171;
       --text-main: #f4f4f5;
       --text-muted: #a1a1aa;
-      --gradient-text: linear-gradient(135deg, #22d3ee, #818cf8);
       --gradient-bg: radial-gradient(circle at 50% -20%, #111827, #000000);
       --glass: blur(16px) saturate(180%);
-      --radius: 24px;
+      --radius: 20px;
     }
 
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Segoe UI", Roboto, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Pretendard", Roboto, sans-serif;
       background: var(--gradient-bg);
       background-attachment: fixed;
       color: var(--text-main);
       min-height: 100vh;
-      padding-bottom: 100px;
+      padding-bottom: 120px;
     }
 
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 20px;
-    }
+    .container { max-width: 800px; margin: 0 auto; padding: 20px; }
 
-    /* Typography */
-    h1 {
-      font-size: 28px;
-      margin: 0 0 8px 0;
-      background: var(--gradient-text);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      letter-spacing: -0.8px;
-      line-height: 1.2;
-    }
-    h2 { font-size: 17px; margin: 0 0 16px 0; font-weight: 600; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
+    /* --- Typography & Layout --- */
+    h1 { font-size: 26px; margin: 0 0 6px 0; background: linear-gradient(135deg, #22d3ee, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.2; }
+    h2 { font-size: 16px; margin: 0 0 12px 0; font-weight: 600; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
     p { margin: 0; color: var(--text-muted); font-size: 13px; line-height: 1.5; }
-
-    /* Components */
+    
     .card {
-      background: var(--bg-card);
-      backdrop-filter: var(--glass);
-      -webkit-backdrop-filter: var(--glass);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px;
-      margin-bottom: 16px;
+      background: var(--bg-card); backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass);
+      border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 16px;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     }
-    
     .row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
     .between { justify-content: space-between; }
 
-    /* Inputs */
-    .grid-inputs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-    .field { display: flex; flex-direction: column; gap: 6px; }
-    .field label { font-size: 12px; color: var(--text-muted); font-weight: 500; margin-left: 4px; }
+    /* --- Inputs --- */
+    .grid-inputs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .field { display: flex; flex-direction: column; gap: 4px; }
+    .field label { font-size: 11px; color: var(--text-muted); margin-left: 4px; }
     .input, .select {
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid var(--border);
-      color: var(--text-main);
-      padding: 12px;
-      border-radius: 12px;
-      font-size: 14px;
-      width: 100%;
-      transition: all 0.2s;
+      background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border); color: var(--text-main);
+      padding: 12px; border-radius: 12px; font-size: 14px; width: 100%; transition: 0.2s;
     }
-    .input:focus, .select:focus { outline: none; border-color: var(--primary); background: rgba(0,0,0,0.6); }
+    .input:focus, .select:focus { outline: none; border-color: var(--primary); background: rgba(0,0,0,0.5); }
 
-    /* KPI Grid */
-    .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 12px; }
+    /* --- KPI Grid --- */
+    .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
     .kpi-box {
-      background: rgba(255,255,255,0.03);
-      border-radius: 16px;
-      padding: 12px;
-      text-align: center;
-      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03); border-radius: 14px; padding: 12px; text-align: center; border: 1px solid var(--border);
     }
     .kpi-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; }
-    .kpi-value { font-size: 15px; font-weight: 700; color: var(--primary); }
-    .kpi-box.main { background: rgba(56, 189, 248, 0.05); border-color: rgba(56, 189, 248, 0.2); }
-    .kpi-box.main .kpi-value { color: var(--primary); font-size: 17px; }
-    .nutri-val { font-family: monospace; letter-spacing: -0.5px; }
+    .kpi-value { font-size: 15px; font-weight: 700; color: var(--primary); font-family: monospace; }
+    .kpi-box.main { background: rgba(56, 189, 248, 0.08); border-color: rgba(56, 189, 248, 0.3); }
+    .kpi-box.main .kpi-value { color: var(--primary); font-size: 16px; }
 
-    /* Slider */
+    /* --- Interactive Weather --- */
+    .weather-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 12px; }
+    .weather-btn {
+      background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px;
+      padding: 10px 4px; text-align: center; cursor: pointer; transition: all 0.2s;
+    }
+    .weather-btn:hover { background: rgba(255,255,255,0.08); }
+    .weather-btn.active {
+      background: rgba(56, 189, 248, 0.15); border-color: var(--primary); box-shadow: 0 0 15px rgba(56,189,248,0.2);
+    }
+    .weather-icon { font-size: 20px; display: block; margin-bottom: 4px; }
+    .weather-label { font-size: 11px; font-weight: 600; color: var(--text-muted); }
+    .weather-btn.active .weather-label { color: var(--primary); }
+
+    /* --- Timeline Schedule --- */
     input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; margin: 10px 0; }
     input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; cursor: pointer; }
-    input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%; background: var(--text-main); margin-top: -9px; cursor: pointer; box-shadow: 0 0 15px rgba(255,255,255,0.3); border: 2px solid #000; }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%; background: var(--text-main);
+      margin-top: -9px; cursor: pointer; box-shadow: 0 0 10px rgba(255,255,255,0.3); border: 2px solid #000;
+    }
 
-    /* Timeline */
     ul.timeline { margin: 0; padding: 0; list-style: none; margin-top: 16px; }
     li.day-row {
       display: flex; align-items: center; padding: 14px; margin-bottom: 8px;
-      background: rgba(255,255,255,0.02); border-radius: 14px; border: 1px solid transparent;
-      transition: all 0.2s;
+      background: rgba(255,255,255,0.02); border-radius: 14px; border: 1px solid transparent; transition: 0.2s;
     }
-    
-    /* Type Colors */
     li.type-easy { border-left: 3px solid var(--success); }
     li.type-long { border-left: 3px solid var(--warning); background: linear-gradient(90deg, rgba(251, 191, 36, 0.05), transparent); }
     li.type-race { border-left: 3px solid var(--danger); background: linear-gradient(90deg, rgba(248, 113, 113, 0.1), transparent); }
     li.type-rest { opacity: 0.5; border-left: 3px solid var(--text-muted); }
 
-    .badge { font-size: 10px; font-weight: 800; padding: 3px 6px; border-radius: 4px; text-transform: uppercase; }
-    .badge.success { background: rgba(52, 211, 153, 0.15); color: var(--success); }
-    .badge.warning { background: rgba(251, 191, 36, 0.15); color: var(--warning); }
-    .badge.danger { background: rgba(248, 113, 113, 0.15); color: var(--danger); }
+    .badge { font-size: 9px; font-weight: 800; padding: 3px 6px; border-radius: 4px; text-transform: uppercase; }
     .badge.accent { background: rgba(129, 140, 248, 0.15); color: var(--accent); }
+    .badge.danger { background: rgba(248, 113, 113, 0.15); color: var(--danger); }
+    .badge.success { background: rgba(52, 211, 153, 0.15); color: var(--success); }
 
-    /* Climate Cards */
-    .weather-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 12px; }
-    @media(min-width: 600px) { .weather-grid { grid-template-columns: repeat(4, 1fr); } }
-    .weather-card {
-        background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 16px; padding: 12px; font-size: 12px;
+    /* --- Dynamic Info Box --- */
+    .info-box {
+      margin-top: 12px; padding: 12px; border-radius: 12px; font-size: 13px; line-height: 1.4;
+      background: rgba(0,0,0,0.3); border: 1px solid var(--border); display: none;
     }
-    .weather-icon { font-size: 20px; margin-bottom: 6px; display: block; }
-    .weather-title { font-weight: 700; color: var(--text-main); margin-bottom: 4px; display: block; }
+    .info-box.visible { display: block; animation: slideDown 0.3s; }
+    @keyframes slideDown { from { opacity:0; transform:translateY(-5px); } to { opacity:1; transform:translateY(0); } }
 
     .fab { position: fixed; bottom: 24px; right: 24px; background: var(--text-main); color: #000; padding: 12px 20px; border-radius: 99px; font-weight: 700; box-shadow: 0 4px 20px rgba(0,0,0,0.4); border: none; cursor: pointer; z-index: 100; }
-    .hidden { display: none !important; }
-
   </style>
 </head>
 <body>
 
   <div class="container">
-    <!-- Header -->
     <header style="margin-bottom: 24px;">
-      <span class="badge accent" style="margin-bottom:8px; display:inline-block;">v6.1 Final</span>
+      <div style="display:flex; gap:6px; margin-bottom:8px;">
+        <span class="badge accent">v6.2 Final</span>
+        <span class="badge success">52-Week</span>
+        <span class="badge danger">Gender-Specific</span>
+      </div>
       <h1>Sub-3 Hybrid Project</h1>
-      <p>1년(52주) 장기 주기화 · 4주 디로드 자동화 · 기후 및 영양 통합</p>
+      <p>52주 장기 플랜 · 성별 알고리즘 · 대화형 기후 가이드</p>
     </header>
 
-    <!-- Settings & Profile -->
+    <!-- 1. Settings -->
     <section class="card">
-      <div class="row between" style="margin-bottom: 16px;">
-        <h2>⚙️ 설정 및 프로필</h2>
+      <div class="row between" style="margin-bottom: 12px;">
+        <h2>⚙️ Personalize</h2>
       </div>
-      
       <div class="grid-inputs">
         <div class="field">
-          <label>훈련 시작 요일</label>
-          <select id="start-day" class="select">
-            <option value="0">월요일 시작</option>
-            <option value="1">화요일 시작</option>
-            <option value="2">수요일 시작</option>
-            <option value="3">목요일 시작</option>
-            <option value="4">금요일 시작</option>
-            <option value="5">토요일 시작</option>
-            <option value="6">일요일 시작</option>
+          <label>성별 (생리학적 적용)</label>
+          <select id="in-sex" class="select">
+            <option value="male">남성 (Standard)</option>
+            <option value="female">여성 (Bone-Safe)</option>
           </select>
         </div>
         <div class="field">
-          <label>체중 (kg)</label>
-          <input id="in-weight" class="input" type="number" value="70" />
+          <label>시작 요일</label>
+          <select id="start-day" class="select">
+            <option value="0">월요일</option>
+            <option value="1">화요일</option>
+            <option value="2">수요일</option>
+            <option value="3">목요일</option>
+            <option value="4">금요일</option>
+            <option value="5">토요일</option>
+            <option value="6">일요일</option>
+          </select>
         </div>
         <div class="field">
           <label>10K 기록</label>
@@ -183,11 +166,11 @@
 
       <div class="kpi-grid">
         <div class="kpi-box main">
-          <div class="kpi-label">Zone 2 (Easy)</div>
+          <div class="kpi-label">Zone 2 (LSD)</div>
           <div id="kpi-easy" class="kpi-value">—</div>
         </div>
         <div class="kpi-box">
-          <div class="kpi-label">MP (Target)</div>
+          <div class="kpi-label">Test Target</div>
           <div id="kpi-mp" class="kpi-value">—</div>
         </div>
         <div class="kpi-box">
@@ -197,135 +180,105 @@
       </div>
     </section>
 
-    <!-- Nutrition Guide -->
-    <section class="card" style="border-color: rgba(52, 211, 153, 0.3);">
-      <div class="row between" style="margin-bottom: 12px;">
-        <h2 style="color:var(--success)">⛽️ 영양 가이드 (LSD/Race)</h2>
-      </div>
-      <div class="kpi-grid" style="grid-template-columns: repeat(3, 1fr);">
-        <div class="kpi-box">
-          <div class="kpi-label">💧 수분 (ml/h)</div>
-          <div id="fuel-water" class="kpi-value nutri-val">—</div>
-        </div>
-        <div class="kpi-box">
-          <div class="kpi-label">🥯 탄수화물 (g/h)</div>
-          <div id="fuel-cho" class="kpi-value nutri-val">—</div>
-        </div>
-        <div class="kpi-box">
-          <div class="kpi-label">🧂 나트륨 (mg/h)</div>
-          <div id="fuel-na" class="kpi-value nutri-val">500</div>
-        </div>
-      </div>
-      <p style="margin-top:10px; font-size:12px; color:var(--text-muted);">* 하이브리드 선수는 근육량이 많아 글리코겐 고갈이 빠릅니다. 장거리 시 15분 간격 급수를 권장합니다.</p>
-    </section>
-
-    <!-- Climate Guide -->
+    <!-- 2. Climate & Nutrition (Combined) -->
     <section class="card">
       <div class="row between">
-        <h2>🌤️ 기후별 생존 가이드</h2>
+        <h2>🌤️ Condition Control</h2>
       </div>
+      <p style="margin-bottom:12px;">현재 훈련 환경을 선택하면 전략이 변경됩니다.</p>
+      
       <div class="weather-grid">
-        <div class="weather-card" style="border-color:var(--warning);">
+        <div class="weather-btn active" onclick="updateWeather('normal', this)">
+          <span class="weather-icon">☁️</span>
+          <span class="weather-label">보통</span>
+        </div>
+        <div class="weather-btn" onclick="updateWeather('hot', this)">
           <span class="weather-icon">🔥</span>
-          <span class="weather-title" style="color:var(--warning)">폭염 (Hot)</span>
-          <ul style="padding-left:14px; margin:0; color:var(--text-muted);">
-            <li>페이스 10~20초 늦춤</li>
-            <li>수분/염분 1.5배 섭취</li>
-            <li>새벽/야간 훈련 필수</li>
-          </ul>
+          <span class="weather-label">폭염</span>
         </div>
-        <div class="weather-card">
-          <span class="weather-icon">❄️</span>
-          <span class="weather-title">겨울 (Winter)</span>
-          <ul style="padding-left:14px; margin:0; color:var(--text-muted);">
-            <li>3 Layer (흡습/보온/방풍)</li>
-            <li>실내 웜업 10분 후 외출</li>
-            <li>장갑/귀마개 필수</li>
-          </ul>
-        </div>
-        <div class="weather-card">
+        <div class="weather-btn" onclick="updateWeather('rain', this)">
           <span class="weather-icon">🌧️</span>
-          <span class="weather-title">우천 (Rain)</span>
-          <ul style="padding-left:14px; margin:0; color:var(--text-muted);">
-            <li>모자 착용 (시야 확보)</li>
-            <li>바세린 도포 (쓸림 방지)</li>
-            <li>젖은 신발 그늘 건조</li>
-          </ul>
+          <span class="weather-label">우천</span>
         </div>
-        <div class="weather-card">
-          <span class="weather-icon">🌨️</span>
-          <span class="weather-title">설천 (Snow)</span>
-          <ul style="padding-left:14px; margin:0; color:var(--text-muted);">
-            <li>트레일러닝화 권장</li>
-            <li>보폭 좁게 (미끄럼 방지)</li>
-            <li>시간주 전환 (거리 무시)</li>
-          </ul>
+        <div class="weather-btn" onclick="updateWeather('snow', this)">
+          <span class="weather-icon">❄️</span>
+          <span class="weather-label">한파/눈</span>
         </div>
+      </div>
+
+      <div id="weather-advice" class="info-box visible">
+        <strong style="color:var(--success)">Normal Strategy:</strong><br>
+        표준 급수(시간당 500-600ml) 및 탄수화물(60g) 섭취를 유지하세요. 특이사항 없습니다.
       </div>
     </section>
 
-    <!-- Schedule -->
+    <!-- 3. 52-Week Scheduler -->
     <section class="card" id="panel-weekly">
       <div class="row between">
-        <h2 id="week-title">Week 1</h2>
+        <h2 id="week-title" style="color:var(--accent)">Week 1</h2>
         <span id="week-badge" class="badge accent">BASE</span>
       </div>
-      
-      <p id="week-desc" style="margin-bottom: 20px; color: var(--text-muted);">...</p>
+      <p id="week-desc" style="margin-bottom: 20px;">로딩 중...</p>
 
-      <div style="padding: 0 8px; margin-bottom: 24px;">
+      <div style="padding: 0 4px; margin-bottom: 24px;">
         <input type="range" id="week-slider" min="1" max="52" value="1" step="1">
-        <div class="row between" style="font-size: 11px; color: var(--text-muted); margin-top: 6px; padding: 0 4px;">
+        <div class="row between" style="font-size: 10px; color: var(--text-muted); padding:0 2px;">
           <span>Start</span>
-          <span>Q1</span>
-          <span>Q2</span>
-          <span>Q3</span>
+          <span>8w(5K)</span>
+          <span>16w(10K)</span>
+          <span>24w(Half)</span>
+          <span>36w(30K)</span>
           <span>Race</span>
         </div>
       </div>
 
       <ul class="timeline" id="week-list"></ul>
       
-      <div id="deload-banner" class="hidden" style="margin-top:16px; padding:16px; background:rgba(52, 211, 153, 0.1); border-radius:16px; border:1px solid var(--success); display:flex; align-items:center; gap:12px;">
-        <div style="font-size:24px;">🍃</div>
-        <div>
-            <strong style="color:var(--success); font-size:15px; display:block; margin-bottom:4px;">Deload Week (디로드)</strong>
-            <p style="font-size:13px; color:var(--text-main);">4주마다 돌아오는 회복 주간입니다. 훈련량을 40% 줄이고 크로스핏 강도도 낮춰 누적된 피로를 씻어내세요.</p>
-        </div>
+      <!-- Deload Banner -->
+      <div id="deload-banner" class="info-box" style="background:rgba(52,211,153,0.1); border-color:var(--success); margin-top:16px;">
+        <strong style="color:var(--success)">🍃 Deload Week (디로드)</strong><br>
+        4주마다 찾아오는 회복 주간입니다. 훈련량을 40% 줄이고, 크로스핏도 고중량을 피하세요.
+        이 기간의 회복이 다음 단계의 성장을 결정합니다.
       </div>
     </section>
 
   </div>
-
+  
   <button class="fab" onclick="window.scrollTo({top:0, behavior:'smooth'})">TOP</button>
 
   <script>
   (function(){
     'use strict';
     
-    // State
     const state = { 
-      rec10k:'', recM:'', curWeek: 1, weight: 70, startDayIdx: 0 
+      rec10k:'45:00', recM:'3:30:00', curWeek: 1, 
+      sex: 'male', startDayIdx: 0, weather: 'normal'
     };
 
     const setById=(id,txt)=>{ const el=document.getElementById(id); if(el) el.textContent=txt; };
     const pad2=n=>String(n).padStart(2,'0');
 
-    // Days Mapping
-    const DAYS_BASE = ['월', '화', '수', '목', '금', '토', '일'];
-    function getDays() {
-        const start = parseInt(state.startDayIdx);
-        // Rotate array based on start index
-        // 0(Mon) -> Mon, Tue...
-        // 1(Tue) -> Tue, Wed...
-        const rotated = [];
-        for(let i=0; i<7; i++) {
-            rotated.push(DAYS_BASE[(start + i) % 7]);
+    // --- Weather Logic ---
+    window.updateWeather = function(type, btn) {
+        state.weather = type;
+        document.querySelectorAll('.weather-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        let msg = "";
+        switch(type){
+            case 'hot': 
+                msg = `<strong style="color:var(--warning)">🔥 폭염 전략:</strong> 심박수가 높게 나옵니다. 페이스를 10~20초/km 낮추세요. 급수는 1.5배(800ml/h), 소금약(Salt Stick) 필수.`; break;
+            case 'rain': 
+                msg = `<strong style="color:var(--primary)">🌧️ 우천 전략:</strong> 시야 확보를 위해 캡 모자 필수. 쓸림 방지(바세린)를 발가락/사타구니에 바르세요. 신발은 그늘 건조.`; break;
+            case 'snow': 
+                msg = `<strong style="color:var(--text-main)">❄️ 한파/설천 전략:</strong> 3-Layer 복장(흡습-보온-방풍). 미끄러우니 보폭을 좁게 하고 '시간주'로 전환하세요.`; break;
+            default: 
+                msg = `<strong style="color:var(--success)">✅ Normal Strategy:</strong> 표준 급수(시간당 500-600ml) 및 탄수화물(60g) 섭취를 유지하세요. 특이사항 없습니다.`;
         }
-        return rotated;
-    }
+        document.getElementById('weather-advice').innerHTML = msg;
+    };
 
-    // Pacing Logic
+    // --- Pacing Logic ---
     function parseTimeToSec(v){
       if(!v) return 0;
       const s=String(v).trim();
@@ -344,8 +297,7 @@
       const t10 = parseTimeToSec(state.rec10k);
       const tM = parseTimeToSec(state.recM);
       let mp = 0;
-      if(tM) mp = tM/42.195;
-      else if(t10) mp = (t10 * 4.65) / 42.195; 
+      if(tM) mp = tM/42.195; else if(t10) mp = (t10 * 4.65) / 42.195; 
       
       const z2_fast = mp ? mp + 45 : 0;
       const z2_slow = mp ? mp + 90 : 0;
@@ -356,83 +308,113 @@
       setById('kpi-10k', paceStr(k10));
     }
 
-    // Nutrition Logic
-    function calculateNutrition(){
-        const w = state.weight;
-        // Basic Needs
-        const water = Math.round(w * 10); // ~10ml per kg per hour
-        const cho = 60; // 60g default
-        const na = 500;
-        
-        setById('fuel-water', `${water}-${water+200}`);
-        setById('fuel-cho', `${cho}-${cho+30}`);
-        setById('fuel-na', `${na}`);
-    }
-
-    // Schedule Logic
+    // --- 52-Week Schedule Logic (Fixed) ---
     function getWeekData(w) {
-        let title, badge, desc, schedule, lsdDist, easyDist;
-        let isDeload = (w % 4 === 0) && (w < 48); // Deload every 4th week
+        let title, badge, desc, schedule;
+        let lsdDist, easyDist;
+        
+        // Gender Factor: Women get 10% less volume progression to prevent bone stress
+        const volumeFactor = state.sex === 'female' ? 0.9 : 1.0;
+        
+        const isDeload = (w % 4 === 0) && (w < 48); 
+        const isRace = (w === 52);
+        
+        // Test Weeks (Fixed)
+        const isTest5K = (w === 8);
+        const isTest10K = (w === 16);
+        const isTestHalf = (w === 24);
+        const isTest30K = (w === 36);
+
+        // Phase Info
         let phase = "";
+        if (w <= 12) phase = "Phase 1: 구조적 적응 (건/인대)";
+        else if (w <= 24) phase = "Phase 2: 유산소 베이스 확장";
+        else if (w <= 36) phase = "Phase 3: 특화 및 내구력";
+        else if (w <= 48) phase = "Phase 4: 피크 및 마무리";
+        else phase = "Taper & Race";
 
-        if (w <= 12) phase = "PHASE 1: 구조적 적응";
-        else if (w <= 24) phase = "PHASE 2: 유산소 확장";
-        else if (w <= 36) phase = "PHASE 3: 근지구력 강화";
-        else if (w <= 48) phase = "PHASE 4: 레이스 준비";
-        else phase = "OFF-SEASON: 회복";
+        // Distance Calculation (Linear Progression)
+        // Base LSD progression from 10km to 32km over 45 weeks
+        if (w <= 12) lsdDist = 10 + (w * 0.5); // 10 -> 16
+        else if (w <= 24) lsdDist = 16 + ((w-12) * 0.8); // 16 -> 25
+        else if (w <= 36) lsdDist = 25 + ((w-24) * 0.5); // 25 -> 31
+        else if (w <= 45) lsdDist = 32; // Hold Peak
+        else lsdDist = 32 - ((w-45) * 4); // Taper: 28, 24, 20, 16...
 
-        // Logic
-        if (w <= 12) {
-            easyDist = 5 + Math.floor((w-1)/2); 
-            lsdDist = 8 + Math.floor(w * 0.5); 
-        } else if (w <= 24) {
-            easyDist = 8 + Math.floor((w-12)/4);
-            lsdDist = 14 + (w-12);
-        } else if (w <= 36) {
-            easyDist = 10;
-            lsdDist = 20 + Math.floor((w-24)*0.7);
-        } else {
-            easyDist = 8;
-            if (w <= 44) lsdDist = 28 + Math.floor((w-36)*0.5); 
-            else lsdDist = 32 - (w-44)*5; 
-        }
+        // Apply Factors
+        lsdDist = Math.round(lsdDist * volumeFactor);
+        easyDist = Math.round((lsdDist * 0.4)); // Weekday runs are shorter
 
+        // Deload Logic
         if (isDeload) {
-            lsdDist = Math.floor(lsdDist * 0.6); 
-            easyDist = Math.floor(easyDist * 0.7);
+            lsdDist = Math.round(lsdDist * 0.6);
+            easyDist = Math.round(easyDist * 0.7);
             badge = "DELOAD";
-            desc = "4주차 디로드 주간. 훈련량을 줄여 회복에 집중하세요.";
+            desc = "4주차 디로드입니다. 훈련량을 줄여 회복하세요.";
         } else {
             badge = "BUILD";
-            desc = `[${phase}] 이번 주 LSD 목표: ${lsdDist}km (Zone 2 준수)`;
+            desc = `${phase}. 이번 주 LSD 목표: ${lsdDist}km (Zone 2).`;
         }
 
+        // --- Schedule Generation ---
+        const days = ['월','화','수','목','금','토','일'];
+        // Rotate days based on startDayIdx
+        const d = [];
+        for(let i=0; i<7; i++) d.push(days[(state.startDayIdx + i)%7]);
+
         title = `Week ${w}`;
-        
-        // Dynamic Days
-        const dayLabels = getDays(); 
-        
-        if (w === 48) {
-            title = "Week 48: D-DAY"; badge = "RACE";
-            desc = "1년 농사의 결실을 맺는 날입니다.";
+
+        // Special Weeks Handling
+        if (isRace) {
+            title = "Week 52: D-DAY"; badge = "RACE"; desc = "1년의 결실. 행운을 빕니다!";
             schedule = [
-                {d:dayLabels[0], t:`Easy 5 km`, type:"easy"}, 
-                {d:dayLabels[1], t:`휴식`, type:"rest"},
-                {d:dayLabels[2], t:`Easy 4 km + 질주`, type:"easy"}, 
-                {d:dayLabels[3], t:`휴식`, type:"rest"},
-                {d:dayLabels[4], t:`휴식`, type:"rest"}, 
-                {d:dayLabels[5], t:`[D-DAY] RACE`, type:"race"}, 
-                {d:dayLabels[6], t:`회복`, type:"rest"}
+                {d:d[0], t:"Easy 5 km", type:"easy"}, {d:d[1], t:"휴식", type:"rest"},
+                {d:d[2], t:"Easy 3 km + 질주", type:"easy"}, {d:d[3], t:"휴식", type:"rest"},
+                {d:d[4], t:"휴식", type:"rest"}, {d:d[5], t:"[D-DAY] RACE 42.195km", type:"race"},
+                {d:d[6], t:"회복", type:"rest"}
+            ];
+        } else if (isTest5K) {
+            title = "Week 8: 5K TT"; badge = "TEST"; desc = "현재 스피드 점검. 전력 질주하세요.";
+            schedule = [
+                {d:d[0], t:`Easy ${easyDist} km`, type:"easy"}, {d:d[1], t:"휴식", type:"rest"},
+                {d:d[2], t:"Easy 5 km", type:"easy"}, {d:d[3], t:"휴식", type:"rest"},
+                {d:d[4], t:"[TEST] 5K TT", type:"race"}, {d:d[5], t:"회복 조깅 5 km", type:"easy"},
+                {d:d[6], t:"휴식", type:"rest"}
+            ];
+        } else if (isTest10K) {
+            title = "Week 16: 10K TT"; badge = "TEST"; desc = "유산소 역치 점검. 10km 기록 측정.";
+            schedule = [
+                {d:d[0], t:`Easy ${easyDist} km`, type:"easy"}, {d:d[1], t:"휴식", type:"rest"},
+                {d:d[2], t:"Easy 5 km", type:"easy"}, {d:d[3], t:"휴식", type:"rest"},
+                {d:d[4], t:"[TEST] 10K TT", type:"race"}, {d:d[5], t:"회복 조깅 8 km", type:"easy"},
+                {d:d[6], t:"휴식", type:"rest"}
+            ];
+        } else if (isTestHalf) {
+            title = "Week 24: Half TT"; badge = "TEST"; desc = "중간 점검. 하프마라톤 거리주.";
+            schedule = [
+                {d:d[0], t:`Easy ${easyDist} km`, type:"easy"}, {d:d[1], t:"휴식", type:"rest"},
+                {d:d[2], t:"Easy 5 km", type:"easy"}, {d:d[3], t:"휴식", type:"rest"},
+                {d:d[4], t:"[TEST] 21.1km TT", type:"race"}, {d:d[5], t:"휴식", type:"rest"},
+                {d:d[6], t:"휴식", type:"rest"}
+            ];
+        } else if (isTest30K) {
+            title = "Week 36: 30K Sim"; badge = "TEST"; desc = "레이스 시뮬레이션. 급수/젤 섭취 훈련.";
+            schedule = [
+                {d:d[0], t:`Easy ${easyDist} km`, type:"easy"}, {d:d[1], t:"휴식", type:"rest"},
+                {d:d[2], t:"Easy 8 km", type:"easy"}, {d:d[3], t:"휴식", type:"rest"},
+                {d:d[4], t:"휴식", type:"rest"}, {d:d[5], t:"[SIM] 30km LSD", type:"race"},
+                {d:d[6], t:"휴식", type:"rest"}
             ];
         } else {
+            // Normal Training
             schedule = [
-                {d:dayLabels[0], t:`Easy ${easyDist} km (유동적)`, type:"easy"},
-                {d:dayLabels[1], t:`Easy ${easyDist+1} km`, type:"easy"},
-                {d:dayLabels[2], t:`Easy ${easyDist} km`, type:"easy"},
-                {d:dayLabels[3], t:`완전 휴식`, type:"rest"},
-                {d:dayLabels[4], t:`Easy ${isDeload?easyDist-2:easyDist} km + 질주`, type:"easy"},
-                {d:dayLabels[5], t:`LSD ${lsdDist} km (Zone 2)`, type:"long"},
-                {d:dayLabels[6], t:`완전 휴식`, type:"rest"}
+                {d:d[0], t:`Easy ${easyDist} km (유동적)`, type:"easy"},
+                {d:d[1], t:`Easy ${easyDist+1} km`, type:"easy"},
+                {d:d[2], t:`Easy ${easyDist} km`, type:"easy"},
+                {d:d[3], t:`완전 휴식`, type:"rest"},
+                {d:d[4], t:`Easy ${isDeload?easyDist-2:easyDist} km + 질주`, type:"easy"},
+                {d:d[5], t:`LSD ${lsdDist} km (Zone 2)`, type:"long"},
+                {d:d[6], t:`완전 휴식`, type:"rest"}
             ];
         }
 
@@ -441,7 +423,6 @@
 
     function renderAll(){
         calculatePaces();
-        calculateNutrition();
         const data = getWeekData(state.curWeek);
         
         setById('week-title', data.title);
@@ -449,30 +430,31 @@
         badgeEl.textContent = data.badge;
         badgeEl.className = 'badge';
         
-        if(data.badge === 'DELOAD') badgeEl.classList.add('success');
-        else if(data.badge === 'RACE') badgeEl.classList.add('danger');
+        if(data.badge.includes('TEST') || data.badge === 'RACE') badgeEl.classList.add('danger');
+        else if(data.badge === 'DELOAD') badgeEl.classList.add('success');
         else badgeEl.classList.add('accent');
 
         setById('week-desc', data.desc);
         
-        // Deload Banner Logic
+        // Deload Banner Visibility
         const deloadBanner = document.getElementById('deload-banner');
-        if(data.isDeload) deloadBanner.classList.remove('hidden');
-        else deloadBanner.classList.add('hidden');
+        if(data.isDeload) deloadBanner.classList.add('visible');
+        else deloadBanner.classList.remove('visible');
 
         const ul = document.getElementById('week-list');
         ul.innerHTML = '';
         data.schedule.forEach((item, idx) => {
             const li = document.createElement('li');
             li.className = `day-row type-${item.type}`;
+            li.style.animation = `slideIn 0.3s ease forwards ${idx * 0.05}s`;
+            li.style.opacity = '0'; // For animation
             
             let badgeHtml = '';
             if(item.type === 'race') badgeHtml = '<span class="badge danger">TARGET</span>';
             else if(item.type === 'long') badgeHtml = '<span class="badge warning">LSD</span>';
-            else if(item.type === 'easy') badgeHtml = '<span class="badge success">EASY</span>';
             
             li.innerHTML = `
-              <div style="width:40px; font-weight:700; color:var(--text-muted);">${item.d}</div>
+              <div style="width:30px; font-weight:700; color:var(--text-muted); font-size:12px;">${item.d}</div>
               <div style="flex:1;">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                   <span style="font-weight:600; color:var(--text-main); font-size:14px;">${item.t}</span>
@@ -484,25 +466,18 @@
         });
     }
 
-    // --- Events ---
-    ['in-10k','in-m','in-weight'].forEach(id => {
-        document.getElementById(id).addEventListener('input', (e) => {
-            if(id==='in-weight') state.weight = parseInt(e.target.value) || 70;
-            else if(id==='in-10k') state.rec10k = e.target.value;
-            else if(id==='in-m') state.recM = e.target.value;
-            renderAll();
-        });
-    });
+    // --- Event Listeners ---
+    ['in-10k','in-m'].forEach(id => document.getElementById(id).addEventListener('input', (e) => {
+        if(id==='in-10k') state.rec10k = e.target.value; else state.recM = e.target.value; renderAll();
+    }));
+    document.getElementById('in-sex').addEventListener('change', (e) => { state.sex = e.target.value; renderAll(); });
+    document.getElementById('start-day').addEventListener('change', (e) => { state.startDayIdx = parseInt(e.target.value); renderAll(); });
+    document.getElementById('week-slider').addEventListener('input', (e) => { state.curWeek = parseInt(e.target.value); renderAll(); });
 
-    document.getElementById('week-slider').addEventListener('input', (e) => {
-        state.curWeek = parseInt(e.target.value);
-        renderAll();
-    });
-
-    document.getElementById('start-day').addEventListener('change', (e) => {
-        state.startDayIdx = parseInt(e.target.value);
-        renderAll();
-    });
+    // Animation Style
+    const style = document.createElement('style');
+    style.innerHTML = `@keyframes slideIn { from { opacity:0; transform:translateX(-10px); } to { opacity:1; transform:translateX(0); } }`;
+    document.head.appendChild(style);
 
     renderAll();
 
