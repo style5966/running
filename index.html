@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Sub-3 Hybrid v7.2 (Director's Cut)</title>
+  <title>Sub-3 Hybrid v7.3 (Physiology Final)</title>
   <style>
     /* --- Design System: Neon Glass Bento --- */
     :root {
@@ -107,7 +107,7 @@
     }
     .kpi-sub { font-size: 10px; color: var(--text-sub); text-transform: uppercase; margin-top: 4px; font-weight: 700; }
 
-    /* --- Nutrition Tabs (New) --- */
+    /* --- Nutrition Tabs --- */
     .nutri-tabs { display: flex; gap: 4px; margin-bottom: 16px; background: rgba(255,255,255,0.05); padding: 4px; border-radius: 12px; }
     .n-tab {
       flex: 1; text-align: center; padding: 8px 0; font-size: 11px; font-weight: 700; color: var(--text-sub);
@@ -194,16 +194,16 @@
   <div class="container">
     
     <header style="margin-bottom: 28px;">
-      <div class="top-badge">v7.2 DIRECTOR'S CUT</div>
+      <div class="top-badge">v7.3 FINAL PHYSIOLOGY</div>
       <h1>Sub-3 Hybrid</h1>
-      <p style="color:var(--text-sub); margin-top:6px; font-size:13px;">1-Year Elite Periodization & Fueling System</p>
+      <p style="color:var(--text-sub); margin-top:6px; font-size:13px;">Science-Based Periodization & Nutrition</p>
     </header>
 
     <div class="bento-grid">
       
       <!-- 1. Profile (Large) -->
       <div class="bento-card col-12">
-        <h2><span style="color:var(--neon-purple)">⚡️</span> PROFILE SETTINGS</h2>
+        <h2><span style="color:var(--neon-purple)">⚡️</span> ATHLETE PROFILE</h2>
         <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
           <div>
             <span class="input-label">GENDER</span>
@@ -261,29 +261,36 @@
 
       <!-- 3. Advanced Nutrition (Medium) -->
       <div class="bento-card col-6">
-        <h2><span style="color:var(--neon-green)">⛽️</span> FUELING STRATEGY</h2>
+        <h2><span style="color:var(--neon-green)">⛽️</span> HYBRID NUTRITION</h2>
         
         <div class="nutri-tabs">
-          <div class="n-tab active" onclick="setNutriTab('pre', this)">PRE (전)</div>
-          <div class="n-tab" onclick="setNutriTab('during', this)">DURING (중)</div>
-          <div class="n-tab" onclick="setNutriTab('post', this)">POST (후)</div>
+          <div class="n-tab active" onclick="setNutriTab('daily', this)">DAILY</div>
+          <div class="n-tab" onclick="setNutriTab('pre', this)">PRE</div>
+          <div class="n-tab" onclick="setNutriTab('during', this)">DURING</div>
+          <div class="n-tab" onclick="setNutriTab('post', this)">POST</div>
         </div>
 
-        <div id="nutri-pre" class="nutri-detail active">
-          <div class="nutri-row"><span class="nutri-label">로딩 (3일전)</span> <span class="nutri-data" id="n-load">—</span></div>
+        <div id="nutri-daily" class="nutri-detail active">
+          <div class="nutri-row"><span class="nutri-label">일일 단백질 (1.8g/kg)</span> <span class="nutri-data" id="n-daily-prot">—</span></div>
+          <div class="nutri-row"><span class="nutri-label">일일 수분 (기초)</span> <span class="nutri-data" id="n-daily-water">—</span></div>
+          <div class="nutri-row" id="n-gender-tip" style="color:var(--neon-purple); font-size:11px;"></div>
+        </div>
+
+        <div id="nutri-pre" class="nutri-detail">
           <div class="nutri-row"><span class="nutri-label">식사 (3시간전)</span> <span class="nutri-data" id="n-meal">—</span></div>
           <div class="nutri-row"><span class="nutri-label">수분 (2시간전)</span> <span class="nutri-data" id="n-water-pre">—</span></div>
+          <div class="nutri-row"><span class="nutri-label">카페인 (1시간전)</span> <span class="nutri-data">3-6 mg/kg</span></div>
         </div>
 
         <div id="nutri-during" class="nutri-detail">
           <div class="nutri-row"><span class="nutri-label">탄수화물/h</span> <span class="nutri-data" id="n-carb-hr">—</span></div>
           <div class="nutri-row"><span class="nutri-label">수분/h</span> <span class="nutri-data" id="n-water-hr">—</span></div>
-          <div class="nutri-row"><span class="nutri-label">카페인/h</span> <span class="nutri-data">50~100mg</span></div>
+          <div class="nutri-row"><span class="nutri-label">나트륨/h</span> <span class="nutri-data">500~800mg</span></div>
         </div>
 
         <div id="nutri-post" class="nutri-detail">
-          <div class="nutri-row"><span class="nutri-label">즉시 섭취 (3:1)</span> <span class="nutri-data" id="n-rec-ratio">—</span></div>
-          <div class="nutri-row"><span class="nutri-label">단백질</span> <span class="nutri-data" id="n-prot">—</span></div>
+          <div class="nutri-row"><span class="nutri-label">리커버리 (3:1)</span> <span class="nutri-data" id="n-rec-ratio">—</span></div>
+          <div class="nutri-row"><span class="nutri-label">필수 단백질</span> <span class="nutri-data" id="n-prot">—</span></div>
           <div class="nutri-row"><span class="nutri-label">타이밍</span> <span class="nutri-data">운동 직후 30분</span></div>
         </div>
       </div>
@@ -305,11 +312,10 @@
       <div class="slider-wrap">
         <input type="range" id="week-slider" min="1" max="52" value="1" step="1">
         <div style="display: flex; justify-content: space-between; font-size: 10px; color: var(--text-sub); margin-top: 8px; font-weight: 700;">
-          <span>Start</span>
-          <span>Q1</span>
-          <span>Q2</span>
-          <span>Q3</span>
-          <span>Race</span>
+          <span>Q1 (Base)</span>
+          <span>Q2 (Build)</span>
+          <span>Q3 (Peak)</span>
+          <span>Q4 (Race)</span>
         </div>
       </div>
 
@@ -324,7 +330,7 @@
         <span style="font-size:20px;">🍃</span>
         <div>
           <strong style="color:var(--neon-lime); font-size:13px;">DELOAD WEEK (디로드)</strong>
-          <div style="font-size:11px; color:var(--text-sub);">회복 주간입니다. 훈련량을 40% 줄이고 크로스핏 강도를 낮춰, 다음 블록을 위한 에너지를 비축하세요.</div>
+          <div style="font-size:11px; color:var(--text-sub);">4주마다 찾아오는 회복 주간입니다. 훈련량을 줄이고 근신경계 피로를 해소하세요.</div>
         </div>
       </div>
 
@@ -394,34 +400,46 @@
       $('kpi-easy').textContent = z2 ? fmtPace(z2) : '—';
     }
 
-    // --- Advanced Fueling Calculator ---
+    // --- Advanced Fueling Calculator (Physiology Applied) ---
     function calcFuel(){
       let w = state.weight || 70;
       let isHot = state.weather === 'hot';
+      let isFemale = state.sex === 'female';
       
+      // Gender Adjustments
+      // Women: slightly lower carb oxid, more reliance on fat, different hydration needs
+      
+      // 0. Daily (New Feature)
+      // Hybrid athlete needs high protein: 1.6-2.0g/kg
+      let dailyProt = Math.round(w * 1.8); 
+      let dailyWater = Math.round(w * 35); // 35ml/kg base
+      
+      $('n-daily-prot').textContent = `${dailyProt}g (High)`;
+      $('n-daily-water').textContent = `${dailyWater/1000}L`;
+      $('n-gender-tip').textContent = isFemale ? "Tip: 황체기 수분/염분 저장 증가 주의" : "Tip: 땀 배출량 많음, 수분 집중";
+
       // 1. Pre (Loading)
-      let loadCarb = Math.round(w * 10); // 10g/kg
-      let mealCarb = Math.round(w * 3);  // 3g/kg (3-4hr before)
-      let preWater = Math.round(w * 7);  // 5-7ml/kg
+      let mealCarb = Math.round(w * 2.5);  // 2.5g/kg (Light meal)
+      let preWater = Math.round(w * 6);  // 5-7ml/kg
       
-      $('n-load').textContent = `Carb ${loadCarb}g/일`;
       $('n-meal').textContent = `Carb ${mealCarb}g`;
       $('n-water-pre').textContent = `${preWater}ml`;
 
       // 2. During
-      let carbHr = 60; // Base
-      if(state.curWeek > 24) carbHr = 75; // Increase for higher intensity phases
-      let waterHr = Math.round(w * 10); // 10ml/kg/h
-      if(isHot) { waterHr = Math.round(waterHr * 1.4); carbHr = 60; } // In heat, focus hydration, reduce carb slightly to prevent GI issues
+      let carbHr = isFemale ? 50 : 60; // Females tend to oxidize more fat
+      if(state.curWeek > 26) carbHr += 10; // Increase intensity
+      
+      let waterHr = Math.round(w * (isFemale ? 9 : 11)); // Men sweat more
+      if(isHot) { waterHr = Math.round(waterHr * 1.4); } 
 
       $('n-carb-hr').textContent = `${carbHr}g`;
       $('n-water-hr').textContent = `${waterHr}ml`;
 
       // 3. Post (Recovery)
-      let recCarb = Math.round(w * 1.2); // 1.2g/kg
-      let recProt = Math.round(w * 0.3); // 0.3g/kg
+      let recCarb = Math.round(w * 1.0); 
+      let recProt = Math.round(w * 0.3); 
       $('n-rec-ratio').textContent = `C:${recCarb}g + P:${recProt}g`;
-      $('n-prot').textContent = `${recProt}g`;
+      $('n-prot').textContent = `${recProt}g (Whey)`;
     }
 
     // --- Core Logic: 52-Week Schedule ---
@@ -432,22 +450,18 @@
       
       let phase = "", lsd = 0, easy = 0;
       
-      // Phase & LSD Progression (Exponential Decay Taper)
-      if (w <= 12) { phase = "PHASE 1: 구조적 적응"; lsd = 10 + (w * 0.5); }
-      else if (w <= 24) { phase = "PHASE 2: 유산소 확장"; lsd = 16 + ((w-12) * 0.8); }
-      else if (w <= 36) { phase = "PHASE 3: 근지구력 강화"; lsd = 25 + ((w-24) * 0.5); }
-      else if (w <= 48) { phase = "PHASE 4: 피크 & 쉐이핑"; lsd = (w<=45) ? 32 : 32; } // Hold peak
+      // Phase Logic (Quarterly)
+      if (w <= 13) { phase = "Q1: BASE (기초공사)"; lsd = 10 + (w * 0.5); }
+      else if (w <= 26) { phase = "Q2: BUILD (확장)"; lsd = 16 + ((w-13) * 0.8); }
+      else if (w <= 39) { phase = "Q3: STRENGTH (강화)"; lsd = 26 + ((w-26) * 0.5); }
+      else if (w <= 48) { phase = "Q4: PEAK (완성)"; lsd = (w<=45) ? 32 : 32; } 
       else { 
           phase = "TAPER & RACE"; 
-          // Smooth Taper: 49(24k), 50(16k), 51(10k)
-          if(w===49) lsd = 24;
-          else if(w===50) lsd = 16;
-          else if(w===51) lsd = 10;
-          else lsd = 0; 
+          if(w===49) lsd = 24; else if(w===50) lsd = 16; else if(w===51) lsd = 10; else lsd = 0; 
       }
 
       lsd = Math.round(lsd * volFactor);
-      easy = Math.round(lsd * 0.35); // Weekday runs shorter
+      easy = Math.round(lsd * 0.35); 
 
       if(isDeload) { 
           lsd = Math.round(lsd * 0.6); 
@@ -483,7 +497,7 @@
         ];
       }
 
-      // Test Weeks (Override Sat)
+      // Test Weeks
       if(w===8) items[5] = {d:days[5], t:"TEST 5K", type:"race", sub:"Max Effort"};
       if(w===16) items[5] = {d:days[5], t:"TEST 10K", type:"race", sub:"Threshold"};
       if(w===24) items[5] = {d:days[5], t:"TEST HALF", type:"race", sub:"21.1km"};
