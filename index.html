@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Sub-3 Hybrid v9.0 (Elite)</title>
+  <title>Sub-3 Hybrid v9.3 (Clear Shake-out)</title>
   <style>
     /* --- Design System: Cyberpunk Neon Glass --- */
     :root {
@@ -18,7 +18,8 @@
       --neon-pink: #f72585;   /* VO2 Max / Race */
       --neon-lime: #ccff00;   /* Technique */
       --neon-orange: #ff9e00; /* Threshold (Tempo) */
-      --neon-red: #ff2a2a;    /* Interval */
+      --neon-red: #ff2a2a;    /* Interval / TT */
+      --neon-gold: #ffd700;   /* Test Week Special */
       
       --text-main: #ffffff;
       --text-sub: #94a3b8;
@@ -43,9 +44,9 @@
     .aurora-bg {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
       background: 
-        radial-gradient(circle at 10% 10%, rgba(255, 158, 0, 0.08), transparent 40%), /* Orange hint for intensity */
+        radial-gradient(circle at 10% 10%, rgba(255, 158, 0, 0.05), transparent 40%),
         radial-gradient(circle at 90% 20%, rgba(114, 9, 183, 0.1), transparent 40%),
-        radial-gradient(circle at 50% 90%, rgba(0, 242, 234, 0.08), transparent 50%);
+        radial-gradient(circle at 50% 90%, rgba(0, 242, 234, 0.05), transparent 50%);
       filter: blur(60px);
     }
 
@@ -159,16 +160,14 @@
     
     .neon-bar { position: absolute; left: 0; top: 0; bottom: 0; width: 4px; }
     
-    /* Updated Training Types for Specificity */
     .type-easy .neon-bar { background: var(--neon-lime); } /* Zone 2 */
     .type-long .neon-bar { background: var(--neon-cyan); } /* LSD */
     .type-tempo .neon-bar { background: var(--neon-orange); box-shadow: 0 0 10px var(--neon-orange); } /* Zone 3-4 */
-    .type-interval .neon-bar { background: var(--neon-red); box-shadow: 0 0 10px var(--neon-red); } /* Zone 5 */
+    .type-test .neon-bar { background: var(--neon-gold); box-shadow: 0 0 12px var(--neon-gold); } /* Test */
     .type-race .neon-bar { background: var(--neon-pink); box-shadow: 0 0 12px var(--neon-pink); }
     .type-rest .neon-bar { background: rgba(255,255,255,0.1); }
     
-    .t-item.type-tempo { background: rgba(255, 158, 0, 0.05); border-color: rgba(255, 158, 0, 0.2); }
-    .t-item.type-interval { background: rgba(255, 42, 42, 0.05); border-color: rgba(255, 42, 42, 0.2); }
+    .t-item.type-test { background: rgba(255, 215, 0, 0.05); border-color: rgba(255, 215, 0, 0.3); }
 
     .t-day { width: 40px; font-weight: 700; font-size: 13px; color: var(--text-sub); text-align: center; margin-right: 12px; }
     .t-content { flex: 1; }
@@ -179,15 +178,15 @@
     .pill-easy { background: rgba(204, 255, 0, 0.1); color: var(--neon-lime); }
     .pill-long { background: rgba(0, 242, 234, 0.1); color: var(--neon-cyan); }
     .pill-tempo { background: rgba(255, 158, 0, 0.15); color: var(--neon-orange); }
-    .pill-int { background: rgba(255, 42, 42, 0.15); color: var(--neon-red); }
+    .pill-test { background: rgba(255, 215, 0, 0.15); color: var(--neon-gold); }
     .pill-race { background: rgba(247, 37, 133, 0.15); color: var(--neon-pink); }
 
     @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
     .top-badge {
       display: inline-flex; align-items: center; padding: 6px 12px; background: rgba(255,255,255,0.05);
-      border-radius: 99px; font-size: 11px; font-weight: 700; color: var(--neon-orange); margin-bottom: 12px;
-      border: 1px solid rgba(255, 158, 0, 0.3);
+      border-radius: 99px; font-size: 11px; font-weight: 700; color: var(--neon-gold); margin-bottom: 12px;
+      border: 1px solid rgba(255, 215, 0, 0.3);
     }
     
     .deload-banner {
@@ -196,7 +195,6 @@
       border: 1px solid rgba(204, 255, 0, 0.3);
     }
     
-    /* Strategy Tip Box */
     .strategy-box {
       margin-top: 20px; padding: 12px; background: rgba(255, 158, 0, 0.05); 
       border-left: 3px solid var(--neon-orange); border-radius: 4px; font-size: 12px; color: #ddd;
@@ -211,9 +209,9 @@
   <div class="container">
     
     <header style="margin-bottom: 28px;">
-      <div class="top-badge">v9.0 ELITE (Feedback Applied)</div>
+      <div class="top-badge">v9.3 CLEAR GUIDE</div>
       <h1>Sub-3 Hybrid Project</h1>
-      <p style="color:var(--text-sub); margin-top:6px; font-size:14px;">"생존을 넘어 기록으로" - 역치(LT) & 특이성 강화 버전</p>
+      <p style="color:var(--text-sub); margin-top:6px; font-size:14px;">"엔진은 믿되, 섀시(관절)는 의심하라"</p>
     </header>
 
     <!-- Bento Grid -->
@@ -269,7 +267,7 @@
             <span id="pace-easy" class="kpi-val-sm">—</span>
           </div>
           <div style="font-size:10px; color:var(--text-sub); margin-top:8px; text-align:right;">
-            *LT 훈련이 Sub-3의 핵심
+            *테스트 주간에 기록 갱신 필수
           </div>
         </div>
       </div>
@@ -343,7 +341,7 @@
       </div>
 
       <div class="strategy-box" id="strategy-tip">
-        <!-- JS Injection for critique-based tips -->
+        <!-- JS Injection -->
       </div>
 
       <div style="height: 1px; background: var(--glass-border); margin: 24px 0;"></div>
@@ -378,7 +376,7 @@
       startDayIdx: 0, 
       weather: 'normal', 
       weight: 70,
-      paces: { mp: 0, lt: 0, easy: 0 } // In seconds per km
+      paces: { mp: 0, lt: 0, easy: 0 } 
     };
 
     const $ = id => document.getElementById(id);
@@ -421,24 +419,17 @@
       $('n-'+type).classList.add('active');
     };
 
-    // --- Logic: Pacing Calculation (Crucial for Sub-3) ---
+    // --- Logic: Pacing Calculation ---
     function calcPace(){
       const t10 = parseTime(state.rec10k);
       
       if(t10 > 0) {
-        // Jack Daniels VDOT approximation logic simplified
-        // 10k pace per km
         const pace10k = t10 / 10; 
         
-        // Elite/Sub-3 Goal Estimation
-        // MP is usually 10k pace + 15~25s for elites, but +30~40s for amateurs.
-        // LT (Threshold) is roughly 10k pace + 10~15s (or 1-hour race pace).
+        state.paces.lt = pace10k + 5;  
+        state.paces.mp = pace10k + 25; 
+        state.paces.easy = state.paces.mp + 50; 
         
-        state.paces.lt = pace10k + 5;  // Threshold is slightly slower than 10k race pace
-        state.paces.mp = pace10k + 25; // Marathon Pace prediction
-        state.paces.easy = state.paces.mp + 50; // Easy is MP + 45~60s
-        
-        // UI Updates
         $('pace-mp').textContent = fmtPace(state.paces.mp);
         $('pace-lt').textContent = fmtPace(state.paces.lt);
         $('pace-easy').textContent = fmtPace(state.paces.easy);
@@ -464,10 +455,9 @@
       $('val-meal').textContent = `탄수 ${Math.round(w*2.5)}g`;
       $('val-water-pre').textContent = `${Math.round(w*6)}ml`;
 
-      // Sub-3 requires higher carb intake (Gut Training)
       let cHr = 60; 
-      if(state.curWeek > 26) cHr = 75; // Increase for Q3 Gut Training
-      if(state.curWeek > 40) cHr = 90; // Elite Level
+      if(state.curWeek > 26) cHr = 75; 
+      if(state.curWeek > 40) cHr = 90; 
       
       let wHr = Math.round(w * 10);
       if(isHot) wHr = Math.round(wHr * 1.4);
@@ -480,34 +470,38 @@
       $('val-rec').textContent = `C:${rCarb}g / P:${rProt}g`;
     }
 
-    // --- Logic: 52-Week Schedule (Elite Structure) ---
+    // --- Logic: 52-Week Schedule (Chassis First) ---
     function generateSchedule(w) {
       const volFactor = state.sex === 'female' ? 0.9 : 1.0;
       const isDeload = (w % 4 === 0) && (w < 48);
       const isRace = (w === 52);
       
-      let phase = "", lsd = 0, easy = 0;
+      const isTest5k = (w === 8);
+      const isTest10k = (w === 16);
+      const isTestHalf = (w === 24);
+      const isTest = isTest5k || isTest10k || isTestHalf;
+
+      let phase = "", lsd = 0, easy = 0, bridge = 0;
       let focusText = "";
       
-      // Phase Definition
       if (w <= 13) { 
-        phase = "Q1. 구조적 적응기"; 
-        focusText = "부상 방지, 건/인대 강화, 유산소 볼륨 점진적 증가.";
-        lsd = 12 + (w * 0.8);
+        phase = "Q1. 섀시(관절) 적응기"; 
+        lsd = 10 + ((w-1) * 0.8); 
+        focusText = "<b>[초기화]</b> 엔진을 믿지 마세요. 10km부터 시작해 뼈와 인대를 먼저 만듭니다.";
       }
       else if (w <= 26) { 
         phase = "Q2. 유산소 확장기"; 
-        focusText = "LSD 거리 증가. 주중 가벼운 템포런(Tempo) 도입 시작.";
-        lsd = 20 + ((w-13) * 0.8);
+        lsd = 19 + ((w-13) * 0.7);
+        focusText = "수요일 준장거리(Semi-Long)로 주말의 충격을 미리 분산시킵니다.";
       }
       else if (w <= 39) { 
         phase = "Q3. 특화기 (Specificity)"; 
-        focusText = "<b>[핵심]</b> 역치(LT) 훈련 본격화. 크로스핏 강도 조절(유지). LSD 내 MP 구간 삽입.";
+        focusText = "<b>[역치 강화]</b> LSD는 더 이상 단순 조깅이 아닙니다. 후반부 MP 주행에 집중.";
         lsd = 28 + ((w-26) * 0.3);
       }
       else if (w <= 48) { 
         phase = "Q4. 피크 & 완성"; 
-        focusText = "실전 모의 훈련. VO2max 자극 및 레이스 페이스 각인.";
+        focusText = "실전 모의 훈련. VO2max 자극 및 레이스 페이스(MP) 각인.";
         lsd = (w<=45) ? 32 : 30;
       }
       else { 
@@ -517,23 +511,25 @@
       }
 
       lsd = Math.round(lsd * volFactor);
-      easy = Math.round(lsd * 0.35);
+      easy = Math.round(lsd * 0.35); 
+      bridge = Math.round(lsd * 0.65); 
 
       if(isDeload) { 
         lsd = Math.round(lsd * 0.6); 
         easy = Math.round(easy * 0.7); 
-        focusText = "<b>[Deload]</b> 훈련량 40% 감소. 호르몬 회복에 집중하세요.";
+        bridge = Math.round(bridge * 0.7);
+        focusText = "<b>[Deload]</b> 훈련량 40% 감소. 과감하게 쉬는 것도 훈련입니다.";
       }
 
-      // Day mapping
+      if(isTest) {
+        focusText = "<b>[TEST WEEK]</b> 현재 수행능력을 점검하여 페이스를 재설정합니다.";
+      }
+
       const daysSrc = ['월','화','수','목','금','토','일'];
       const d = [];
       for(let i=0; i<7; i++) d.push(daysSrc[(parseInt(state.startDayIdx)+i)%7]);
 
-      // Schedule Construction
       let items = [];
-      
-      // Formatting Paces for display
       const pEasy = fmtPace(state.paces.easy);
       const pMP = fmtPace(state.paces.mp);
       const pLT = fmtPace(state.paces.lt);
@@ -549,38 +545,49 @@
           {d:d[6], t:"Recovery", type:"rest", sub:"걷기 및 식사"}
         ];
       } else {
-        // Standard Week Logic
-        let wedRun = { t: `Easy ${easy}km`, type: 'easy', sub: `@${pEasy}` };
-        let satRun = { t: `LSD ${lsd}km`, type: 'long', sub: 'Zone 2 대화가능 속도' };
-        let thuCrossfit = { t: 'CrossFit (MetCon)', sub: '심폐지구력' };
+        let wedRun = { t: `Semi-Long ${bridge}km`, type: 'easy', sub: `주말 가교 역할 @${pEasy}` };
+        
+        // [UPDATED] Friday Logic: Very concise based on user request
+        let friRun = { t: `Shake-out 4km`, type: 'rest', sub: `Zone1(25분내) + 80% 질주 3회` };
 
-        // [CRITICAL UPDATE] Specificity & Intensity Logic
-        if (!isDeload) {
-          // Q2: Intro Tempo
+        let satRun = { t: `LSD ${lsd}km`, type: 'long', sub: 'Zone 2 대화가능 속도' };
+        let thuCrossfit = { t: 'CrossFit', sub: '심폐지구력 (다리 부하 주의)' };
+
+        if (!isDeload && !isTest) {
           if (w > 13 && w <= 26) {
-            wedRun = { t: `Tempo Run 6k`, type: 'tempo', sub: `2k업 + 4k@${pMP} + 쿨다운` };
+             wedRun = { t: `Tempo Run ${Math.max(6, bridge-2)}km`, type: 'tempo', sub: `2k업 + @${pMP} 지속 + 쿨다운` };
           }
-          // Q3: Threshold & Fast Finish LSD
           if (w > 26 && w <= 39) {
-            wedRun = { t: `LT Interval`, type: 'interval', sub: `2km x 3 @${pLT} (휴식 2분)` };
-            satRun = { t: `LSD ${lsd}km (Fast Finish)`, type: 'long', sub: `마지막 5km @${pMP} 필수` };
-            thuCrossfit = { t: 'Strength / Core', sub: '고중량 저반복 (러닝 간섭 최소화)' };
+             wedRun = { t: `LT Interval`, type: 'interval', sub: `2km x 3 @${pLT} (휴식 2분)` };
+             satRun = { t: `LSD ${lsd}km (Fast Finish)`, type: 'long', sub: `마지막 5km @${pMP} 필수` };
+             thuCrossfit = { t: 'Strength / Core', sub: '관절 보호를 위한 보강운동' };
           }
-          // Q4: Peak MP
           if (w > 39 && w <= 48) {
-            wedRun = { t: `Tempo Run 12k`, type: 'tempo', sub: `10k @${pMP} 지속주` };
-            satRun = { t: `LSD ${lsd}km (Sim)`, type: 'race', sub: `전반 Easy / 후반 10k @${pMP}` };
-            thuCrossfit = { t: 'Plyometrics', sub: '폭발력 유지, 피로 관리' };
+             wedRun = { t: `Tempo Run 12k`, type: 'tempo', sub: `10k @${pMP} 지속주` };
+             satRun = { t: `LSD ${lsd}km (Sim)`, type: 'race', sub: `전반 Easy / 후반 10k @${pMP}` };
           }
+        }
+
+        if (isTest5k) {
+          satRun = { t: `TEST 5K (Time Trial)`, type: 'test', sub: `전력 질주 (현재 스피드 측정)` };
+          wedRun = { t: `Easy ${Math.round(bridge*0.7)}km`, type: 'easy', sub: `테이퍼링` };
+        }
+        if (isTest10k) {
+          satRun = { t: `TEST 10K (Time Trial)`, type: 'test', sub: `전력 질주 (유산소 역치 측정)` };
+          wedRun = { t: `Easy ${Math.round(bridge*0.7)}km`, type: 'easy', sub: `테이퍼링` };
+        }
+        if (isTestHalf) {
+          satRun = { t: `TEST HALF (21.1km)`, type: 'test', sub: `Sub-3 가능성 타진 (목표 1:26~28)` };
+          wedRun = { t: `Easy ${Math.round(bridge*0.5)}km`, type: 'easy', sub: `테이퍼링` };
         }
 
         items = [
           {d:d[0], t:`Easy ${easy}km + 질주`, type:"easy", sub:`@${pEasy}, 100m 질주 x 4`},
           {d:d[1], t:`Easy ${easy+1}km`, type:"easy", sub:`@${pEasy}`},
-          {d:d[2], t:wedRun.t, type:wedRun.type, sub:wedRun.sub}, // Key Workout
+          {d:d[2], t:wedRun.t, type:wedRun.type, sub:wedRun.sub}, 
           {d:d[3], t:`${thuCrossfit.t}`, type:"rest", sub:thuCrossfit.sub},
-          {d:d[4], t:`Easy ${isDeload?Math.max(3,easy-2):easy}km`, type:"easy", sub:"가볍게 (Active Recovery)"},
-          {d:d[5], t:satRun.t, type:satRun.type, sub:satRun.sub}, // Long Run
+          {d:d[4], t:friRun.t, type:friRun.type, sub:friRun.sub}, 
+          {d:d[5], t:satRun.t, type:satRun.type, sub:satRun.sub}, 
           {d:d[6], t:`완전 휴식`, type:"rest", sub:"수면/영양 보충"}
         ];
       }
@@ -618,6 +625,7 @@
         if(item.type==='tempo') pill = '<span class="pill pill-tempo">TEMPO</span>';
         if(item.type==='interval') pill = '<span class="pill pill-int">LT/VO2</span>';
         if(item.type==='race') pill = '<span class="pill pill-race">TARGET</span>';
+        if(item.type==='test') pill = '<span class="pill pill-test">TEST DAY</span>';
 
         li.innerHTML = `
           <div class="neon-bar"></div>
